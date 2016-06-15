@@ -1,0 +1,108 @@
+﻿ body{ background:#000;}
+ h1{ text-align:center;}
+        dl, dt, dd
+        {
+            margin: 0;
+            padding: 0;
+        }
+        *
+        {
+            margin: 0;
+            padding: 0;
+            font-size: 1em;
+        }
+        ul
+        {
+            width: 98%;
+            height: 300px;
+            margin: 0 auto;
+            overflow: scroll;
+        }
+        li
+        {
+          
+            padding: 2px 5px 2px 5px;
+        }
+        ul, li
+        {
+            list-style-type: none;
+            clear: both;
+        }
+         #ul1{width:95%; margin:0 auto;}
+        #ul1 li
+        {
+          padding-top: 10px;
+          width:96%;
+          margin:0 auto;
+        
+        }
+        
+        .span_left
+        {
+            width: 10px;
+            height: 30px;
+            display: block;
+            float: left;
+            background: url(../images/left.png) no-repeat left center;
+        }
+        .span_right
+        {
+            width: 10px;
+            height: 30px;
+            display: block;
+            float: right;
+            background: url(../images/right.png) no-repeat left center;
+        }
+        .dl_left
+        {
+            width: 50px;
+            height: 60px;
+            float: left;
+        }
+        .dl_left img
+        {
+            width: 45px;
+            height: 45px;
+        }
+        .dl_right
+        {
+            width: 50px;
+            height: 60px;
+            float: right;
+            text-align: right;
+        }
+        .dl_right img
+        {
+            width: 45px;
+            height: 45px;
+        }
+        
+        #say dd #txt{ width:100%;}
+        #say dt {text-align:center}
+        
+        .left
+        {
+            color:#fff;
+            background: #b8d45c;          
+            float: left;
+            display: block;
+            background: #b8d45c;
+            min-height: 40px;
+            border-radius: 7px;
+            padding: 3px;
+           max-width: 77%;
+         
+        }
+        .right
+        {
+            background: #f00;          
+            float: right;
+            display: block;
+            background: #fcfcfc;
+            min-height: 40px;
+            border-radius: 7px;
+            padding: 3px;
+           max-width: 77%;
+          
+        }
+ 

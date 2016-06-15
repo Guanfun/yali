@@ -1,0 +1,102 @@
+﻿<include file="Public:header" />
+</head>
+<body class="wbg">
+<link rel="stylesheet" href="SKIN_HTML5/{$templet_name}/css/global.css" />
+<link rel="stylesheet" href="SKIN_HTML5/{$templet_name}/css/buyerorder.css" />
+<include file="Public:top"/>
+	<!--3、此处加入主体内容，id="container"必带-->
+	<section id="container">
+         <form method="get" action="{:U('BuyerOrder/apply_return_info',array('openid'=>$openid,'member_id'=>$member_id))}">
+         <input type="hidden" name="order_list" value="" />
+         <input type="hidden" name="order_id" value="{$list['id']}" />
+		<div class="carbox">
+        	<header class="cartop">
+            	<d>售后服务<small>请选择需要售后的产品</small></d>
+                <div class="clear"></div>
+            </header>
+            <div class="carbody shop_checkbox">
+         
+                 <ul class="cartTable">
+                    <volist name="list['order_list']" id="vo">
+                 <li>
+                        <div class="sel">
+                            <input type="checkbox"  class="checkbox item_checkbox"  value="{$vo['id']}"  id="checkbox-1-{$key}" >
+                            <label for="checkbox-1-{$key}"></label>
+                        </div>
+                        <img src="{$vo['thumb']}">
+                        <a href="{:U('Product/view',array('id'=>$vo['product_id']))}">
+                        <div class="cright">
+                            <h3>{$vo['name']}</h3>
+                            <span>&yen;
+                            <if condition="$vo['price'] and !$vo['score']">
+                            	{$vo['unit_price']}元
+                            <elseif condition="$vo['price'] and $vo['score']"/>
+                            	{$vo['unit_price']}元 + {$vo['score']}积分
+                            <else/>
+                             	{$vo['score']}积分
+                             </if>
+                            </span>
+                            <div class="clear"></div>
+                        </div>
+                        </a>
+                        <div class="clear"></div>
+                    </li>
+                    </volist>
+                  </ul>
+                 
+            </div>
+            <div class="carbottom">
+            	<div class="sel1"><input type="checkbox" name="all" class="checkbox" id="checkbox-2-999"><label for="checkbox-2-999"></label>全选</div>
+                <button id="make_order" type="submit" class="disabled" disabled="disabled">请选择需要售后的商品</button>
+                <div class="clear"></div>
+            </div>
+        </div>
+            <input type="hidden" name="openid" id="openid" value="{$openid}"/>
+        </form>
+	</section>
+	<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+             //全选
+            $("input[name='all']").click(function () {
+                if (this.checked == true) {
+                    $("input[type=checkbox]").each(function () {
+                        $(this).prop('checked', true);
+                    });
+                } else {
+                    $("input[type=checkbox]").each(function () {
+                        $(this).prop('checked', false);
+                    });
+                }
+                checked();
+            });
+            $('.item_checkbox').click(function () {
+                checked();
+            });
+            checked();
+        });
+        function checked() {
+            var checked = $('.item_checkbox:checked');
+            var checked_num = checked.length;
+            if (checked.length > 0) {
+                $('#make_order').removeClass('disabled').attr('disabled', false);
+                var total_score = 0;
+                var orderlist = '';
+                $.each(checked, function () {
+                	orderlist += ',' + $(this).val();
+                    var cart = $(this).attr('cart');
+                    total_score += Number($('#price_total_' + cart).val());
+                });
+                orderlist = orderlist.substr(1);
+                $('input[name=order_list]').val(orderlist);
+                $('#make_order').html('申请售后（'+checked_num+')');
+            } else {
+                $('#make_order').addClass('disabled').attr('disabled', true);
+                $('#make_order').html('请选择商品');
+            }
+        }
+
+        
+    </script>
+</body>
+</html>

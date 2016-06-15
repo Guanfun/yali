@@ -1,0 +1,53 @@
+<volist name="list['list']" id="vo">
+    <li>
+        <div class="product_activity_main">
+            <p>{$vo.title}</p>
+            <p>使用期限{$vo.begintime|msubstr=###,2,8} ~ {$vo.endtime|msubstr=###,2,8}</p>
+            <p>剩余：{$vo.overplus}</p>
+        </div>
+        <div class="product_activity_money">
+            <p>{$vo.money}</p>
+            <php>if($vo['use_type']=="1"){</php>
+            <p>满{$vo.full_money}使用</p>
+            <php>}else{</php>
+            <p>无使用条件</p>
+            <php>}</php>
+        </div>
+        <div class="product_activity_receive" id="{$vo.id}" receive="{$vo.receive_count}" person="{$vo['person_num']}">
+            <php>if($vo['person_num']!="0" && $vo['receive_count']<$vo['person_num'] || $vo['person_num']=="0"){</php>
+                <php>if($vo['receive_count']=="0"){</php>
+                    <p class="first">立即</p>
+                    <p class="second">领取</p>
+                <php>}else{</php>
+                    <p class="first">已领取</p>
+                    <p class="second">{$vo.receive_count}张</p>
+                <php>}</php>
+            <php>}else{</php>
+                <p>已领</p>
+                <p>取完</p>
+            <php>}</php>
+        </div>
+    </li>
+</volist>
+<script>
+    $('.product_activity_receive').on('click',function(){
+        var person=$(this).attr('person');
+        var ids=$(this).attr('id');
+        var openid = "{$openid}";
+        var member_id = "{$member_id}";
+        var a=$(this);
+        $.get("{:U('ProductActivity/addcoupon')}",{id:ids,openid:openid,member_id:member_id},function(s) {
+            if(s.status == 1){
+                alert("领取成功");
+                if(Number(person)-Number(s.receive_count)==0){
+                    a.html("<p>已领</p><p>取完</p>");
+                }else if(Number(person)!=0&&Number(person)-Number(s.receive_count)>0 || Number(person)==0){
+                    a.children("p.first").html("已领取");
+                    a.children("p.second").html(s.receive_count+"张");
+                }
+            }else{
+                alert(s.data);
+            }
+        },'json');
+    });
+</script>

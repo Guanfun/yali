@@ -1,0 +1,255 @@
+<include file="Public:header"/> 
+
+
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<link href="SKIN_HTML5/{$templet_name}/css/style.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/bin1.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="SKIN_HTML5/{$templet_name}/css/menu.css" rel="stylesheet" type="text/css"/>
+<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/menu.js" type="text/javascript"></script>
+<I name="column_id" input="get.column_id" default="0"/>
+<i name="cate_id" input="get.cate_id" default="0"/>
+<i name="id" input="get.id" default="0"/>
+</head>
+
+<body>
+
+<include file="Public:top"/>
+
+
+<section id="container">
+	<getResumeView name="Resume_View" id="$id" />
+	<!-- {$Resume_View|P} -->
+	<form class="addForm" action="MemberCenter.html"><!-- method="post"-->
+		<ul class="sep_teams">
+			<div class="headTitle">基本资料</div>
+			<li class="ava">
+				<span>头像</span>
+				<small>
+				<php>if($Resume_View['thumb']!=""){</php>
+					<img src="{$Resume_View['thumb']|show_Pic}">
+				<php>}</php>
+				</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>姓名</span>
+				<small>{$Resume_View['realname']}</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>出生年份</span>
+				<small>{$Resume_View['birth_month']|msubstr=###,0,10}</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>婚姻状况</span>
+				<small>{$Resume_View['marriage']}</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>手机号码</span>
+				<small>{$Resume_View['phone']}</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>邮箱</span>
+				<small>{$Resume_View['email']}</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>户口</span>
+				<small>{$Resume_View['native_address']}</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>状态</span>
+				<small>{$Resume_View['job_status']}</small>
+				<div class="clear"></div>
+			</li>
+		</ul>
+		
+		<ul class="sep_teams">
+			<div class="headTitle">职业意向</div>
+			<li>
+				<span>期望行业</span>
+				<article>{$Resume_View['cate_name']}</article>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>期望职能</span>
+				<small>{$Resume_View['job_nature']}</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>期望地点</span>
+				<small>{$Resume_View['job_address']}</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>期望年薪</span>
+				<small>{$Resume_View['ex_salary']}</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>目前年薪</span>
+				<small>{$Resume_View['now_salary']}</small>
+				<div class="clear"></div>
+			</li>
+		</ul>
+		<php>if(count($Resume_View['resume_experience'])>0){</php>
+		<ul class="sep_teams">
+			<div class="headTitle">工作经历</div>
+			<volist name="Resume_View" id="work">
+			<php>if($i!=1){</php>
+			<div id="workExp" style="display: none;">
+			<php>}</php>
+			<li>
+				<span>所在公司</span>
+				<small>{$work['company']}</small>
+				<div class="clear"></div>
+			</li>
+			<li>
+				<span>担任职位</span>
+				<small>{$work['job']}</small>
+				<div class="clear"></div>
+			</li>
+			<li>
+				<span>在职时间</span>
+				<small>{$work['begintime']|date="Y-m",###}-{$work['endtime']|date="Y-m",###}</small>
+				<div class="clear"></div>
+			</li>
+			<li>
+				<span>工作地点</span>
+				<small>{$work['address']}</small>
+				<div class="clear"></div>
+			</li>
+			<li class="bottomLine">
+				<span>工作职责</span>
+				<small>{$work['content']}</small>
+				<div class="clear"></div>
+			</li>
+			<php>if($i!=1){</php>
+			</div>
+			<php>}</php>
+			</volist>
+			<div class="ink_submit">
+				<input type="button" value="更多" class="submit" onclick="show()">
+			</div>
+		</ul>
+		<php>}</php>
+		<php>if(count($Resume_View['resume_edu'])>0){</php>
+		<ul class="sep_teams">
+			<div class="headTitle">教育经历</div>
+			<volist name="Resume_View['resume_edu']" id="edu">
+			<li>
+				<span>所读学校</span>
+				<small>{$edu['school']}</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>专业名称</span>
+				<small>{$edu['major']}</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>学历</span>
+				<small>{$edu['education']}</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>在读时间</span>
+				<small>{$edu['begintime']|date="Y/m",###}–{$edu['endtime']|date="Y/m",###}</small>
+				<div class="clear"></div>
+			</li>
+			</volist>
+		</ul>
+		<php>}</php>
+		
+		<!-- <ul class="sep_teams">
+			<div class="headTitle">语言能力</div>
+			<li>
+				<span>语言能力</span>
+				<small>英语四级、普通话流利</small>
+				<div class="clear"></div>
+			</li>
+		</ul> -->
+		
+		<ul class="sep_teams lastTeam">
+			<div class="headTitle">自我评价</div>
+			<li>
+				<!-- <span>擅长技能</span>
+				<article>IOS、HTML5、JAVA、C#</article> -->
+				<div class="clear"></div>
+			</li>
+			<li>
+				<span>自我评价</span>
+				<article>{$Resume_View['intro']}</article>
+				<div class="clear"></div>
+			</li>
+		</ul>
+		
+	</form>
+		
+	<script>
+		function show(){
+			$("#workExp").toggle();
+			if($(".ink_submit input").val() == '更多'){
+				$(".ink_submit input").val("收起");
+			}else{
+				$(".ink_submit input").val("更多");
+			}
+		}
+	</script>
+<php>if($apply_id){</php>
+	<!-- <div class="deal">
+	<input type="hidden" id="job_apply" value="{$apply_id}">
+		<input type="button" value="通知面试" val="2" class="submit">
+	</div> -->
+<php>}</php>
+</section>
+
+	<include file="Public:footer"/>
+<script type="text/javascript">
+	$(function(){
+		$('.button').click(function(){
+			var id=$('#job_apply').val();
+			var status=$(this).attr('val')
+			if(status==2){msg="通知面试";}else{msg="不合适";}
+			if(confirm("您确定"+msg+"吗？")){
+				$.ajsx({
+					type:'post',
+					url:"{:U('resume/savejobApply')}",
+					data:{id:id,status:status},
+					dataType:'json',
+					async:salse,
+					success:function(s){
+						if(s.status=='1'){
+							alert('通知成功')
+						}else{
+							alert('您没有权限');
+						}
+					}
+				})
+			}
+		})
+	})
+</script>
+</body>
+</html>

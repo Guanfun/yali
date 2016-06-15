@@ -1,0 +1,67 @@
+<include file="Public:header" />
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet">
+<link href="SKIN_HTML5/{$templet_name}/css/score.css" rel="stylesheet">
+</head>
+<body>
+<header id="header">
+    <div class="top">
+        <a href="javascript:window.history.go(-1)" class="headerLeft"><img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+        <div class="hTitle">我的积分</div>
+    </div>
+</header>
+<!--3、此处加入主体内容，id="container"必带-->
+<section id="container">
+    <div class="user">
+        <a class="head_portrait" href="{:U('Member/LockBox',array('openid'=>$openid,'member_id'=>$member_id))}">
+            <php>if($is_sales){</php>
+            <img src="{$headimgurl}" style="max-width:100%" />
+            <php>}else{</php>
+            <img src="SKIN_HTML5/{$templet_name}/images/touxiang.png">
+            <php>}</php>
+        </a>
+        <a class="user_name" href="{:U('Member/LockBox',array('openid'=>$openid,'member_id'=>$member_id))}">
+            {:$_G['realname']}[{:$_G['username']}]
+        </a>
+        <div style="width: 60%;height: 1px;float: left"></div>
+        <a href="{:U('Product/score',array('member_id'=>$member_id,'openid'=>$openid))}">
+            <div class="integral">
+                兑换商品
+            </div>
+        </a>
+        <div class="clear"></div>
+        <a href="{:U('Member/LockBox',array('openid'=>$openid,'member_id'=>$member_id))}" class="seT">
+            <img src="SKIN_HTML5/{$templet_name}/images/SeT.png">
+        </a>
+    </div>
+    <div class="score_price">
+        <div class="score_price_left">
+            <span>{$_G['credit']|default="0"}</span>
+            剩余积分
+        </div>
+        <div class="score_price_left">
+            <span>{:$downcredit?$downcredit:0}</span>
+            已消费
+        </div>
+        <div class="score_price_left">
+            <span>{:$upcredit?$upcredit:0}</span>
+            总积分
+        </div>
+    </div>
+    <div class="score_record">
+        <p class="record">积分记录</p>
+        <div class="recordView">
+            <ul>
+                <volist name="list" id="vo">
+                    <li>
+                        <p class="addtime">{$vo['addtime']}</p>
+                        <p class="remark">{$vo['remark']}</p>
+                        <p class="credit">{$vo['credit']}</p>
+                    </li>
+                </volist>
+            </ul>
+        </div>
+    </div>
+</section>
+<include file="Public:footer" />
+</body>
+</html>

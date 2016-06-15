@@ -1,0 +1,54 @@
+/*¿Õ¹ºÎï³µ*/
+.none{
+    margin-top: 5em;
+    text-align: center;
+    overflow: hidden;
+}
+.none img{
+    width: 8em;
+    height:8em;
+    object-fit: contain;
+}
+.none p{
+    width: 100%;
+    line-height: 1.3em;
+    font-size: 1.3em;
+    overflow: hidden;
+    color:#333333;
+}
+.none p:nth-child(3){
+    font-size: 0.9em;
+    overflow: hidden;
+    color:#999999;
+}
+.none_2,.none_3{
+    margin-top: 3em;
+    overflow: hidden;
+    padding:6%;
+    width: 88%;
+    text-align: center;
+}
+.none_2 a{
+    display: block;
+    width: 45%;
+    float: left;
+    text-align: center;
+    padding:0.5em 0;
+    background: #efeff4;
+    border:1px solid #dddddd;
+    border-radius: 0.25em;
+}
+.none_2 a:nth-child(2){
+    float: right;
+}
+.none_3 a{
+    display: block;
+    width: 45%;
+    text-align: center;
+    padding:0.5em 0;
+    background: #efeff4;
+    border:1px solid #dddddd;
+    border-radius: 0.25em;
+    margin: 0 auto;
+
+}

@@ -1,0 +1,52 @@
+<include file="Public:header"/>
+
+<link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/index.css">
+<link href="SKIN_HTML5/{$templet_name}/css/style.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/luo.css" rel="stylesheet" type="text/css">
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<i name="column_id" input="get.column_id" default="0" />
+<i name="cate_id" input="get.cate_id" default="0" />
+<i name="id" input="get.id"/>
+</head>
+
+<body>
+
+<include file="Public:top"/>
+<getArticlecolumn name="data_column" id="$column_id" />
+<getarticlecategorys name="article_categorys_list_top" column_id="$column_id" is_mobile="1"/>
+<volist name="article_categorys_list_top" id="vo_top">
+	<eq name="cate_id" value="$vo_top.id" >
+		<assign name="data_cate_name" value="$vo_top.name" />
+	</eq>
+</volist>
+<getarticleview name="article_view_list" id="$id" />
+<section id="container">
+	<div class="info_page">
+		<h1 class="info_page_title">{$article_view_list.title}</h1>
+		<time class="info_page_time">{$article_view_list.addtime|date='Y-m-d',###}</time>
+		<div class="info_content">
+			{$article_view_list.mobile_content|htmlspecialchars_decode}
+		</div>
+	</div>
+	<div class="page">
+			<getUpdownArticle name="list" id="$id" />
+			<if condition="$list[prev]">
+				<a href="{:U('Article/view',array('column_id'=>$column_id,'id'=>$list['prev']['id']))}">
+					<input type="button" value="上一篇" class="pre">
+				</a>
+			</if>
+			<if condition="$list[next]">
+				<a href="{:U('Article/view',array('column_id'=>$column_id,'id'=>$list['next']['id']))}">
+					<input type="button" value="下一篇" class="next">
+				</a>
+			</if>
+			<div class="clear"></div>
+		</div>
+</section>
+
+
+	<include file="Public:footer"/>
+
+</body>
+</html>

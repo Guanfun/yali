@@ -1,0 +1,25 @@
+<i name="cate_id" input="get.cate_id" default="0" />
+<i name="column_id" input="get.column_id" default="0" />
+<i name="pages" input="get.pages" default="0" />
+<getProductBuyList name="data" column_id="$column_id" cate_id="$cate_id" size="10" title="$title"  p="$pages"/>
+	<volist name="data['list']" id="vo">
+		<a href="{:U('Productbuy/view',array('id'=>$vo['id']))}">
+			<li class="hasArr">
+			<b>
+				<php>if($vo['mobile_thumb']!=""){</php>
+					<img src="{$vo['mobile_thumb']|show_Pic=###,120,120,0}">
+				<php>}elseif($vo['thumb']!=""){</php>
+					<img src="{$vo['thumb']|show_Pic=###,120,120,0}">
+				<php>}else{</php>
+					<img src="/Public/nopic.jpg">
+				<php>}</php>
+			</b>
+			<var>
+				<p class="title listTitle">{$vo['title']}</p>
+				<p class="listTitle">{$vo['num']}{$vo['unit']}，{$vo['price']}元 </p>
+				<span>{$vo['endtime']|substr=###,0,10}</span>
+			</var>
+			</li>
+		</a>
+
+	</volist>	

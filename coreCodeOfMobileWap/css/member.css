@@ -1,0 +1,32 @@
+.hr{width:100; height:0.5em; background:#f0eff5;}
+.user{width:100%;background:url(../images/user_bg.png) no-repeat top left; background-size:100% 100%; padding:1em 0; position:relative;overflow: hidden}
+.user .seT{ position:absolute; right:0.5em; top:0.5em;}
+.user .seT img{width:1.5em; height:1.5em; vertical-align:middle;}
+.head_portrait{display:block; width:20%; border-radius:100%; padding:1px;border:2px solid #FFF; overflow:hidden; text-align:center; margin:0 5% 0 5%; float:left;}
+.head_portrait>img{width:100%; height:100%; vertical-align:middle; }
+.member_user{
+    width: 65%;
+    float: left;
+    overflow: hidden;
+}
+.user_name{float:left; color:#fff !important;font-size:1rem; line-height:1.5rem; display:inline-block; background:#35c7ec; margin-top:0.2em;padding:0 0.25em; border-radius:0.4em;  }
+.integral{color:#FFF;display:block;float:left; padding-top:1.2em; line-height:1em;}
+.integral img{width:1.2em; height:1.2em; vertical-align:baseline;}
+.integral small{font-size:1em; margin:0 0.5em;}
+.integral big{font-size:1.3em;}
+.ml1{margin-left: 1em;}
+.column{width:100%; overflow:hidden; background:#fff; line-height:1.5em;}
+.vice_list a{display:block; float:left; width:50%; box-sizing:border-box; text-align:center;padding:0.2em 0; line-height:2em;}
+.vice_list a:first-child{border-right:1px #f0eff5 solid;}
+.vice_list img{width:1.5em; height:1.5em; vertical-align:middle; }
+.vice_list a span{display:inline-block;width:100%;font-size:1em;color:#3d4245;}
+/*.order{box-shadow:0px 0.8em 0.4em #000}*/
+.order .order_title{width:100%;height:3em; line-height:3em;padding:0 1em; box-sizing:border-box; border-bottom:1px solid rgb(216,216,216);}
+.order .order_title h3{ float:left; font-size:1.3rem; font-weight:normal; color:#3d4245;}
+.order .order_title .more{float:right; font-size:1em; color:#b3b3b3; padding-right:1.5em; background:url(../images/more.png) center right no-repeat; background-size:1em 1em;}
+.order .order_nav a{display:inline-block; text-align:center; width:25%;float:left; padding:0.5em 0 0.2em 0; line-height:2.2em;}
+.order .order_nav a img {width:1.5em; height:1.5em; vertical-align:middle;}
+.order .order_nav a span{display:inline-block; width:100%;font-size:1em;}
+.con_major a{display:block; float:left; box-sizing:border-box; width:25%; height:6.66rem; text-align:center; border-right:1px solid #e7e7e7;border-bottom:1px solid #e7e7e7; line-height:1em;}
+.con_major a img{width:1.8em; height:1.8em; vertical-align:middle; margin:1.4rem 0 1rem 0;}
+.con_major a span{display:inline-block; width:100%; font-size:1em; color:#152a36}

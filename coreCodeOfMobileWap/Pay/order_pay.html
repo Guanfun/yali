@@ -1,0 +1,203 @@
+<include file="Public:header"/>
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/pay.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<header id="header">
+	<div class="top">
+		<div class="headerLeft">
+			<i class="home_open">
+				<a href="javascript:window.history.go(-1)">
+					<img src="SKIN_HTML5/{$templet_name}/images/back2.png" />
+				</a>
+			</i>
+		</div>
+		<div class="hTitle">
+			订单确认
+		</div>
+		<div class="headerRight">
+		</div>
+	</div>
+</header>
+<section id="container">
+	<form method="post" class="pay_for" >
+	<div class="Order_pay_content">
+		<volist name="order" id="vo">
+		<div class="clearfix"></div>
+		<div class="pay_order_no">
+			订单单号：{$vo['order_no']}
+		</div>
+		<div class="pay_order_details">
+			<table>
+				<tr>
+					<td>
+					店&nbsp;&nbsp;&nbsp;&nbsp;铺
+					</td>
+					<td>
+						{$vo['shop_name']}
+					</td>
+				</tr>
+				<tr>
+					<td>价&nbsp;&nbsp;&nbsp;&nbsp;格</td>
+					<td>{:number_format($vo['total'],2)}</td>
+				</tr>
+				<tr>
+					<td>运&nbsp;&nbsp;&nbsp;&nbsp;费</td>
+					<td>{$vo['shipping_money']}</td>
+				</tr>
+				<tr>
+					<td>总&nbsp;&nbsp;&nbsp;&nbsp;计</td>
+					<td>{:number_format($vo['total']+$vo['shipping_money'],2)}</td>
+				</tr>
+				<!--<tr>
+					<td>购买时间</td>
+					<td>{$vo['addtime']|date='Y-m-d H:i:s',###}</td>
+				</tr>-->
+				<tr>
+					<td>收货地址</td>
+					<td>{$region[$vo['province']]['name']}{$region[$vo['city']]['name']}{$region[$vo['zone']]['name']} {$vo['address']}</td>
+				</tr>
+				<tr>
+					<td colspan="2">商品详情</td>
+				</tr>
+				<volist name="product_list[$vo['order_no']]" id="v">
+				<tr>
+					<td></td>
+					<td colspan="2">
+						<p>{$v['name']}</p>
+						<p>{$v['attr_val']?$v['attr_val']:''}</p>
+						<p><orange>{:$v['num']?'数量：'.$v['num'].'件':''}</orange></p>
+					</td>
+				</tr>
+				</volist>
+				<if condition="$vo['customer_remark']">
+					<tr>
+						补充说明：
+						{$vo['customer_remark']}
+					</tr>
+				</if>
+				<tr>
+					<td>总额：</td>
+					<td><orange>{:number_format($vo['total']+$vo['shipping_money'],2)}元</orange></td>
+				</tr>
+			</table>
+			<input type="hidden" value="{$vo['total']+$vo['shipping_money']}" class="shop_total_fee" />
+		</div>
+		</volist>
+		<div class="payWay">
+			<div class="total_fee"></div>
+			<ul>
+				<li id="Wxpay"><img src="SKIN_HTML5/{$templet_name}/images/weixin.png" /></li>
+				<li id="Alipay" class="on"><img src="SKIN_HTML5/{$templet_name}/images/zhifubao.png" /></li>
+			</ul>
+		</div>
+		<div>
+			<input type="hidden" value="2" id="patyType" name="paytype"/>
+			<input type="hidden" name="openid" value="{$openid}"/>
+			<input type="hidden" name="member_id" value="{$member_id}"/>
+			<input type="hidden" name="total_fee" value="0" id="total_fee"/>
+			<input type="hidden" name="web_id" value="{$_G['web_id']}"/>
+			<input type="hidden" name="order_no" value="{$new_order_no}"/>
+			<input type="button" value="立即支付" id="pay_money" class="add_address_submit"/>
+		</div>
+	</div>
+	</form>
+</section>
+<include file="Public:footer"/>
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<script>
+	$(document).ready(function() {
+		var total=0;
+		$('.shop_total_fee').each(function(){
+			var money=$(this).val();
+			total=(parseInt(total * 100)+ parseInt(money * 100))/ 100;
+		});
+		$('.total_fee').html("<p>应付金额</p><p><orange>"+parseInt(total * 100) / 100+"元</orange></p>");
+		$('#total_fee').val(parseInt(total * 100) / 100);
+		var payWay=$('.payWay li.on').attr('id');
+		var action="<php>if($payway==2){</php>{:U('WxPay/index')}<php>} else {</php>{:U('WxPay/aliPay')}<php>}</php>";
+		$('.payWay li').click(function () {
+			payWay=$(this).attr('id');
+			$(this).addClass('on').siblings().removeClass('on');
+			pay_Way(payWay);
+		});
+		function pay_Way(a) {
+			if (a == "Wxpay") {
+				action = "{:U('WxPay/index')}";
+			}
+			if (a == "Alipay") {
+				action = "{:U('WxPay/aliPay')}";
+			}
+		}
+		$('#pay_money').click(function(){
+			$('.pay_for').attr("action",action).submit();
+		});
+	});
+</script>
+<php>if($_G[credit]>$total_score){</php>
+<include file="Public:form_validation" />
+<script>
+	var down_time = 0;
+	var new_time = {$config['sms_code_minsms_code_min']*60};
+	$(document).ready(function() {
+		$('.pay_for').formValidation({
+			fields: {
+			<php>if(!$_G[pay_password]){</php>
+		login_pwd: nb_check.password,
+				confirm_pay_pwd:{
+			validators: {
+				notEmpty: {
+					message: '请输入确认支付密码'
+				},
+				identical: {
+					field: 'pay_pwd',
+							message: '两次输入的支付密码必须一致'
+				}
+			}
+		},
+		<php>}</php>
+		<php>if($config['pay_code']){</php>
+		checkCode:{
+			validators: {
+				notEmpty: {
+					message: '请输入6位验证码'
+				},
+				stringLength: {
+					min: 6,
+							max: 6,
+							message: '验证码有效值为6位'
+				}
+			}
+		},
+		<php>}</php>
+		pay_pwd:nb_check.password
+
+	}
+	}).on('success.form.fv', function(e) {
+		form_action(e);
+	});
+	$('.getCheckCode').click(function(){
+		down_time = new_time;
+		settime();
+		$('#tip').html("短信验证码已发送成功,{$config['pay_code_min']}分钟内有效");
+		$.post("{:U('Register/getCheckCode')}",{type:1},function(data){},'json');
+	});
+	function settime(){
+		if (down_time == 0){
+			$('.getCheckCode').removeClass('disabled');
+			$('.getCheckCode').html("重新发送");
+			down_time = new_time;
+		}else{
+			$('.getCheckCode').addClass('disabled');
+			$('.getCheckCode').html("("+down_time+")秒后，重新发送");
+			down_time--;
+			time= setTimeout(function() {
+				settime();
+			},1000);
+		}
+	};
+	});
+</script>
+<php>}</php>
+</body>
+</html>

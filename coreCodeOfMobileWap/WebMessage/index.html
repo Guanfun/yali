@@ -1,0 +1,69 @@
+﻿<include file="Seo:seo_webmessage" />
+<getWebMessagecolumn name="data_column" id="$column_id" />
+<include file="Public:header" />
+<link href="SKIN_HTML5/{$templet_name}/css/webmessage.css" rel="stylesheet" type="text/css">
+    <link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<include file="Public:top" />
+	<!--3、此处加入主体内容，id="container"必带-->
+	<section id="container">	
+	<div class="content">
+  	<div class="NewsBar">
+		<h1>{$data_column.name|default="在线留言"}</h1>
+		</div>
+         <summary class="LockBox">
+             <form class="login-form" name="myform" id="myform" class="form-horizontal" >
+                 <dd>
+                     <span><i></i>昵称：</span>
+                     <input name="realname" id="nickname" type="text" required>
+                 </dd>
+                <dd>
+                    <span><i></i>邮箱：</span>
+                    <input name="email" id="email" type="text">
+                </dd>
+                <dd>
+                    <span><i></i>电话：</span>
+                    <input type="text" name="phone" id="tel">
+                </dd>
+                 
+                <dd>
+                <span class="tie"><i></i>留言：</span>
+                <textarea class="msg-textarea" name="message" required></textarea>
+                </dd>
+
+                <dt>
+                    <input class="but" id="lockBox_but" type="button" value="提交">
+                </dt>
+            </form>
+        </summary>
+    </div>
+        <div class="bottom"> </div>
+	</section>
+<include file="Public:footer" />
+	<!--4、此处引入js，2个jquery文件需带上-->
+	<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#lockBox_but').click(function () {
+                $.ajax({
+                    type: "POST",
+                    url: "{:U('WebMessage/saveWebMessage')}",
+                    data: $('#myform').serialize(),
+                    success: function (data) {
+                        var data = $.parseJSON(data);
+                        if (data.status == '1') {
+                            alert(data.data);
+                            location.href = "{:U('Index/index',array('openid'=>$openid,'member_id'=>$member_id))}";
+                        } else {
+                            alert(data.data);return;
+                        }
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>

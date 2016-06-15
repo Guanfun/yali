@@ -1,0 +1,83 @@
+<include file="Public:header"/>
+
+<link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/index.css">
+<link href="SKIN_HTML5/{$templet_name}/css/style.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/bin1.css" rel="stylesheet" type="text/css">
+<!--<script src="js/jquery-1.10.2.min.js"></script>-->
+<i name="column_id" input="get.column_id" default="0"/>
+<i name="cate_id" input="get.cate_id" default="0"/>
+<i name="my_list" input="get.my_list" default="0"/>
+
+</head>
+
+<body>
+
+
+<include file="Public:top"/>
+
+
+
+<section id="container">
+<php>
+	$pages=1;
+			if(isset($_GET['p'])){
+				$pages=$_GET["p"];
+			}
+</php>
+	<getResumeList name="Resume_List" map="" shop_uid="" uid="" job_id="" ex_salary="" work_year="" edu_id=""  sex="" title="" realname="" size="5" p="$pages" />	
+	<!-- {$Resume_List|P} -->
+	<ul class="myShopType">
+	<volist name="Resume_List['list']" id="vo_resume">
+		<a href="{:U('Resume/view',array('column_id'=>$vo_resume['column_id'],'cate_id'=>$vo_resume['cate_id'],'id'=>$vo_resume['id'],'openid'=>$openid,'member_id'=>$member_id))}">
+			<li class="hasArr">
+				<p>{$vo_resume['realname']}，{$vo_resume['sex']}，{$vo_resume['birthdate']}</p>
+				<p>工作年限：{$vo_resume['work_year']}</p>
+				<!-- <p>期望月薪：2000-3000元</p> -->
+				<p>职位名称：{$vo_resume['cate_name']}</p>
+				<span>{$vo_resume['addtime']|date='Y-m-d',###}</span>
+			</li>
+		</a>			
+	</volist>
+	</ul>
+	<php>
+		if($Resume_List['total']>5){
+			
+			if($Resume_List['total']%5>0){
+				$number=(int)($Resume_List['total']/5)+1;
+			}else{
+				$number=(int)($Resume_List['total']/5);
+			}
+	</php>
+	<div class="pagePreNext">
+	<php>if($pages-1>0){</php>
+		<a href="{:U('Resume/index',array('column_id'=>$column_id,'cate_id'=>$cate_id,'opne_id'=>$openid,'member_id'=>$member_id,p=>pages-1))}">
+	<php>}else{</php>
+		<a href="javascript:;" class="no">
+	<php>}</php>
+		上一页</a>
+		<div class="page_num">第
+			<select id="page_select" onchange="javascript:window.location=this.value">
+			<php>
+				for($i=1;$i<=$number;$i++){
+			</php>
+				<option value="{:U('Resume/index',array('column_id'=>$column_id,'cate_id'=>$cate_id,'openid'=>$openid,'member_id'=>$member_id,p=>$i))}"<php>if($i==$pages){</php> selected="selected"<php>}</php>>{$i}</option>
+			<php>}</php>
+			</select> 页 共 {$number}页
+		</div>
+	<php>if($pages<$number){</php>
+		<a href="{:U('Resume/index',array('column_id'=>$column_id,'cate_id'=>$cate_id,'openid'=>$openid,'member_id'=>$member_id,p=>$pages+1))}">
+	<php>}else{</php>
+		<a href="javascript:;">
+	<php>}</php>
+	下一页</a>
+	</div>
+	<php>}</php>
+	<div class="deal">
+		<a href="{:U('Resume/my_list',array('openid'=>$openid,'member_id'=>$member_id))}"><input type="button" value="我的简历" class="submit"></a>
+	</div>
+</section>
+	<include file="Public:footer"/>
+
+</body>
+</html>

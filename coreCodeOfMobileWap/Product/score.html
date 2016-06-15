@@ -1,0 +1,54 @@
+<I name="column_id" input="get.column_id" />
+<I name="cate_id" input="get.cate_id" default="0" />
+<I name="id" input="get.id" default="0" />
+<I name="is_hot" input="get.is_hot" default="0" />
+<I name="is_new" input="get.is_new" default="0" />
+<I name="keywords" input="get.keywords" default="0" />
+<I name="order" input="get.order" default="orderid"/>
+<I name="sort" input="get.sort" default="desc"/>
+<getProductscolumn name="data_column" id="$column_id" />
+<include file="Public:header" />
+<link href="SKIN_HTML5/{$templet_name}/css/score.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<header id="header">
+    <div class="top">
+        <a href="javascript:window.history.go(-1)" class="headerLeft"><img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+        <div class="hTitle">积分商城</div>
+        <!--<a href="#" class="headerRight"><span>筛选</span></a>-->
+    </div>
+</header>
+<!--3、此处加入主体内容，id="container"必带-->
+<section id="container">
+    <ul class="pro-list" id="search_keyword">
+        <volist name="jflist['data']" id="lists">
+            <li>
+                <a href="{:U('Product/view',array('cate_id'=>$lists['cate_id'],'id'=>$lists['id'],'openid'=>$openid,'member_id'=>$member_id))}" >
+                    <img src="{$lists.thumb|show_Pic=###,300,300,6}" />
+                    <h4>{$lists.name}</h4>
+                    <div class="price">
+                        <notempty name="lists['score']">
+                        <b>积分:{$lists.score}</b>
+                        </notempty>
+                        <notempty name="lists['market_price']">
+                        <s>原价:{$lists.market_price}</s>
+                        </notempty>
+                    </div>
+                    <div class="dis">
+                        <notempty name="lists['discount']">
+                        <span>{$lists.discount}折</span>
+                        </notempty>
+                        <notempty name="lists['sales']">
+                        <small>销量:{$lists.sales}</small>
+                       </notempty>
+                    </div>
+                </a>
+            </li>
+        </volist>
+        <div class="clear"></div>
+    </ul>
+    <include file="Public:footer" />
+</section>
+</body>
+</html>

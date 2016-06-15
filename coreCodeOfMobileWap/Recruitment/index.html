@@ -1,0 +1,108 @@
+<include file="Public:header"/>
+
+
+<link href="SKIN_HTML5/{$templet_name}/css/index.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/superIndex.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/style.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/bin1.css" rel="stylesheet" type="text/css">
+<!--<script src="js/jquery-1.10.2.min.js"></script>-->
+<I name="keyboard" input="get.keyboard"  />
+<i name="column_id" input="get.column_id" default="0" />
+<i name="cate_id" input="get.cate_id" default="0"/>
+<i name="edu_require" input="get.edu_require"  />
+<i name="work_year" input="get.work_year"  />
+<i name="sex" input="get.sex"  />
+<eq name="column_id" value="0">
+	<getRecruitColumnList name="re_column_name"  field="" order="" />
+	<assign name="data_column" value="$re_column_name['0']['name']"/>
+<else/>
+	<getRecruitColumn name="re_column_name" id="$column_id" />
+	<assign name="date_column" value="$re_column_name['name']"/>
+</eq>
+</head>
+
+<body>
+
+<include file="Public:top"/>
+<section id="container">
+	
+	<!--搜索框-->
+	<form class="search" action="{:U('Recruitment/index')}">
+		<div class="searchInput2">
+			<input type="text" placeholder="请输入关键词" name="keyboard" required="">
+		</div>
+  		<button type="submit"><img src="SKIN_HTML5/{$templet_name}/images/search_for.png" /></button>
+  	</form>	
+	<ul class="myShopType">
+	<php>
+		$pages=1;
+			if(isset($_GET["p"])){
+				$pages=$_GET["p"];
+			}
+	</php>
+		<getRecruitList name="Recruit_List" column_id="$column_id" cate_id="$cate_id" edu_require="$edu_require" work_year="$work_year" sex="$sex" title="$keyboard" size="10" p="$pages" />
+	
+
+	<!-- {$Recruit_List|P} -->
+	<volist name="Recruit_List['list']" id="vo_re">
+		<li class="hasArr">
+			<a href="{:U('Recruitment/view',array('id'=>$vo_re['id'],'cate_id'=>$vo_re['cate_id'],'openid'=>$openid,'member_id'=>$member_id))}">
+				<p class="title2" style="width: 50%;float: left;">{$vo_re['title']}</p>
+				<p class="title2"style="width: 50%;float: left;">{$vo_re['edu_require']}|{$vo_re[work_year]}</p>
+				<!-- <p>公司名称：{$vo_re['shop_name']}</p> -->
+				<p>工作地点：{$vo_re['address']}</p>
+				<p>{$vo_re['month_salary']}</p>
+				<span>{$vo_re['begintime']}</span>
+			</a>			
+		</li>
+		<assign name="ids" value="$vo_re['id']"/>
+		<getRecruitView name="view_data" id="95" />
+		<!-- {$view_data|P} -->
+	</volist>
+	</ul>
+	<php>
+		if($Recruit_List['total']>10){
+			
+			if($Recruit_List['total']%10>0){
+				$number=(int)($Recruit_List['total']/10)+1;
+			}else{
+				$number=(int)($Recruit_List['total']/10);
+			}
+			if($keywords!=0 && $keywords!=""){
+				$herf=U('Recruitment/index',array('keywords'=>$keywords,'openid'=>$openid,'member_id'=>$member_id));
+			}else{
+				$href=U('Recruitment/index',array('column_id'=>$column_id,'cate_id'=>$cate_id,'openid'=>$openid,'member_id'=>$member_id));
+			}
+	</php>
+	<div class="pagePreNext">
+	<php>if($pages-1>0){</php>
+		<a href="{$herf}?p={$pages-1}">
+	<php>}else{</php>
+		<a href="javascript:;" class="no">
+	<php>}</php>
+		上一页</a>
+		<div class="page_num">第
+		
+			<select id="page_select" onchange="javascript:window.location=this.value">
+			<php>
+				for($i=1;$i<=$number;$i++){
+			</php>
+				<option value="{$href}?p={$i}" <php>if($i==$pages){</php> selected="selected"<php>}</php>>{$i}</option>
+			<php>}</php>
+			</select> 页 共 {$number} 页
+		</div>
+	<php>if($pages<$number){</php>
+		<a href="{$href}?p={$pages+1}">
+	<php>}else{</php>
+		<a href="javascript:;" class="no">
+	<php>}</php>
+		下一页</a>
+	</div>
+	<php>}</php>
+</section>
+
+	<include file="Public:footer"/>
+
+</body>
+</html>

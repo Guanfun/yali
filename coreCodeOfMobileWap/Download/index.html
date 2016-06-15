@@ -1,0 +1,140 @@
+<i name="column_id" input="get.column_id" default="0" />
+<i name="cate_id" input="get.cate_id" default="0" />
+<i name="id" input="get.id"/>
+<include file="Public:header" />
+    <link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/global.css">
+    <link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/download.css">
+    <link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/navigator/navigator.css" />
+    <link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/navigator/navigator.iscroll.css" />
+    <link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/navigator/navigator.default.css" />
+    <script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/zepto/zepto.js"></script>
+    <script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/zepto/zepto.extend.js"></script>
+    <script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/zepto/zepto.ui.js"></script>
+    <script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/zepto/zepto.iscroll.js"></script>
+    <script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/widget/navigator.js"></script>
+    <script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/widget/navigator.iscroll.js"></script>
+    <style>
+        #nav-smartSetup ul{
+            min-width: 100%;
+            border-bottom: 1px solid #dedede;
+            box-shadow: 3px 0 3px 0 #dfdfdf;
+            margin-bottom: 0.5em;
+        }
+        #nav-smartSetup li{
+            margin-left: 1px;
+            line-height: 3em;
+            background: #fff;
+            font-weight: normal;
+            color:#999;
+            border-radius: 1px;
+        }
+        #nav-smartSetup li a{
+            line-height: 3em;
+            font-weight: normal;
+            color:#999;
+        }
+        #nav-smartSetup li a.cur{
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<notempty name="column_id">
+    <getDownloadcolumn name="column" id="$column_id" />
+    <empty name="cate_id">
+        <getDownloadCategorys name="cate_list" column_id="$column_id" />
+        <else />
+        <getDownloadCategorys name="cate_list" column_id="$column_id" />
+        <getDownloadCategoryView name="cate" id="$cate_id" />
+    </empty>
+</notempty>
+<empty name="column_id">
+    <getDownloadCategorys name="cate_list" />
+    <notempty name="cate_id">
+        <getDownloadCategoryView name="cate" id="$cate_id" />
+    </notempty>
+</empty>
+<header id="header">
+    <div class="top">
+        <div class="headerLeft">
+            <i class="home_open">
+                <a href="javascript:window.history.go(-1)">
+                    <img src="SKIN_HTML5/{$templet_name}/images/back2.png" />
+                </a>
+            </i>
+        </div>
+        <div class="hTitle">
+            <if condition="($column_id eq 0) AND ($cate_id eq 0)">
+                下载中心
+                <elseif condition="$cate_id neq 0" />
+                {$cate.name}
+                <elseif condition="($column_id neq 0) AND ($cate_id eq 0)" />
+                {$column.name}
+            </if>
+        </div>
+    </div>
+</header>
+<section id="container">
+    <if condition="count($cate_list) gt 1">
+        <div id="nav-smartSetup">
+            <ul>
+                <volist name="cate_list" id="vo_nav">
+                    <li>
+                        <a <eq name="cate_id" value="$vo_nav.id">class="cur"</eq> href="{:U('Download/index',array('column_id'=>$vo_nav['column_id'],'cate_id'=>$vo_nav['id'],'openid'=>$openid,'member_id'=>$member_id))}" >
+                        <span>{$vo_nav['name']}</span>
+                        </a>
+                    </li>
+                </volist>
+            </ul>
+        </div>
+    </if>
+    <script type="text/javascript">
+        (function () {
+            Zepto('#nav-smartSetup').navigator();
+        })();
+    </script>
+    <ul class="download_list">
+        <getDownload name="download_list" cate_id="$cate_id" is_page="1" list_row="10" column_id="$column_id" />
+        <volist name="download_list['list']" id="download">
+            <li>
+                <a href="{:U('Download/view',array('column_id'=>$download['column_id'],'cate_id'=>$download['cate_id'],'id'=>$download['id'],'openid'=>$openid,'member_id'=>$member_id))}">
+                    <img src='{$download.thumb|show_Pic=###,120,120,0,"SKIN_HTML5/$templet_name/images/default_bg.png"}'>
+                    <hgroup class="f_title">
+                        <h2>{$download.title}</h2>
+                        <h3>{$download.short_content|htmlspecialchars_decode|strip_tags}</h3>
+                        <if condition="$download['size'] gt 1000000">
+                            <php>
+                                $size=$download['size']/1000000;
+                                $unit=M;
+                                $size=number_format($size, 2, '.', '')
+                            </php>
+                            <elseif condition="($download['size'] gt 1000) AND ($download['size'] lt 1000000)"/>
+                            <php>
+                                $size=$download['size']/1000;
+                                $unit=K;
+                                $size=number_format($size, 2, '.', '')
+                            </php>
+                            <elseif condition="($download['size'] lt 1000)" />
+                            <php>
+                                $size=$download['size'];
+                                $unit=B;
+                                $size=number_format($size, 2, '.', '')
+                            </php>
+                            <else />
+                        </if>
+                        <span>{$size}{$unit}</span>
+                    </hgroup>
+                    <empty name="download['file']">
+                        <a class="download" href="{$download.url}">下载</a>
+                        <else />
+                        <a class="download" href="{$download.file}">下载</a>
+                    </empty>
+                    <div class="clear"></div>
+                </a>
+            </li>
+        </volist>
+    </ul>
+</section>
+<include file="Public:footer" />
+</body>
+</html>

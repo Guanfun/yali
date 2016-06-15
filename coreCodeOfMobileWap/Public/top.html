@@ -1,0 +1,19 @@
+<header id="header">
+    <div class="top">
+		<a href="javascript:window.history.go(-1)" class="headerLeft"><img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+        <div class="hTitle">
+        <php>if($id){</php>
+			{$data_id_name}
+			<php>}elseif($cate_id){</php>
+			{$data_cate_name}
+			<php>}else{</php>
+			<php>if($column_id){</php>
+			{$data_column.name}
+			<php>}else{</php>
+			{$web_config['name']}
+			<php>}</php>
+			<php>}</php>
+			</div>
+		<!--<a class="headerRight"><span>新增</span></a>-->
+    </div>
+</header>

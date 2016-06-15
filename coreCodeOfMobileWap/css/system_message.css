@@ -1,0 +1,117 @@
+/*消息系统设置*/
+.system_class{
+    width: 100%;
+    overflow: hidden;
+    background: #fff;
+}
+.system_class p{
+    width: 100%;
+    font-size: 1.1em;
+    line-height: 2.5em;
+    border-bottom: 1px solid #dddddd;
+
+}
+.system_class p:nth-child(1){
+    float: left;
+    width: 100%;
+    font-size: 1.1em;
+    line-height: 2.5em;
+    height: 2.5em;
+    color: #fff;
+    background:url(../images/head-bg.png) repeat-x center, linear-gradient( #3388ff, #027ad7);
+    border-bottom: none;
+    border-radius: 0.1em;
+    text-align: center;
+
+}
+.system_class p:last-child{
+    margin-bottom: 1em;
+
+}
+.system_class p i{
+    font: normal 1em/1em "Microsoft YaHei";
+    padding:0 0.5em 0 0;
+}
+.system_class label{
+    width: 94%;
+    margin:0 2%;
+    display: block;
+    background: url('../images/system_close.png') no-repeat right;
+    background-size: 10% 50%;
+}
+.system_class label.checked{
+    background: url('../images/system_open.png') no-repeat right;
+    background-size: 10% 50%;
+}
+.system_class input{
+    display: none;
+}
+
+/*消息提醒*/
+.system_content{
+    width: 100%;
+    overflow: hidden;
+}
+.system_content ul li{
+    width: 96%;
+    padding:0.5em 2%;
+    margin-bottom: 0.5em;
+    border-bottom: 1px solid #dddddd;
+    border-top: 1px solid #dddddd;
+    background: #fff;
+    overflow: hidden;
+}
+.system_content ul li p{
+    font-size: 1em;
+    line-height: 2em;
+    color: #333333;
+    overflow: hidden;
+    text-align: right;
+}
+.system_content ul li p:nth-child(1){
+    width:70%;
+    overflow: hidden;
+    -o-text-overflow:ellipsis;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    *white-space: nowrap;
+    display: block;
+    float: left;
+    text-align: left;
+}
+.system_content ul li p:nth-child(2){
+    padding:0 0.5em;
+    float: right;
+}
+.system_content ul li p:nth-child(3){
+    padding:0 0.5em;
+    float: right;
+}
+.system_content ul li p.system_main{
+    clear: both;
+    width:96%;
+    padding:0.5em 2%;
+    text-indent: 2em;
+    text-align: left;
+    overflow: hidden;
+    display: none;
+}
+/*上下页*/
+.page_list{
+    width: 96%;
+    padding:1em 2%;
+    overflow: hidden;
+}
+.page_list a{
+    padding:0.5em 1.5em;
+    background: #f60;
+    border: 1px solid #dddddd;
+    border-radius: 0.25em;
+    color:#ffffff;
+}
+.page_list a:nth-child(1){
+    float: left;
+}
+.page_list a:nth-child(2){
+    float: right;
+}

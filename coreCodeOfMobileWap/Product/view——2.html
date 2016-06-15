@@ -1,0 +1,372 @@
+﻿<I name="column_id" input="get.column_id" />
+<I name="cate_id" input="get.cate_id" default="0" />
+<I name="id" input="get.id" />
+<include file="Public:header"/>
+	<!--2、此处引入css文件-->
+	<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+    <link href="SKIN_HTML5/{$templet_name}/css/bin1.css" rel="stylesheet" type="text/css">
+    <link href="SKIN_HTML5/{$templet_name}/css/luo.css" rel="stylesheet" type="text/css">
+    <getProductscolumn name="data_column" id="$column_id" />
+    <getproductview name="data_product_view" id="$id" />
+    <assign name="data_id_name" value="$data_product_view.name" />
+    <assign name="shopuid" value="$data_product_view['shop_uid']"/>
+    <getMemberDetail name="shop" uid="$shopuid" />
+</head>
+<body>
+<include file="Public:top"/>
+	<!--3、此处加入主体内容，id="container"必带-->
+	<form method="post" action="{:U('Cart/addWeixinCart')}" id="add_cart_form">
+        <input type="hidden" name="column_id"  value='<php>echo($_GET["column_id"])</php>' />
+        <input type="hidden" name="cate_id"  value='<php>echo($_GET["cate_id"])</php>' />
+        <input type="hidden" name="id"  value='<php>echo($_GET["id"])</php>' />
+        <input type="hidden" name="group_attr" id="group_attr"/>
+        <input type="hidden" name="member_id" id="member_id" value="{$member_id}"/>
+        <input type="hidden" name="openid" id="openid" value="{$openid}"/>
+        <input type="hidden" name="shop_id" id="shop_id" value="{$data_product_view[web_id]}"/>
+        <input type="hidden" name="id" id="id" value="{$data_product_view[id]}"/>
+        <input type="hidden" name="score" id="score" value="{$data_product_view[score]}"/>
+        <input type="hidden" name="price" id="price" value="{$data_product_view[price]}"/>
+	<section id="container" class="pro-main">
+		<!--banner-->
+        <div id="focus" class="focus">
+            <div class="bd">
+                <ul>
+                <volist name="data_product_view['photo']" id="vo">
+                    <li><a>
+                    <if condition="$vo['product_id'] neq 0 && $vo['product_id'] eq $data_product_view['id']">
+                    <img src="{$vo.photo|show_Pic=###,640,640,6}" />
+                    </if>
+                    </a></li>
+                </volist>
+                </ul>
+            </div>
+            <div class="hd"><ul></ul></div>
+        </div>
+        <!--产品信息-->
+        <article class="pro-column-top border-tb">
+        	<div class="joinus">
+            	<h3>{$data_product_view.name}</h3>
+            </div>
+        	
+            <div class="money">
+                <switch name="data_product_view['pay_type']" >
+                    <case value="0">
+                        <php>if($data_product_view['time_discount']){</php>
+                            <big>&yen;{$data_product_view['time_discount']['discount_price']}
+                                <s>&yen;{$data_product_view.unit_price}</s>
+                                <div class="discount">{$data_product_view['time_discount']['discount']}折</div>
+                            </big>
+                        <php>}else{</php>
+                            <php>if($data_product_view['unit_price']){</php>
+                            <big>&yen;{$data_product_view.unit_price}</big>
+                            <php>}</php>
+                            <php>if($data_product_view['market_price']){</php>
+                            <small>市场价：&yen;{$data_product_view.market_price}</small>
+                            <php>}</php>
+                        <php>}</php>
+                    </case>
+                    <case value="1">
+                        <php>if($data_product_view['score']){</php>
+                        <big>积分:{$data_product_view.score}</big>
+                        <php>}</php>
+                        <php>if($data_product_view['market_price']){</php>
+                        <small>市场价：&yen;{$data_product_view.market_price}</small>
+                        <php>}</php>
+                    </case>
+                    <case value="2">
+                        <big>&yen;{$data_product_view.unit_price} +积分:{$data_product_view.score}</big>
+                    </case>
+                </switch>
+            </div>
+            
+        	<div class="msb">
+                <!-- <span>(下单立减10元)</span> -->
+                <h5>销量：{$data_product_view.sales}件</h5>
+                <div class="clear"></div>
+            </div>
+        </article>
+        
+        <div class="hr border-b"></div>
+        
+        <!--规格选择-->
+        <button class="spec" type="button" href = "javascript:void(0)" onclick =
+        "document.getElementById('light').style.display='block';
+        document.getElementById('fade').style.display='block'">
+        	请选择商品规格
+        </button> 
+        
+        <div class="hr border-tb"></div>
+        <!--进入我的小店-->
+        <php>
+            if($isWeixin){
+            if($is_sales && $_GET["member_id"])
+            {
+        </php>
+        <div class="come">
+        	<header class="come-top">
+            	<img src="{$headimgurl}">
+                <big>{$realname}</big><br>
+                <small>全部宝贝{$countProduct}个</small>
+                <div class="clear"></div>
+            </header>
+        
+        	<a href="{:U('product/index',array('openid'=>$openid,'member_id'=>$member_id,'myshop'=>'$myshop'))}"><button class="fl">
+            <img src="SKIN_HTML5/{$templet_name}/images/footer4.png">查看所有商品</button></a>
+            
+            <php>if($shop['shop']!=""){</php>
+            <a href="http://{$shop['shop']['domain']}"><button class="fr"><img src="SKIN_HTML5/{$templet_name}/images/footer3.png">查看店铺信息</button></a>
+            <php>}</php>
+            <div class="clear"></div>
+        </div>
+       
+       <php>}}</php>
+        <div class="hr"></div>
+
+        <div id="tab">
+            
+            <h3 class="up" id="two1" onmouseover="setContentTab('two',1,4)">图文详情</h3>
+            <div class="block" id="con_two_1">
+                {$data_product_view['mobile_content']|htmlspecialchars_decode}
+            </div>
+            
+            
+            <h3 id="two2" onmouseover="setContentTab('two',2,4)">产品参数</h3>
+            <div id="con_two_2" class="tab-page">
+            <volist name="data_product_view['attrSale']" id="v">
+                <p><span>{$v['name']}</span>
+                 <volist name="v[vals]" id="r">
+                 {$r['attr_val']}&nbsp;&nbsp;
+                </volist>
+                </p>
+            </volist>
+            </div>
+            
+            
+            <h3 id="two3" onmouseover="setContentTab('two',3,4)">用户评论</h3>
+            <div id="con_two_3" class="tab-page">
+             <getProductComment name="product_comment_list" pro_id="$id" p="1" size="5" />
+             <if condition="$product_comment_list['total'] gt 0">
+                <ul class="pl-list">
+                <volist name="product_comment_list['list']" id="product_comment">
+                	<li class="border-b"><h4>{$product_comment['user_info']['username']}/h4><br>{$product_comment.content}</li>
+                </volist>
+					
+                </ul>
+            </if>
+            </div>
+            
+            
+            <h3 id="two4" onmouseover="setContentTab('two',4,4)">同店推荐</h3>
+            <div id="con_two_4">
+                <ul class="pro-list">
+                <getProducts name="cate_same" column_id="$column_id" cate_id="$cate_id" size="10" />
+                <if condition="count($cate_same['list']) gt 0">
+                <volist name="cate_same['list']" id="cate_same_pro">
+                    <li>
+                        <a href="{:U('Product/view',array('column_id'=>$cate_same_pro['column']['0']['id'],'cate_id'=>$cate_same_pro['cate_id'],'id'=>$cate_same_pro['id'],'openid'=>$openid,'member_id'=>$member_id))}">
+                        <php>if($cate_same_pro['thumb']!=""){</php>
+                            <img src="{$cate_same_pro['thumb']|show_Pic}">
+                        <php>}</php>
+                            <h4>{$cate_same_pro['name']}</h4>
+                            <section class="price">
+                            <php>if($cate_same_pro['unit_price']!=""&&$cate_same_pro['unit_price']!="0"){</php>
+                                <b>&yen;{$cate_same_pro.unit_price}</b>
+                            <php>}</php>
+                                <s>原价:{$cate_same_pro.market_price}</s>
+                            </section>
+                            <section class="dis">
+                            <php>if($cate_same_pro['discount']!=""&&$cate_same_pro['discount']!="0"){</php>
+                                <span>{$cate_same_pro.discount}折</span>
+                            <php>}</php>
+                            <php>if($cate_same_pro['sales']!=""&&$cate_same_pro['sales']!="0"){</php>
+                                <small>销量:{$cate_same_pro.sales}</small>
+                            <php>}</php>
+                            </section>
+                        </a>
+                    </li>
+                </volist>
+                </if>
+                    <div class="clear"></div>
+                </ul>
+            </div>
+            
+		</div>
+            
+        <script type="text/javascript">
+        function setContentTab(name, curr, n) {
+            for (i = 1; i <= n; i++) {
+                var menu = document.getElementById(name + i);
+                var cont = document.getElementById("con_" + name + "_" + i);
+                menu.className = i == curr ? "up" : "";
+                if (i == curr) {
+                    cont.style.display = "block";
+                } else {
+                    cont.style.display = "none";
+                }
+            }
+        }
+        </script>
+		
+	</section>
+	
+    
+	<footer id="pro-footer">
+		<ul>
+        <php>if($shop['shop']!=""){</php>
+			<li>
+            
+            <a href="http://{$shop['shop']['domain']}">
+
+            
+            <img src="SKIN_HTML5/{$templet_name}/images/member-shangjia.png"><b>进入店铺</b></a></li>
+        <php>}else{</php>
+        <style type="text/css">
+            #pro-footer ul li{width: 50%;}
+        </style>
+        <php>}</php>
+			<li><a href="javascript:;" onclick="Addcollecpeoduct({$id})" id="collect_name"><img src="SKIN_HTML5/{$templet_name}/images/collection.png"><b><eq name="is_collect" value="1">已收藏<else/>收藏</eq></b></a></li>
+			<li class="fr"><a href="{:U('Cart/index',array('openid'=>$openid,'member_id'=>$member_id))}"><img src="SKIN_HTML5/{$templet_name}/images/shopcart.png"><b>购物车</b></a></li>
+            <div class="clear"></div>
+		</ul>
+        
+        <button href = "javascript:void(0)" type="button" onclick =
+        "document.getElementById('light').style.display='block';
+        document.getElementById('fade').style.display='block';on_shop(1);">加入购物车</button>
+        <button href = "javascript:void(0)" type="button" onclick =
+        "document.getElementById('light').style.display='block';
+        document.getElementById('fade').style.display='block';on_shop(0);">立即购买</button>
+        <div class="clear"></div>
+	</footer>
+	
+	<!--<footer id="footer">
+		<ul>
+			<li><a href="Index.html"><span></span><i>首页</i></a></li>
+            <li><a href="Shop_Index.html"><span></span><i>招商加盟</i></a></li>
+            <li><a href="Product_Index.html"><span></span><i>产品信息</i></a></li>
+            <li><a href="OpenShop.html"><span></span><i>我要加盟</i></a></li>
+		</ul>
+	</footer>-->
+	
+     <div class="modal fade" id="cart_success" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <p>共<b class="fa fa-check" id="cart-count" ></b>商品已成功加入购物车！</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">继续购物</button>
+                    <button type="button" onclick="go_cart();" class="btn btn-danger">去购物车结算</button> </div>
+            </div>
+        </div>
+    </div>
+    <!--弹出-->
+      <div id="light" class="white_content">
+            <div class="white_top">
+            	<article>
+                	<img src="{$data_product_view.thumb|ltrim=###,'.'}">
+                	<span>{$data_product_view.name}</span>
+                    <b>&yen;{$data_product_view.unit_price}</b>
+                    <div class="clear"></div>
+                </article>
+                <a href = "javascript:void(0)" class="close" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"></a>
+                <div class="clear"></div>
+            </div>
+            
+            <div class="spinner-box">
+            	<span>数量</span>
+				<div class="add-del">
+					<a class="btn-add" href="#" id="reduce_num" onclick="add(-1);" ><span>-</span></a>
+                    <input type="text" class="new-input" value="1" id="product_num" name="product_num" />
+                    <a class="btn-del" href="#" id="add_num" onclick="add(1);"><span>+</span></a></div>
+    	        <p>库存{$data_product_view.stock}件</p>
+                <div class="clear"></div>                    
+            </div>
+            
+            <button class="button" type="button" id="btn">确认</button>
+        </div> 
+        
+        <div id="fade" class="black_overlay" onclick = "document.getElementById('light').style.display='none';document.getElementById('fade').style.display='none'"></div> 
+        
+    <!--弹出结束-->
+   	</form>
+	<!--4、此处引入js，2个jquery文件需带上-->
+    <script src="SKIN_HTML5/{$templet_name}/js/zepto.min.js"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/script.js"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+    <script src="SKIN_HTML5/{$templet_name}/js/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+     function go_cart(){
+        location.href="{:U('Cart/index',array('openid'=>$openid,'member_id'=>$member_id))}";
+    }
+
+         //收藏产品
+    function Addcollecpeoduct(id){
+        $.get("{:U('Product/addCollectProduct',array('openid'=>$openid,'member_id'=>$member_id))}",{id:id},function(data){
+            if(data.status=='1'){
+                $('#collect_name').html('<a style="color: #fe9402;font-size: 1.2em; line-height: 1.5em;">★</a><br />已收藏');
+            }else{
+                alert(data.data);
+//              $('#collect_name').html('<a style="color: #fe9402;font-size: 1.2em;line-height: 1.5em;">★</a><br />收藏');
+            }
+        },'json');
+    }
+    //购买数量
+    var stock={$data_product_view.stock},
+        product_num=document.getElementById('product_num');
+        function add(on){
+        	var number=parseInt(product_num.value);
+        	number+=on;
+        	if(number<1){
+        		number=1;
+        	}
+        	if(number>stock){
+        		number=stock;
+        	}
+        	product_num.value=number;
+        }
+        //购买或者加入购物车,0 or 1
+        var anniu=null;
+        function on_shop(en){
+        	anniu=en;
+        }
+        
+        $('.button').click(function(){
+        	console.log(anniu);
+        	var form=$('#add_cart_form');
+        	if(anniu==0){
+        		form.attr("action","{:U('Cart/order',array('openid'=>$openid,'member_id'=>$member_id))}").submit();
+        	}
+        	else if(anniu==1){
+        		$.ajax({
+        			type:"get",
+        			url:form.attr('action'),
+        			data:form.serialize(),
+        			success:function(s){
+        				if(s.status == '1'){
+                        $('#cart_success').modal({
+                            backdrop:'static',
+                            keyboard:false
+                        });
+                        $('#cart-count').html(s.product_count);
+                    }
+                    else if(s.status == '10'){
+                        alert(s.data);
+                        var column_id=s.column_id;
+                        location="{:U('Login/index',array('column_id'=>$_GET['column_id'],'cate_id'=>$_GET['cate_id'],'id'=>$_GET['id'],'backurl'=>'Product','ac'=>'view'))}";
+                    }
+                    else{
+                        alert(s.data);
+                    	}
+        			},
+        			dataType:'json'
+        		});
+        	}
+        	else return;
+        	
+        });
+        
+        
+    </script>
+</body>
+</html>

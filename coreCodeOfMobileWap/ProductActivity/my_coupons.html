@@ -1,0 +1,108 @@
+<include file="Public:header" />
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/productactivity.css" rel="stylesheet" type="text/css">
+
+</head>
+<body class="wbg">
+<include file="Public:top" />
+<!--3、此处加入主体内容，id="container"必带-->
+    <div class="shade"></div>
+    <!---我的收藏--->
+    <if condition="$list">
+        <nav class="my_coupons_select">
+            <ul>
+                <li class="nav"><a class="type">全部类型</a>
+                    <ul>
+                        <li><a sid="0">全部类型</a></li>
+                        <li><a sid="1">店铺优惠券</a></li>
+                        <li><a sid="2">商品优惠券</a></li>
+                        <li><a sid="3">包邮券</a></li>
+                    </ul>
+                </li>
+                <li class="nav"><a class="give_type">领取类型</a>
+                    <ul>
+                        <li><a sid="1">自己领取</a></li>
+                        <li><a sid="2">商家发送</a></li>
+                        <li><a sid="3">积分兑换</a></li>
+                    </ul>
+                </li>
+                <li class="nav"><a class="is_over">使用情况</a>
+                    <ul>
+                        <li><a sid="0">未使用未到期</a></li>
+                        <li><a sid="1">已使用或已到期</a></li>
+
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div class="clearfix"></div>
+        <ul class="product_activity_content">
+
+        </ul>
+        <div class="clearfix"></div>
+        <p></p>
+        <else/>
+        <div class="carbox">
+            <div class="none">
+                <img src="SKIN_HTML5/{$templet_name}/images/member-note .png" />
+                <p>您尚未领取优惠券</p>
+                <p>
+                    <a href="{:U('ProductActivity/index',array('openid'=>$openid,'member_id'=>$member_id))}">
+                        <span></span>前往领取</span>
+                    </a>
+                </p>
+            </div>
+        </div>
+    </if>
+<include file="Public:footer" />
+<!--4、此处引入js，2个jquery文件需带上-->
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+<script>
+    $(function(){
+        $(".my_coupons_select ul li.nav").click(function(){
+            $(this).siblings("li").children("ul").fadeOut(200);
+            $(this).children("ul").slideDown(200,function(){
+                $(".shade").fadeIn();
+            });
+            if($(this).find("ul").length=="0"){
+                $(".shade").fadeOut();
+            }
+        });
+        $(".shade").click(function(){
+            $(".my_coupons_select ul li.nav").children("ul").fadeOut();
+            $(".shade").fadeOut();
+        });
+        $(".nav ul li a").click(function(){
+            $(".shade").fadeOut(0);
+            $(".my_coupons_select ul li.nav").children("ul").fadeOut();
+            var text=$(this).html();
+            var value=$(this).attr('sid');
+            $(this).parent().parent().parent().children("a").html(text);
+            if($(this).parent().parent().parent().children("a").hasClass("type")){
+                $(this).parent().parent().parent().siblings("li").children("a.give_type").html("领取类型");
+                $(this).parent().parent().parent().siblings("li").children("a.is_over").html("使用期限");
+                bulid_url(value,'1','-1');
+            }else if($(this).parent().parent().parent().children("a").hasClass("give_type")){
+                $(this).parent().parent().parent().siblings("li").children("a.type").html("全部类型");
+                $(this).parent().parent().parent().siblings("li").children("a.is_over").html("使用期限");
+                bulid_url('0',value,'-1');
+            }else if($(this).parent().parent().parent().children("a").hasClass("is_over")){
+                $(this).parent().parent().parent().siblings("li").children("a.give_type").html("领取类型");
+                $(this).parent().parent().parent().siblings("li").children("a.type").html("全部类型");
+                bulid_url('0','1',value);
+            }
+            return false
+        });
+        var type_a="0";
+        var give_t="1";
+        var over_a="-1";
+        bulid_url(type_a,give_t,over_a);
+        function bulid_url(type,give_type,is_over){
+            var loading = "{:U('ProductActivity/my_coupons_ajax')}?openid={$_GET['openid']}";
+            $('.product_activity_content').load(loading+'&type='+type+'&give_type='+give_type+'&is_over='+is_over);
+        }
+    });
+</script>
+</body>
+</html>

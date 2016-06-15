@@ -1,0 +1,295 @@
+﻿<include file="Public:header" />
+	<!--2、此处引入css文件-->
+	<link href="SKIN_HTML5/{$templet_name}/css/index.css" rel="stylesheet" type="text/css">
+	<link href="SKIN_HTML5/{$templet_name}/css/bin1.css" rel="stylesheet" type="text/css">
+	<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+	<link href="SKIN_HTML5/{$templet_name}/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        var code_check = "{:U('Public/ajax_c_v')}",check_o = "{:U('Public/ajax_c_only')}";
+    </script>
+</head>
+
+<body>
+
+	<header id="header">
+		<div class="top">
+		    <div class="headerLeft">
+		    	<i class="home_open">
+		    		<a href="javascript:window.history.go(-1)">
+		    			<img src="SKIN_HTML5/{$templet_name}/images/back2.png" />
+		    		</a>
+		    	</i>
+		    </div>
+			<div class="hTitle">
+				注册
+			</div>
+			<div class="headerRight">
+				<a href="{:U('Login/index')}">登录</a>
+			</div>
+		</div>
+	</header>
+
+	<!--3、此处加入主体内容，id="container"必带-->
+	<section id="container">
+        <div class="ink_content">
+        <form action="{:U('Register/register',array('openid'=>$openid,'member_id'=>$member_id))}" name="creator" id="registerForm" class="ink_form" enctype="multipart/form-data">
+            <div class="form-group">
+                <div class="login_text"><span>用户名</span><input type="text" id="username" name="username" placeholder="手机 / 用户名 / 邮箱"></div>
+                <div class="login_text"><span>登录密码</span><input type="password" id="password" name="password" placeholder="请输入密码"></div>
+                <div class="login_text"><span>确认密码</span><input type="password" id="confirm_password" name="confirm_password" ></div>
+                <div class="login_text">
+                    <span>手机号码</span>
+                    <input type="phone" id="phone" name="phone" >
+                    <if condition="$web_config['reg_sms']">
+                        <button type="button" id="sendBtn">发送短信</button>
+                    </if>
+                </div>
+                <if condition="$web_config['reg_sms']">
+                    <div class="item"> <span class="label"><b class="cRed">*</b>手机验证码：</span>
+                        <div class="fl">
+                            <input type="text" id="sms_code" name="sms_code" class="text" tabindex="1" style="ime-mode:disabled"/>
+                            <label id="sms_code_succeed" class="blank"></label>&nbsp;&nbsp;
+                            <div id="sms_code_error"></div>
+                        </div>
+                    </div>
+                    <input type="hidden" value="1" name="is_check_code"/>
+                </if>
+                <div class="login_text">
+                    <span>邮箱</span>
+                    <input type="email" id="email" name="email" >
+                    <if condition="$web_config['reg_email']">
+                        <button type="button" id="sendMailBtn">发送邮件</button>
+                    </if>
+                    <div id="email_error"></div>
+                    <if condition="$web_config['reg_email']">
+                        <div class="item"> <span class="label"><b class="cRed">*</b>邮件验证码：</span>
+                            <div class="fl">
+                                <input type="text" id="email_code" name="email_code" class="text" />
+                                <label id="email_code_succeed" class="blank"></label>&nbsp;&nbsp;
+                                <div id="email_code_error"></div>
+                            </div>
+                        </div>
+                        <input type="hidden" value="1" name="is_check_email_code"/>
+                    </if>
+                </div>
+                <input type="hidden" id="type_int" name="type_int" value="0"/>
+                <if condition="$web_config['is_member_cate']">
+                    <div class="item member_type">
+                        <div class="fl">
+                            <span class="label"><b class="cRed">*</b>用户类型：</span>
+                            <select name="type_id" id="member_type" class="catselect" >
+                                <option value="0"> 请选择</option>
+                                <getMemberType name="member_type" pid="" is_tree="1" field="" order="" />
+                                <volist name="member_type" id="vo">
+                                    <option value="{$vo.id}"> {$vo.name}</option>
+                                    <neq name="vo['children']" value="">
+                                        <volist name="vo['children']" id="sub" key="k">
+                                            <eq name="k" value="1">
+                                                <option value="{$sub.id}"> ┣ {$sub.name}</option>
+                                                <else />
+                                                <option value="{$sub.id}"> ┗ {$sub.name}</option>
+                                            </eq>
+                                        </volist>
+                                    </neq>
+                                </volist>
+                            </select>
+                        </div>
+                    </div>
+                </if>
+                <notempty name="reg_code">
+                    <div class="login_text">
+                        <input type="text" class="verify"  name="code" required="required" placeholder="输入验证码" />
+                        <img id="verifyImg" src="{:U('Login/verify')}"/>
+                    </div>
+                </notempty>
+                <div class="login_protocol">
+                    <input type="checkbox" name="protocol" id="protocol" value="1" />
+                    <label for="protocol">
+                        我已阅读并同意
+                        <a href="{:U('Register/protocol')}">《商城网站用户注册协议》</a>
+                    </label>
+                </div>
+            </div>
+                <div class="ink_submit form-group">
+                <input type="button" name="submit" value='注册 <notempty name="web_config.is_member_check">（需等待审核）</notempty>' class="submit">
+            </div>
+        </form>
+        </div>
+        <div class="modal fade" id="submit_msg" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+	</section>
+	<include file="Public:footer" />
+    <script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+    <script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+    <script src="SKIN_HTML5/{$templet_name}/js/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <include file="Public:form_validation" />
+   <!-- <script type="text/javascript">
+        //发送邮件
+        var t1 = 60;
+        var s1 = null;
+        $(function(){
+            $('#sendMailBtn').on('click',function(){
+                var email = $('#email').val();
+                var error = $('#email_error');
+                if(email.match(/^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/)){
+                    error.html('');
+                    var url = "{:U('Front/Register/index')}";
+                    var data = "email="+email;
+                    var handler = function(data){
+                        if(data.status==0){
+                            alert(data.data);
+                        }else{
+                            waitmalitime($('#sendMailBtn'));
+                            $('#sendMailBtn').attr('disabled','disabled');
+                        }
+                    };
+                    s1 = setTimeout(function(){
+                        sendAjax(url,data,handler);
+                    },500);
+                    $('#sendMailBtn').attr('disabled','disabled');
+                }else{
+                    error.html('邮件格式错误');
+                }
+            });
+            function waitmalitime(obj){
+                if(t1==0){
+                    $('#sendMailBtn').removeAttr('disabled');
+                    $('#sendMailBtn').html('发送邮件验证码');
+                    t1 = 60;
+                }else{
+                    t1&#45;&#45;;
+                    $('#sendMailBtn').attr('disabled','disabled');
+                    $('#sendMailBtn').html('重发('+t1+')');
+                    setTimeout(function() {
+                                waitmalitime(obj)
+                            },
+                            1000)
+                }
+            }
+
+            $('#verifyImg').click(function(){
+                fresh_verify('verifyImg',$(this).attr('src'));
+            });
+        });
+        //发送短信
+        var t = 60;
+        var s = null;
+        $(function(){
+            $('#sendBtn').on('click',function(){
+                var mobile = $('#phone').val();
+                var error = $('#phone_error');
+                if(mobile.match(/^(((13[0-9]{1})|(15[0-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$/)){
+                    error.html('');
+                    var url = "{:U('Front/Register/index')}";
+                    var data = "mobile="+mobile;
+                    var handler = function(data){
+                        if(data.status==0){
+                            alert(data.data);
+                        }else{
+                            waittime($('#sendBtn'));
+                            $('#sendBtn').attr('disabled','disabled');
+                        }
+                    };
+                    s = setTimeout(function(){
+                        sendAjax(url,data,handler);
+                    },500);
+                    $('#sendBtn').attr('disabled','disabled');
+                }else{
+                    error.html('短信格式错误');
+                }
+            })
+            function waittime(obj){
+                if(t==0){
+                    $('#sendBtn').removeAttr('disabled');
+                    $('#sendBtn').html('发送短信');
+                    t = 60;
+                }else{
+                    t&#45;&#45;;
+                    $('#sendBtn').attr('disabled','disabled');
+                    $('#sendBtn').html('重发('+t+')');
+                    setTimeout(function() {
+                                waittime(obj)
+                            },
+                            1000)
+                }
+            }
+        });
+        function sendAjax(surl,sdata,handler,asyncType){
+            if(typeof(asyncType)=='undefined'){
+                asyncType = true;
+            }else{
+                asyncType = false;
+            }
+            $.ajax({
+                url:surl,
+                data:sdata,
+                type:'post',
+                dataType:'JSON',
+                async:asyncType,
+                error:function(data){
+                    alert(data);
+                    return false;
+                },
+                success:function(data){
+                    if(data.status == 0){
+                        return false;
+                    }else{
+                        if(!data.data){
+                            handler();
+                        }else{
+                            var returnBack = data.data;
+                            handler(returnBack);
+                        }
+                    }
+                }
+            })
+        }
+    </script>-->
+    <script>
+        var down_time = 0;
+        var time = "{$web_config['sms_code_min']*60}";
+        var member_check="{$web_config['is_member_check']}";
+        nb_check.username.validators.remote = {url:check_o,message:'此用户名已被注册'};
+        nb_check.phone.validators.remote = {url:check_o,message:'此手机号已被注册'};
+        nb_check.email.validators.remote = {url:check_o,message:'此邮箱已被注册'};
+        $(document).ready(function() {
+            $('#verifyImg').click(function(){
+                fresh_verify('verifyImg',$(this).attr('src'));
+            });
+            $('.submit').click(function(){
+                var protocol=$('#protocol');
+                if(protocol.is(':checked')){
+                    $('#registerForm').submit();
+                }else{
+                    messager("请同意《商城网站用户注册协议》");
+                    return false
+
+                }
+            });
+            $('#registerForm').formValidation({
+                fields: {
+                    username: nb_check.username,
+                    password: nb_check.password,
+                    confirm_password: nb_check.confirm_password,
+                    phone:nb_check.phone,
+                    code:nb_check.code
+                }
+            }).on('success.validator.fv', function(e, data) {
+                data.fv.disableSubmitButtons(false);
+            }).on('success.form.fv', function(e) {
+                form_action(e,"{:CU('Member/index')}");
+            });
+        });
+    </script>
+</body>
+</html>

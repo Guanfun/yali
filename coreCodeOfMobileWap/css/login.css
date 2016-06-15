@@ -1,0 +1,63 @@
+.ink_content{width:100%; margin-top:1em; font-family:"Î¢ÈíÑÅºÚ";}
+.ink_form{/* border-top:1px solid #e5e5e5; border-bottom:1px solid #e5e5e5;*/}
+.ink_form .login_text{
+    width: 100%;
+    padding-left: 5%;
+    padding-right: 1em;
+    box-sizing: border-box;
+    height: 3em;
+    line-height: 3em;
+    border-bottom: 1px solid #e5e5e5;
+}
+.ink_form .login_text:last-child{border-bottom:none;margin-bottom: 1em;}
+.ink_form .login_text span{display:inline-block; font-size:1em; color:#333;width:20%;float:left;text-align: left}
+.ink_form .form-group{background: #fff;}
+.ink_form .login_text input{
+    font-size: 1em;
+    background: none;
+    line-height: 2em;
+    height: 2em;
+    outline: none;
+    width: 79%;
+   /* border: solid 1px #eee;*/
+    margin: 0.5em 0 0.5em 1%;
+    box-sizing: border-box;
+    color: #8f8f8f;
+    text-indent: 1em;
+    float:left;
+}
+.ink_form .login_text input.verify{
+    width: 29% ;
+    float: left;
+}
+.login_protocol{
+    width:95%; margin-left:5%; padding-right:1em;box-sizing:border-box; height:3em; line-height:3em;border-bottom:1px solid #e5e5e5;
+}
+.login_protocol a{
+    color:#007cc2
+}
+#verifyImg{
+    width: 40%;
+    float: right;
+    height: 2em;
+    margin:0.5em 5% 0;
+}
+.fv-form-bootstrap .help-block{
+    margin-left: 5%;
+    color: #007cc2;
+}
+.ink_submit{width:92%; margin:1em auto auto auto;  font-family:"Î¢ÈíÑÅºÚ";}
+.ink_submit .submit{width:100%; color:#fff; background:#007cc2; line-height:2.5em; height:2.5em; border-radius:0.25em; font-size:1em;margin-bottom: 0.5em;}
+.ink_submit .forgot{ font-size:1em;float:right; line-height:2em; height:2em; color:#b8b8b8;}
+.ink_register{
+    text-align: center;
+    padding:0.5em 1em;
+    border-radius: 0.25em;
+    margin-top: 4em;
+}
+.go_register{
+    color: #007cc2;
+    padding: 0.5em 1em;
+    border: 1px solid #007cc2;
+    border-radius: 0.25em;
+}

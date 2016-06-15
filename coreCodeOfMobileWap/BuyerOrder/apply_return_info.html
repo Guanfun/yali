@@ -1,0 +1,240 @@
+<include file="Public:header" />
+<link rel="stylesheet" href="SKIN_HTML5/{$templet_name}/css/global.css" />
+<link rel="stylesheet" href="SKIN_HTML5/{$templet_name}/css/buyerorder.css" />
+</head>
+<body>
+ <style>
+     	.sub_btn{
+     		margin-left:2%;
+     		float:left;
+			width:47%;
+     		padding:0.25em;
+     		border-radius:0.25em;
+     		border:1px solid #dddddd;
+     		background:#f60;
+     		color:#fff;
+     	}
+     </style>
+<include file="Public:top" />
+<section id="container">
+    <summary class="apply_return_info">
+    <if condition="!$_GET['service_no'] ||  $list['status'] eq 2 ||  $list['status'] eq 11">
+    <form id="ShopForms" method="post" action="{:U('BuyerOrder/saveApplyInfo')}" enctype="multipart/form-data">
+        <input type="hidden" name="order_id" value="{$list['id']}"/>
+        <input type="hidden" name="web_id" value="{$list['web_id']}"/>
+        <input type="hidden" name="apply_id" value="{$list['product_id']}"/>
+         <input type="hidden" name="status" value="{$list['status']}"/>
+        <input type="hidden" name="service_no" value="{$_GET['service_no']}"/>
+         <input type="hidden" name="back_url" value="{:U('BuyerOrder/user_order',array('openid'=>$openid,'member_id'=>$member_id,'status_value'=>7))}"/>
+        <table class="return_info">
+         <if condition="$list['status'] eq 2  ||  $list['status'] eq 11">
+           <tr>
+                <td></td>
+                <td>
+                   	{$list['status_name']}
+                </td>
+            </tr>
+         </if>
+            <tr>
+                <td>货品情况</td>
+                <td>
+                    <volist name="globalData['customer_service']" id="vo">
+                        <input type="radio" id="apply_status{$i}" name="apply_status" value="{$key}" <eq name="customer_service['apply_status']" value="$key">checked</eq>  <if condition="!$_GET['order_no']">required="required"</if>/>
+                        <label for="apply_status{$i}" name="apply_status" <eq name="list['apply_status']" value="$key">class="checked"</eq> for="check_{$i}">{$vo['name']}</label>
+                    </volist>
+                </td>
+            </tr>
+            <tr>
+                <td>申请原因</td>
+                <td>
+                    <select name="reason_id" id="reason"  required="required">
+                    <if condition="$globalData['customer_service'][1]['list']">
+                        <volist name="globalData['customer_service'][1]['list']" id="vo" k="key" >
+                            <option value="{$vo}" <eq name="list['reason_id']" value="$key">selected="selected"</eq>>{$vo}</option>
+                        </volist>
+                    </if>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>售后要求</td>
+                <td>
+                    <select name="ask_id" id="ask_id" required="required" >
+                        <option value=''>请选择售后要求</option>
+                        <volist name="globalData['customer_service_require']" id="vo">
+                            <option value="{$key}" <eq name="list['ask_id']" value="$key">selected="selected"</eq>>{$vo}</option>
+                        </volist>
+                    </select>
+                </td>
+            </tr>
+            <tr <php>if(!$list['total']){</php>hidden<php>}</php> id="money" class="ease">
+                <td>
+                    退款金额
+                </td>
+                <td>
+                    <input type="text" id="credit" name="credit" value="{$list['total']}"  placeholder="退款金额不能超过实付金额">
+                    <input type="hidden" id="paid" name="paid" value="{$list['total']}"/>
+                </td>
+            </tr>
+            <tr>
+                <td>申请说明</td>
+                <td>
+                    <textarea name="remark" id="remark" placeholder="请输入申请说明">{$list['remark']}</textarea>
+                </td>
+            </tr>
+        </table>
+        <input type="submit" id="saveInfoApply" value="提交申请">
+    </form>
+   <elseif condition="$list['status'] eq 3" />
+    	 <form id="tuiForm" method="post" action="{:U('BuyerOrder/saveReturnProduct')}" enctype="multipart/form-data">
+	    	 <input type="hidden" name="service_no" value="{$_GET['service_no']}"/>
+	    	<table class="return_info">
+	         	<tr>
+	                <td></td>
+	                <td>
+	                   	退款申请达成,等待买家发货
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>物流单号</td>
+	                <td>
+	                   	<input type="text" id="shipping_no" name="shipping_no" value=""  placeholder="请输入您的退货单号"  required="required" >
+	                </td>
+	            </tr>
+	            <tr>
+	                <td>退货说明</td>
+	                <td>
+	                    <textarea name="remark" id="remark"  placeholder="请输入退货说明"></textarea>
+	                </td>
+	            </tr>
+	         </table>
+           <input type="button" class="sub_btn" id="tuihuo" value="确认退货">
+           <input type="button" class="sub_btn" id="quxiao" value="关闭售后申请">
+           </form>
+           <div class="clearfix"></div>
+    
+    <else/>
+     <form id="tuiForm" method="post" action="" enctype="multipart/form-data">
+    	<input type="hidden" name="service_no" value="{$_GET['service_no']}"/>
+    	<table class="return_info">
+        	 <tr>
+                <td></td>
+                <td>
+                   	 {$list['status_name']}
+                </td>
+            </tr>
+             <if condition="$list['status'] eq 1">
+              <tr>
+                <td></td>
+                <td>
+                   	  <input type="button" class="sub_btn" id="quxiao" value="关闭售后申请">
+                </td>
+            	</tr>
+             </if>
+         </table>
+         </form>
+    </if>
+    <if condition="$_GET['service_no']">
+     <table class="return_info">
+          <volist name="message" id="vo">
+            <tr>
+                <td><if condition="!$vo['uid'] && $vo['web_id']">卖家：<else/>买家：</if></td>
+                <td>
+                   {$vo['content']}  {$vo['addtime']|date='Y-m-d',###}
+                </td>
+            </tr>
+         </volist>
+        </table>
+    </if>
+    </summary>
+</section>
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<include file="Public:form_validation" />
+<script>
+var service_no = "{$_GET['service_no']}";
+var order_id = "{$_GET['order_id']}";
+    $(document).ready(function(){
+    	//取消售后申请
+    	$('#quxiao').click(function(){
+    		$.get("{:U('BuyerOrder/cancleService')}",{service_no:service_no},function(data){
+    			if(data.status == '1'){
+    				window.location.href="{:U('BuyerOrder/apply_return_info')}?order_id="+order_id+"&service_no="+service_no;
+    			}else{
+    				alert(data.data);
+    			}
+    		},'json');
+    	});
+        $('label').click(function(){
+            var radioId = $(this).attr('name');
+            $('label').removeAttr('class') && $(this).attr('class', 'checked');
+            $('input[type="radio"]').removeAttr('checked') && $('#' + radioId).attr('checked', 'checked');
+        });
+        //省市选择
+    });
+    //退货
+    $('#tuihuo').click(function(){
+    	var shipping_no = $('input[name=shipping_no]').val();
+    	if(shipping_no){
+    		$.get("{:U('BuyerOrder/saveReturnProduct')}",$('#tuiForm').serialize(),function(data){
+    			if(data.status == '1'){
+    				window.location.href="{:U('BuyerOrder/apply_return_info')}?order_id="+order_id+"&service_no="+service_no;
+    			}else{
+    				alert(data.data);
+    			}
+    		},'json');
+    	}else{
+    		alert('请输入物流单号');
+    	}
+    });
+    $('input[type=radio]').change(function(){
+        var id = $(this).val();
+        $.post("{:U('BuyerOrder/getReason',array('openid'=>$openid,'member_id'=>$member_id))}",{id:id},function(data){
+            $('#reason').html(data.data);
+        },'json');
+    });
+    $('#ask_id').change(function(){
+        var id = $(this).val();
+        if(id == 1 || id==2){
+            $('#money').attr('hidden',false);
+        }else{
+            $('#money').attr('hidden',true);
+        }
+    });
+    $('#credit').change(function(){
+        var credit = $(this).val();
+        var parent_credit = $('#paid').val();
+        var shen = parent_credit - credit;
+        $('#credit').val(credit.replace(/[^0-9.]/g, ''));
+        if(shen < 0){
+            $('#credit').val("");
+        }
+    });
+    $('#saveInfoApply').click(function(){
+        var credit = $('#credit').val();
+        var apply_status =$('#apply_status').val();
+        var paid = $('#paid').val();
+        var reason_id = $('#reason').val();
+        var ask_id = $('#ask_id').val();
+        var remark = $('#remark').val();
+        var shen = credit - paid;
+        if(shen > 0){
+            alert('退款金额不能超过实付金额,谢谢合作!');
+        }else if(apply_status == ''){
+            alert('请选择货品情况');
+        }else if(reason_id == ''){
+            alert('请选择申请售后原因');
+        }else if(ask_id  == ''){
+            alert('请选择售后要求');
+        }else if((ask_id == '1' || ask_id=='2') && credit==''){
+            alert('请输入退款金额');
+        }else if(remark == ''){
+            alert('请填写申请售后说明');
+        }else{
+            $('#ShopForms').submit();
+        }
+    });
+</script>
+</body>
+</html>

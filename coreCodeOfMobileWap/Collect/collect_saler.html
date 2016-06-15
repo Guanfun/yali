@@ -1,0 +1,104 @@
+<include file="Public:header" />
+<link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/index.css">
+<link href="SKIN_HTML5/{$templet_name}/css/style.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/shopsList.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<header id="header">
+    <div class="top">
+        <a href="javascript:window.history.go(-1)" class="headerLeft"><img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+        <div class="hTitle">我的收藏</div>
+        <a class="headerRight"><span id="edit">编辑</span></a>
+    </div>
+</header>
+<section id="container">
+    <nav class="store_nav">
+        <a href="{:U('Collect/collect_product',array('openid'=>$openid,'member_id'=>$member_id))}">产品</a>
+        <a class="store_on" href="{:U('Collect/collect_saler',array('openid'=>$openid,'member_id'=>$member_id))}">店铺</a>
+        <a href="{:U('Collect/collect_article',array('openid'=>$openid,'member_id'=>$member_id))}">资讯</a>
+        <div class="clear"></div>
+    </nav>
+    <if condition="$list">
+        <ul class="shop-list" style="background: #fff">
+            <volist name="list" id="vo">
+                <li id="collect_{$vo.id}">
+                    <a href="http://{$vo.domain}">
+                        <img src="{$vo.company_logo|show_Pic}">
+                        <h1>{$vo.shop_name}</h1>
+                        <div class="shopType">{$vo.shop_description|htmlspecialchars_decode|strip_tags}</div>
+                        <div>{$vo.provinceName}</div>&nbsp;<div>{$vo.cityName}</div><br>
+                        <div>{$vo.industryName}</div>
+                        <button class="go_shop">进入店铺</button>
+                    </a>
+                    <input type="button" onclick="del_collect({$vo['id']})" class="del" value="删除" />
+                </li>
+            </volist>
+        </ul>
+    </if>
+    <style>
+        .shop-list li{
+            margin:0;
+            padding:1em;
+            border-bottom: #f4f4f4 2px solid;
+        }
+        .del{
+            width: 5em;
+            height: 2em;
+            text-align: center;
+            box-sizing: border-box;
+            border: 1px solid #666;
+            color: #666;
+            font-size: 1em;
+            border-radius: 0.25em;
+            position: absolute;
+            right: 0.5em;
+            bottom:0.8em;
+            display: none;
+            background:none;
+        }
+        </style>
+    <!--<div class="pagePreNext">
+        <a href="javascript:;" class="no">上一页</a>
+        <div class="page_num">第
+            <select id="page_select" onchange="javascript:window.location=this.value">
+                <option value="" selected="selected">1</option>
+                <option value="">2</option>
+            </select> 页 共 2 页
+        </div>
+        <a href="javascript:;">下一页</a>
+    </div>-->
+</section>
+<include file="Public:footer" />
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<script>
+    $("#edit").click(function(){
+        if($(this).html() == "编辑"){
+            $(this).html("确认");
+            $(".del").each(function(){
+                $(this).css("cssText","display:block !important");
+            });
+            $('.go_shop').css("margin-right","5em");
+        }
+        else{
+            $(this).html("编辑");
+            $(".delete").each(function(){
+                $(this).css("cssText","display:none !important");
+            });
+        }
+    });
+    function del_collect(id){
+        if(confirm('您确定要移除吗？')){
+            $.post("{:U('Collect/cancleCollectShop')}",{id:id},function(data){
+                if(data.status == 1){
+                    alert(data.data);
+                    $('#collect_'+id).remove();
+                }else{
+                    alert(data.data);
+                }
+            },'json');
+        }
+    }
+</script>
+</body>
+</html>

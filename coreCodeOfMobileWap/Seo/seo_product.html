@@ -1,0 +1,13 @@
+<!-- seo_product -->
+<if condition="$id and $id neq 0">
+	<getProductView name="seo_data_view" id="$id" />
+</if>
+<if condition="$children_cate_id and $children_cate_id neq 0">
+	<getProductCategoryView name="seo_child_cate" id="$children_cate_id" />
+</if>
+<if condition="$cate_id and $cate_id neq 0">
+	<getProductCategoryView name="seo_data_cate" id="$cate_id" />
+</if>
+<if condition="$column_id and $column_id neq 0">
+	<getProductscolumn name="seo_data_column" id="$column_id" />
+</if>

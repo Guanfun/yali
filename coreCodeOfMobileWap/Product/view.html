@@ -1,0 +1,617 @@
+﻿<I name="column_id" input="get.column_id" />
+<I name="cate_id" input="get.cate_id" default="0" />
+<I name="id" input="get.id" />
+<include file="Public:header"/>
+<!--2、此处引入css文件-->
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/bin1.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/luo.css" rel="stylesheet" type="text/css">
+<getProductscolumn name="data_column" id="$column_id" />
+<getproductview name="data_product_view" id="$id" />
+<assign name="data_id_name" value="$data_product_view.name" />
+<assign name="shopuid" value="$data_product_view['shop_uid']"/>
+<getMemberDetail name="shop" uid="$shopuid" />
+</head>
+<body>
+<include file="Public:top"/>
+<form method="post" action="{:U('Cart/addWeixinCart')}" id="add_cart_form">
+    <input type="hidden" name="column_id"  value='<php>echo($_GET["column_id"])</php>' />
+    <input type="hidden" name="cate_id"  value='<php>echo($_GET["cate_id"])</php>' />
+    <input type="hidden" name="id"  value='<php>echo($_GET["id"])</php>' />
+    <input type="hidden" name="group_attr" id="group_attr"/>
+    <input type="hidden" name="member_id" id="member_id" value="{$member_id}"/>
+    <input type="hidden" name="openid" id="openid" value="{$openid}"/>
+    <input type="hidden" name="shop_id" id="shop_id" value="{$data_product_view['web_id']}"/>
+    <input type="hidden" name="shop_uid" id="shop_uid" value="{$data_product_view['shop_uid']}"/>
+    <input type="hidden" name="id" id="id" value="{$data_product_view['id']}"/>
+    <input type="hidden" name="score" id="score" value="{$data_product_view['score']}"/>
+    <input type="hidden" name="price" id="price" value="{$data_product_view['price']}"/>
+	<!--3、此处加入主体内容，id="container"必带-->
+	<section class="pro-main">
+		<!--banner-->
+        <div id="focus" class="focus">
+            <div class="bd">
+                <ul>
+                    <volist name="data_product_view['photo']" id="vo">
+                        <if condition="$vo['product_id'] neq 0 && $vo['product_id'] eq $data_product_view['id']">
+                            <li>
+                                <img src="{$vo.photo|show_Pic=###,640,640,6}" />
+                            </li>
+                        </if>
+                    </volist>
+                </ul>
+            </div>
+            <div class="hd"><ul></ul></div>
+        </div>
+        <!--1-->
+        <article class="pro-column-top border-tb">
+        	<div class="joinus">
+                <h3>{$data_product_view.name}</h3>
+                <!--<php>if($isWeixins){
+                    $url_share=U('Distribute/share',array('openid'=>$openid,'column_id'=>$_GET['column_id'],'cate_id'=>$_GET['cate_id'],'id'=>$_GET['id'],'member_id'=>$member_id));
+                </php>
+                <a class="btn" href="<php>echo($url_share)</php>">
+                    <img src="SKIN_HTML5/{$templet_name}/images/yen.png">
+                    我要分销
+                </a>
+                <php>}</php>
+                <div class="clear"></div>-->
+            </div>
+            <div class="money">
+                <switch name="data_product_view['pay_type']" >
+                    <case value="0">
+                        <php>if($data_product_view['time_discount']){</php>
+                        <big>
+                            <span>&yen;{$data_product_view['time_discount']['discount_price']}</span>
+                            <s>&yen;{$data_product_view.unit_price}</s>
+                            <!--<div class="discounts">{$data_product_view['time_discount']['discount']}折</div>-->
+                        </big>
+                        <php>}else{</php>
+                        <php>if($data_product_view['unit_price']){</php>
+                        <big>&yen;{$data_product_view.unit_price}</big>
+                        <php>}</php>
+                        <php>if($data_product_view['market_price']){</php>
+                        <small>市场价：&yen;{$data_product_view.market_price}</small>
+                        <php>}</php>
+                        <php>}</php>
+                    </case>
+                    <case value="1">
+                        <php>if($data_product_view['score']){</php>
+                        <big>积分:{$data_product_view.score}</big>
+                        <php>}</php>
+                        <php>if($data_product_view['market_price']){</php>
+                        <small>市场价：&yen;{$data_product_view.market_price}</small>
+                        <php>}</php>
+                    </case>
+                    <case value="2">
+                        <big>&yen;{$data_product_view.unit_price} +积分:{$data_product_view.score}</big>
+                    </case>
+                </switch>
+            </div>
+        	<div class="msb">
+                <php>if($data_product_view['time_discount']){</php>
+                <h4>{$data_product_view['time_discount']['discount']}折</h4>
+                <php>}</php>
+                <php>if($data_product_view['activity']){</php>
+                <span>({$data_product_view.activity})</span>
+                <php>}</php>
+                <h5>已售：{$data_product_view.sales}件</h5>
+                <div class="clear"></div>
+            </div>
+        </article>
+        <div class="hr border-b"></div>
+        <!--规格选择-->
+        <a class="spec" href="javascript:;" onclick="display('#light','#fade','#buy_now','.pro_attr');">请选择商品规格</a>
+
+        <div class="hr border-tb"></div>
+        <!--进入我的小店-->
+        <notempty name="shop">
+            <div class="come">
+                <header class="come-top">
+                    <img src="{$shop['shop']['company_logo']|show_Pic=###,120,120,6}">
+                    <big>{$shop['shop']['shop_name']}</big><br>
+                   <!-- <small>全部宝贝{$countProduct}个</small>-->
+                    <div class="clear"></div>
+                </header>
+
+                <a href="http://{$shop['shop']['domain']}/Shop/Product/index.html">
+                    <button class="fl"><img src="SKIN_HTML5/{$templet_name}/images/footer4.png">查看所有商品</button>
+                </a>
+                <a href="http://{$shop['shop']['domain']}">
+                    <button class="fr"><img src="SKIN_HTML5/{$templet_name}/images/footer3.png">进店逛逛</button>
+                </a>
+                <div class="clear"></div>
+            </div>
+        </notempty>
+        <!--显示上一级微信信息结束-->
+        <div class="hr"></div>
+        <div id="tab">
+            <h3 class="up" id="two1" onmouseover="setContentTab('two',1,4)">图文详情</h3>
+            <div class="tab-page block" id="con_two_1" style="display: block">
+                {$data_product_view['mobile_content']|htmlspecialchars_decode}
+            </div>
+            <h3 id="two2" onmouseover="setContentTab('two',2,4)">产品参数</h3>
+            <div id="con_two_2" class="tab-page">
+                <php>if(empty($data_product_view['attrSale'])){</php>
+                    <div class="pro_empty">暂无详细参数</div>
+                <php>}else{</php>
+                <volist name="data_product_view['attrSale']" id="v">
+                    <p>
+                        <span>{$v['name']}</span>
+                        <volist name="v[vals]" id="r">
+                            {$r['attr_val']}&nbsp;&nbsp;
+                        </volist>
+                    </p>
+                </volist>
+                <php>}</php>
+
+            </div>
+            <h3 id="two3" onmouseover="setContentTab('two',3,4)">用户评论</h3>
+            <div id="con_two_3" class="tab-page">
+                <ul class="pl-list">
+                    <getProductComment name="product_comment_list" pro_id="$id" p="1" size="5" />
+                    <if condition="$product_comment_list['total'] gt 0">
+                    <volist name="product_comment_list['list']" id="product_comment">
+                        <li class="border-b">
+                            <h4>{$product_comment['user_info']['username']}</h4>
+                            <br>{$product_comment.content}
+                        </li>
+                    </volist>
+                        <li>
+                            <a href="{:U('Product/comment',array('openid'=>$openid,'member_id'=>$member_id,'column_id'=>$column_id,'cate_id'=>$cate_id,'id'=>$id))}">
+                                查看全部
+                            </a>
+                        </li>
+                        <else />
+                        <div class="no_comment pro_empty">
+                            暂无评论
+                        </div>
+                    </if>
+                </ul>
+            </div>
+            <h3 id="two4" onmouseover="setContentTab('two',4,4)">同店推荐</h3>
+            <div id="con_two_4" class="tab-page">
+                <ul class="pro-list">
+                <getProducts name="cate_same" column_id="$column_id" cate_id="$cate_id" size="10" />
+                <if condition="count($cate_same['list']) gt 0">
+                <volist name="cate_same['list']" id="cate_same_pro">
+                    <a href="{:U('Product/view',array('column_id'=>$cate_same_pro['column']['0']['id'],'cate_id'=>$cate_same_pro['cate_id'],'id'=>$cate_same_pro['id'],'openid'=>$openid,'member_id'=>$member_id))}" >
+                    <li class="imgDiv">
+                        <div class="imgDivOut">
+                            <div class="imgDivInner">
+                                <div class="imgBorder">
+                                    <div class="imgBorderInner">
+                                        <img class="imgFinal" src='{$cate_same_pro.thumb|show_Pic=###,320,320,0,"SKIN_HTML5/$templet_name/images/default_bg.png"}'/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <h4>{$cate_same_pro.name}</h4>
+                            <div class="price">
+                                <php>if($cate_same_pro['unit_price']){</php>
+                                <b>&yen;{$cate_same_pro.unit_price}</b>
+                                <php>}</php>
+                                <php>if($cate_same_pro['market_price']){</php>
+                                <s>原价:{$cate_same_pro.market_price}</s>
+                                <php>}</php>
+                            </div>
+                            <div class="dis">
+                                <php>if($cate_same_pro['discount']){</php>
+                                <span>{$cate_same_pro.discount}折</span>
+                                <php>}</php>
+                                <php>if($cate_same_pro['sales']){</php>
+                                <small>销量:{$cate_same_pro.sales}</small>
+                                <php>}</php>
+                            </div>
+                    </li>
+                    </a>
+                </volist>
+                    <else />
+                    <div class="pro_empty">
+                        暂无同类产品
+                    </div>
+                </if>
+                </ul>
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+            function setContentTab(name, curr, n) {
+                for (i = 1; i <= n; i++) {
+                    var menu = document.getElementById(name + i);
+                    var cont = document.getElementById("con_" + name + "_" + i);
+                    var tab=document.getElementById('tab');
+                    menu.className = i == curr ? "up" : "";
+                    if (i == curr) {
+                        cont.style.display = "block";
+                        tab.style.height=menu.offsetHeight+cont.offsetHeight+'px';
+                    } else {
+                        cont.style.display = "none";
+                    }
+                }
+            }
+            //防止id为con_two_1的内容中的width超出手机宽度
+            var con_two_1=document.getElementById('con_two_1'),
+                        con=['div','table','tr','td','img','dd','b','i','iframe','form'];
+                arrys(con,con_two_1);
+                function arrys(con,obj){
+                    for(var attr in con) {
+                        var id = obj.getElementsByTagName(con[attr])||0;
+                        if (id) {
+                            for (var i = 0; i < id.length; i++) {
+                                if(id[i].width && id[i].width>document.documentElement.offsetWidth){
+                                    id[i].width=document.documentElement.offsetWidth+"px";
+                                }
+                            }
+                        }
+                    }
+                }
+            //判断页面是否加载完毕
+            document.onreadystatechange = function(){   
+                    if(document.readyState=="complete")   
+                    {   
+                   var tab=document.getElementById('tab');
+                    var menu=document.getElementById('two1');
+                    var cont=document.getElementById('con_two_1');
+                    tab.style.height=menu.offsetHeight+cont.offsetHeight+'px';
+                    } 
+            }
+        </script>
+	</section>
+    <div class="modal fade" id="cart_success" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">确定</button>
+                    <button type="button" onclick="go_cart();" class="btn btn-danger">购物车</button> </div>
+            </div>
+        </div>
+    </div>
+	<footer id="pro-footer">
+		<ul>
+            <php>if($shop['shop']!=""){</php>
+
+            <li>
+                <a href="http://{$shop['shop']['domain']}">
+                    <img src="SKIN_HTML5/{$templet_name}/images/member-shangjia.png"><b>店铺</b></a></li>
+            <php>}else{</php>
+            <style type="text/css">
+                #pro-footer ul li{width: 50%;}
+            </style>
+            <php>}</php>
+			<li><a href="javascript:;" onclick="AddCollecProduct({$id})" id="collect_name">
+                <img src="SKIN_HTML5/{$templet_name}/images/collection.png">
+                <b><eq name="is_collect" value="1">已收藏<else />收藏</eq></b>
+            </a>
+            </li>
+			<li class="fr">
+                <a href="{:U('Cart/index',array('openid'=>$openid,'member_id'=>$member_id))}">
+                <img src="SKIN_HTML5/{$templet_name}/images/footer3.png"><b>购物车</b></a></li>
+            <div class="clear"></div>
+		</ul>
+        <a class="pro_btn cart_btn" href="javascript:;" onclick="display('#light','#fade','#add_cart');">加入购物车</a>
+        
+        <a class="pro_btn buy_btn" href="javascript:;" onclick="display('#light','#fade','#buy_now');">立即购买</a>
+        <div class="clear"></div>
+	</footer>
+    <!--弹出-->
+      <div id="light" class="white_content">
+            <div class="white_top">
+            	<article>
+                    <img src="{$data_product_view.thumb|ltrim=###,'.'}">
+                    <span>{$data_product_view.name}</span>
+                    <b id="price_html">&yen;{$data_product_view.unit_price}</b>
+                    <div class="clear"></div>
+                </article>
+                <a href = "javascript:void(0)" class="close" onclick="display_none('#light','#fade','#buy_now','#add_cart');" ></a>
+                <div class="clear"></div>
+            </div>
+          <ul class="pro_attr">
+              <volist name="data_product_view['attrSale']" id="v">
+              <li>{$v['name']}：</li>
+              <li class="choose-attr">
+                  <volist name="v[vals]" id="r">
+                      <span class="attr_val " id="{$v[id]}-{$r[id]}" val="{$r[id]}">
+                          {$r['attr_val']}
+                      </span>
+                  </volist>
+              </li>
+              </volist>
+          </ul>
+            <div class="clear"></div>
+            <div class="spinner-box">
+            	<span>数量</span>
+				<div class="add-del">
+					<b class="btn-add" id="reduce_num" ><span>-</span></b>
+                    <input type="text" class="new-input" value="1" id="product_num" name="product_num" />
+                    <b class="btn-del" id="add_num"><span>+</span></b></div>
+    	        <p>库存<c id="has_num">{$data_product_view.stock}</c>件</p>
+                <div class="clear"></div>                    
+            </div>
+            <input type="button" class="button btn-default" id="add_cart" style="display:none;"  value="加入购物车"/>
+            <input class="button" type="submit" id="buy_now" style="display:none;" value="立即购买"/>
+            <input type="button" class="button btn-default" id="yyproduct" style="display:none;" value="到货提醒"/>
+        </div>
+        <div id="fade" class="black_overlay" onclick="display_none('#light','#fade','#buy_now','#add_cart');"></div>
+    <!--弹出结束-->
+</form>
+	<!--4、此处引入js，2个jquery文件需带上-->
+    <script src="SKIN_HTML5/{$templet_name}/js/zepto.min.js"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/script.js"></script>
+    <script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+    <script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+    <script src="SKIN_HTML5/{$templet_name}/js/getElements.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/bootstrap_common.js"></script>
+<include file="Public:goTop" />
+<include file="Public:form_validation" />
+<script>
+    var group_attr = {$data_product_view['group_attr']|json_encode};
+    var product_id = "{$id}";
+    var uid ="{$_G['uid']}";
+    //收藏产品
+    function AddCollecProduct(id){
+        $.get("{:U('Product/addCollectProduct',array('openid'=>$openid,'member_id'=>$member_id))}",{id:id},function(data){
+            if(data.status=='1'){
+                $('#collect_name').html('<a style="color: #fe9402;font-size: 1.2em; line-height: 1.5em;">★</a><br />已收藏');
+            }else{
+                alert(data.data);
+                $('#collect_name').html('<a style="color: #fe9402;font-size: 1.2em;line-height: 1.5em;">★</a><br />已收藏');
+            }
+        },'json');
+    }
+    function go_cart(){
+        location.href="{:U('Cart/index',array('openid'=>$openid,'member_id'=>$member_id))}";
+    }
+    function display(id,id2,btn){
+        $(id).slideDown(300);
+        $(id2).css("display","block");
+        $(btn).css("display","block");
+        $('body').css("overflow","hidden");
+    }
+    function display_none(id,id2,btn,btn1){
+        $(id).slideUp(300);
+        $(id2).css("display","none");
+        $(btn).css("display","none");
+        $(btn1).css("display","none");
+        $('body').css("overflow","auto");
+    }
+    //产品预约 2016.03.16 Pual
+    //uid  登录者编号；id 产品编号; group_attr 属性组id
+$("#yyproduct").on('click',function(){
+        if(uid){
+            var group_attr = $('.choose-attr .has-choose-attr').val();
+            var product_num =$('#product_num').val();
+            location.href="{:U('Product/subscribe')}"+"?id={$id}&group_attr="+group_attr+"&openid={$openid}&member_id={$member_id}"
+        }
+        else{
+            display_none('#light','#fade','#buy_now','#add_cart');
+            $('.modal-body').html("请先登录");
+            $('.modal-footer .btn-default').css('width','100%');
+            $('#cart_success').modal({
+                backdrop:'static',
+                keyboard:false
+            }).on('hide.bs.modal',function(){
+                location.href="{:U('Login/index')}";
+            });
+        }
+    });   
+     $(document).ready(function(){
+        //设置值
+        function set_value(v){
+            $('#group_attr').val(v.id);
+            $('#price').val(v.price);
+            $('#price_html').html('&yen; '+v.price);
+            $('#has_num').html(v.stock);
+            if(v.stock == 0){
+                $('#has_num').addClass('color-f00').html(v.stock);
+                $('#add_cart').addClass('disabled').attr('disabled','disabled').css("background","#d8d8d8");
+                $('#buy_now').addClass('disabled').attr('disabled','disabled').css("background","#d8d8d8");
+                $('#yyproduct').show();
+            }else{
+                $('#has_num').removeClass('color-f00').html(v.stock);
+                $('#add_cart').removeClass('disabled').attr('disabled',false).css("background","rgb(253,154,52)");
+                $('#buy_now').removeClass('disabled').attr('disabled',false).css("background","rgb(255,104,1)");
+                $('#yyproduct').hide();
+            }
+            $('#code').val(v.code);
+            $('#code_html').html(v.code);
+        }
+$("li.choose-attr:eq(0) span").on('click',function(){
+            var attribute = $(this).attr("id");
+            var attr_vals=[];
+            $.each(group_attr[product_id],function(i,v){
+                var attr_val_id= v.attr_val_ids.split(",");
+                if(attribute == attr_val_id[0]){
+                    for(var i=1;i<attr_val_id.length;i++)
+                        attr_vals.push(attr_val_id[i]);
+                }
+            });
+            var that=$(this).parent().siblings().children();
+            if(attr_vals.length>1){
+                for(var i=0;i<that.length;i++){
+                    if($.inArray(that.eq(i).attr("id"), attr_vals) == "-1"){
+                        that.eq(i).css("display","none");
+                    }else{
+                        that.eq(i).css("display","");
+                    }
+                }
+            }
+        });
+	//选择产品属性
+        $('.choose-attr span').on('click',function(){
+            $(this).siblings().removeClass('has-choose-attr');
+            $(this).addClass('has-choose-attr');
+            var attr_vals =[];
+            $('.has-choose-attr').each(function(i,v){
+                var attr_val = $(this).attr('id');
+                attr_vals.push(attr_val);
+            });
+            $.each(group_attr[product_id],function(i,v){
+                if(v.attr_val_ids == attr_vals){
+                    set_value(v);
+                    return false;
+                }
+            });
+        });
+        $(".choose-attr").each(function () {
+            $(this).children("span:eq(0)").click();
+        });
+        //按钮禁止
+        if((!$.isEmptyObject(group_attr) && !$('#group_attr').val()) || $('#has_num').html() == '0'){
+            $('#add_cart').addClass('disabled').attr('disabled','disabled').css("background","#d8d8d8");
+            $('#buy_now').addClass('disabled').attr('disabled','disabled').css("background","#d8d8d8");
+            $('#yyproduct').show();
+        }
+        //自动选取第一个属性值
+        $('#reduce_num').click(function(){
+            var product_num = parseInt($('#product_num').val());
+            if(product_num > parseInt(1)) $('#product_num').val((product_num-1));
+        });
+        $('#product_num').keyup(function(){
+            var product_num = $(this).val();
+            if(product_num < 1 || !product_num || isNaN(product_num) || product_num.indexOf(".")>0) $(this).val('1');
+        });
+        $('#add_num').click(function(){
+            var product_num = parseInt($('#product_num').val());
+            var add_num = product_num+1;
+            var string = add_num.toString();
+            if(string.length < 3&&$('#has_num').html() != '0'){
+                $('#product_num').val(add_num);
+            }else{
+                $('#product_num').val(product_num);
+            }
+        });
+        //加入购物车
+        $('#add_cart').click(function(){
+            $("#shop_id").val("0");
+            var form = $('#add_cart_form');
+            $.ajax({
+                type: 'GET',
+                url: form.attr('action'),
+                data: form.serialize(),
+                success: function(s){
+                    if(s.status == '1'){
+                        $('.modal-body').html("共"+s.product_count+"商品已成功加入购物车!");
+                        $('.btn-danger').show();
+                        $('#cart_success').modal({
+                            backdrop:'static',
+                            keyboard:false
+                        }).on('hide.bs.modal',function(){
+                            $("#fade").click();
+                        });
+                    }
+                    else if(s.status == '10'){
+                        $('.modal-body').html(s.data);
+                        $('.modal-footer .btn-default').css('width','100%');
+                        $('#cart_success').modal({
+                            backdrop:'static',
+                            keyboard:false
+                        }).on('hide.bs.modal',function(){
+                            location.href="{:U('Login/index')}";
+                        });
+                    }
+                    else{
+                        $('.modal-body').html(s.data);
+                        $('#cart_success').modal({
+                            backdrop:'static',
+                            keyboard:false
+                        });
+                    }
+                },
+                dataType: 'json'
+            });
+        });
+        //立即购买
+        $('#buy_now').click(function(){
+            var form = $('#add_cart_form');
+            form.attr("action","{:U('Cart/order',array('openid'=>$openid,'member_id'=>$member_id))}").submit();
+        });
+    });
+</script>
+
+ <php>if($canDistribute==1 || $is_sales){</php>
+<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"> </script>
+<script>
+
+    var title = "{$distributeName}的小店";
+    var desc = "{$web_config['website']}";
+    var link = "http://<php>echo($_SERVER['HTTP_HOST']);</php>{:U('Index/index',array('member_id'=>$openid))}";
+
+    var imgUrl = "{$headimgurl}";
+
+    wx.config({
+        debug: false,
+        appId: "{$signPackage['appId']}",
+        timestamp: "{$signPackage['timestamp']}",
+        nonceStr: "{$signPackage['nonceStr']}",
+        signature: "{$signPackage['signature']}",
+        jsApiList: [
+      'checkJsApi',
+      'onMenuShareTimeline',
+      'onMenuShareAppMessage'
+    ]
+    });
+
+
+    wx.ready(function () {
+        wx.checkJsApi({
+            jsApiList: ['onMenuShareAppMessage'], // 需要检测的JS接口列表，所有JS接口列表见附录2,
+            success: function (res) {
+                var result = res.errMsg;
+                if (result == "checkJsApi:ok") {
+
+                }
+                else {
+                    alert("你的微信版本不支持分享,请换Iphone手机或者高版本的安卓手机后再进行分享操作，谢谢");
+                    return false;
+                }
+                // 以键值对的形式返回，可用的api值true，不可用为false
+                // 如：{"checkResult":{"chooseImage":true},"errMsg":"checkJsApi:ok"}
+            }
+        });
+        wx.onMenuShareTimeline({
+            title: title,
+            link: link,
+            imgUrl: imgUrl,
+            trigger: function (res) {
+
+            },
+            success: function (res) {
+                todoaftershare();
+            },
+            cancel: function (res) {
+            },
+            fail: function (res) {
+
+            }
+        });
+        wx.onMenuShareAppMessage({
+            title: title,
+            desc: desc,
+            link: link,
+            imgUrl: imgUrl,
+            trigger: function (res) {
+
+            },
+            success: function (res) {
+                alert('已分享');
+            },
+            cancel: function (res) {
+                alert('已取消');
+            },
+            fail: function (res) {
+                alert(JSON.stringify(res));
+            }
+        });
+
+    });
+
+
+</script>
+<php>}</php>
+</body>
+</html>

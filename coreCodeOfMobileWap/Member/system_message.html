@@ -1,0 +1,54 @@
+<include file="Public:header" />
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/system_message.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<header id="header">
+    <div class="top">
+        <a href="javascript:window.history.go(-1)" class="headerLeft"><img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+        <div class="hTitle">
+            系统消息设置
+        </div>
+        <!--<a class="headerRight"><span>����</span></a>-->
+    </div>
+</header>
+<section id="container">
+    <volist name="list" id="vo">
+        <div class="system_class">
+            <p><i>{$vo.name}</i></p>
+            <div class="clearfix"></div>
+            <volist name="vo['info']" id="v">
+                <p>
+                    <label for="{$v['field']}" name="{$v['field']}" value="{$v['is_value']}" <eq name="v['is_value']" value="1">class="checked"</eq>>{$v.title}</label>
+                    <input type="checkbox" id="{$v['field']}" name="{$v['field']}" value="{$v['is_value']}" />
+                </p>
+            </volist>
+        </div>
+    </volist>
+</section>
+<include file="Public:footer" />
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+<include file="Public:form_validation" />
+<script>
+    $(document).ready(function() {
+        $('label').click(function () {
+            var id=$(this);
+            var fields = $(this).attr('name');
+            var is_values = $(this).attr('value');
+             $.get("{:U('Member/saveMemberMessage',array('openid'=>$openid,'member_id'=>$member_id))}", {field:fields,is_value:is_values}, function (s) {
+                 if(s.status == '1'){
+                    if(id.hasClass('checked')){
+                        id.removeClass('checked');
+                    }else{
+                        id.attr('class', 'checked');
+                    }
+                     id.attr('value', s.value);
+                }
+            }, 'json');
+
+        });
+        });
+</script>
+</body>
+</html>

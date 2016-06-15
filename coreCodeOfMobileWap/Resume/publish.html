@@ -1,0 +1,411 @@
+<include file="Public:header"/>
+
+<link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/index.css">
+<link href="SKIN_HTML5/{$templet_name}/css/style.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/bin1.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="SKIN_HTML5/{$templet_name}/css/menu.css" rel="stylesheet" type="text/css"/>
+<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/menu.js" type="text/javascript"></script>
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/jquery.cityselect.js"></script>
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/city.min.js"></script>
+<i name="id" input="get.id" default="0"/>
+</head>
+
+<body>
+
+<include file="Public:top"/>
+
+
+<section id="container">
+	<!-- {$info|P} -->
+  <form class="addForm" action=""><!-- method="post"-->
+  <input type="hidden"  value="{$info['title']}" name="title" id="title">
+  <input type="hidden" value="{$info['id']}" name="id">
+    <ul class="sep_teams">
+    <input type="hidden" name="status" value="1" />
+      <div class="headTitle">基本资料</div>
+      
+     <!--  <li class="ava">
+        <span>头像</span>
+        <small>
+        <php>if($info['thumb']!=""){</php>
+          <img src="{$info['thumb']|show_Pic}">
+        <php>}</php>
+        </small>
+        <div class="clear"></div>
+      </li> -->
+      <li>
+        <span>标题</span>
+        <small>
+          <input type="text" name="title" id="title" value="{$info['title']}" />
+        </small>
+        <div class="clear"></div>
+      </li>
+      <li>
+        <span>姓名</span>
+        <small><input id="realname" name="realname" value="{$info['realname']}" required="required"/></small>
+        <div class="clear"></div>
+      </li>
+      <li>
+        <span>性别</span>
+        <small>
+        <select name="sex">
+          <option value="0" <if condition="$info['sex'] eq '男'">checked="checked"</if>>男</option>
+          <option value="1" <if condition="$info['sex'] eq '女'">checked="checked"</if>>女</option>
+        </select>
+        </small>
+        <div class="clear"></div>
+      </li>
+      <li>
+        <span>出生年份</span>
+        <small><input id="birthdate" name="birthdate" value="{$info['birthdate']|msubstr=###,0,10}" placeholder="如：1991-01-0 1"/></small>
+        <div class="clear"></div>
+      </li>
+      
+     <!--  <li>
+        <span>婚姻状况</span>
+        <small>
+          <select name="marriage">
+            <option <php>if($info['marriage']=="保密"){</php> selected="selected"<php>}</php> >保密</option>
+            <option <php>if($info['marriage']=="未婚"){</php> selected="selected"<php>}</php> >未婚</option>
+            <option <php>if($info['marriage']=="已婚"){</php> selected="selected"<php>}</php> >已婚</option>
+          </select>
+        </small>
+        <div class="clear"></div>
+      </li>
+       -->
+      <li>
+        <span>手机号码</span>
+        <small>
+          <input id="phone" name="phone" type="tel" value="{$info['phone']}">
+        </small>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <span>邮箱</span>
+        <small><input id="receiveEmail" name="email" value="{$info['email']}"/></small>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <span>现居住地</span>
+        <small>
+          <!-- <input id="city" name="city" value="{$info['address']}"/> -->
+          <div id="mycity">
+          <select  class="selectr" name="province" id="province"></select>
+          <select  class="selectr" name="city" id="city"></select>
+          <select  class="selectr" name="zone" id="zone"></select></div>
+        </small>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <span>状态</span>
+        <small>
+        <!-- <input id="" name="" value="快可以一个星期入职" placeholder="如：在职，最快可以一个星期入职"/> -->
+         <select  class="selectr" name="job_status" id="job_status">
+            <volist name='job_status' id='vj'>
+            <option value="{$key}" <if condition="$info['job_status'] eq $vj">selected="selected" </if>>{$vj}</option>
+            </volist>
+          </select>
+        </small>
+        <div class="clear"></div>
+      </li>
+    </ul>
+    
+    <ul class="sep_teams">
+      <div class="headTitle">职业意向</div>
+      <li>
+        <span>期望行业</span>
+        <small><input id="positionType" readonly="readonly" name="positionType" value="{$info['pcate_name']}"/>
+        </small>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <span>期望职能</span>
+        <small><input id="positionName" readonly="readonly" name="positionName" value="{$info['cate_name']}"/></small>
+        <div class="clear"></div>
+        <input type="hidden" value="{$info['cate_id']}" id="cate_id" name="cate_id" />
+      </li>
+      <li id="arr" style="display: none;">
+      
+      <small>
+        <select id="vo"></select>
+        <select id="vt"></select>
+        <select id="vth"></select>
+        </small>
+        <div class="clear"></div>
+      </li>
+      <script type="text/javascript">
+      $('#positionType').click(function(){
+        $("#vo").empty();
+        $('#arr').show();
+        var json_array=<?php echo json_encode($recruit_cate); ?>;
+        var number=0;
+            for(var i=0;i<json_array.length;i++){
+              if(json_array[i]['children']){
+              var en_option=document.createElement('option');
+                en_option.value=i;
+                en_option.innerHTML=json_array[i]['name'];
+                $("#vo").append(en_option);
+              }
+            }
+            changes(json_array[0]['children'],$('#vt'));
+            changes(json_array[0]['children'][0]['children'],$('#vth'),true);
+            $('#positionType').attr("value",$('#vt').find("option:selected").text());
+               $('#positionName').attr("value",$('#vth').find("option:selected").text());
+               $('#cate_id').attr("value",$('#vth').val());
+
+
+            function changes(json_array,two_obj,cate){
+              two_obj.empty();
+              for(var i=0;i<json_array.length;i++){
+                var en_option=document.createElement('option');
+                en_option.value=i;
+                if (cate) {
+                  en_option.value=json_array[i]['id'];
+                }
+                 en_option.innerHTML=json_array[i]['name'];
+                 two_obj.append(en_option);
+              }
+            }
+            $('#vo').change(function(){
+               number=$('#vo').val();
+              changes(json_array[number]['children'],$('#vt'));
+              changes(json_array[number]['children'][0]['children'],$('#vth'),true);
+               $('#positionType').attr("value",$('#vt').find("option:selected").text());
+               $('#positionName').attr("value",$('#vth').find("option:selected").text());
+               $('#cate_id').attr("value",$('#vth').val());
+            });
+            $('#vt').change(function(){
+              var en_number=$('#vt').val();
+              changes(json_array[number]['children'][en_number]['children'],$('#vth'),true);
+              $('#positionType').attr("value",$('#vt').find("option:selected").text());
+               $('#positionName').attr("value",$('#vth').find("option:selected").text());
+               $('#cate_id').attr("value",$('#vth').val());
+            });
+            $('#vth').change(function(){
+               $('#positionName').attr("value",$('#vth').find("option:selected").text());
+               $('#cate_id').attr("value",$('#vth').val());
+            });
+      });
+        
+      </script>
+      <li>
+        <span>期望地点</span>
+        <small><!-- <input id="city2" name="city2" value="{$info['job_address']}"/> -->
+         <div id="job_city">
+                    <select  class="selectr" name="job_province" id="province"></select>
+                    <select  class="selectr" name="job_city" id="city"></select>
+                    <select  class="selectr" name="job_zone" id="zone"></select></div>
+        </small>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <span>期望薪资</span>
+        <small>
+          <select name="ex_salary"  id="ex_salary" class="selectr selectr_380">
+            <volist name='ex_salary' id='salary' >
+                    <option value="{$key}" <if condition="$info['ex_salary'] eq $salary">selected="selected" </if>>{$salary}</option>
+                    </volist>
+          </select>
+        </small>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <span>目前薪资</span>
+        <small>
+          <select name="now_salary"  id="now_salary" class="selectr selectr_380">
+             <volist name='ex_salary' id='salary' >
+                    <option value="{$key}" <if condition="$info['now_salary'] eq $salary">selected="selected" </if>>{$salary}</option>
+                    </volist>
+          </select>
+        </small>
+        <div class="clear"></div>
+      </li>
+    </ul>
+    
+  <!--   <ul class="sep_teams">
+      <div class="headTitle">工作经历</div>
+      <php>if(count($info['resume_experience'])>0){</php>
+      <volist name="info['resume_experience']" id="work">
+      <li>
+        <span>所在公司</span>
+        <small><input id="company" name="company" value="{$work['company']}"/></small>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <span>担任职位</span>
+        <small><input id="job" name="job" value="{$work['job']}"/></small>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <span>在职时间</span>
+        <small><input id="begintime" name="begintime" value="{$work['begintime']|date="Y-m",###}-{$work['endtime']|date="Y-m",###}" placeholder="如：2010.01-2010.12"/></small>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <span>工作地点</span>
+        <small><input id="" name="address" value="{$work['address']}" /></small>
+        <div class="clear"></div>
+      </li>
+      
+      <li class="bottomLine">
+        <span>工作职责</span>
+        <small><input id="" name="content" value="{$work['content']}"/></small>
+        <div class="clear"></div>
+      </li>
+      </volist>
+      <php>}</php>
+      <div class="ink_submit">
+        <input type="button" value="添加" class="submit" onclick="add()">
+      </div>
+    </ul> -->
+    
+<!--     <ul class="sep_teams">
+      <div class="headTitle">教育经历</div>
+      <php>if(count($info['resume_edu'])>0){</php>
+      <volist name="info['resume_edu']" id="edu">
+      <li>
+        <span>所读学校</span>
+        <small><input id="" name="school" value="{$edu['school']}"/></small>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <span>专业名称</span>
+        <small><input id="" name="major" value="{$edu['major']}"/></small>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <span>学历</span>
+        <small>
+          <select name="education">
+            <option <php>if($edu['education']=="中专"){</php> selected="selected"<php>}</php>>中专</option>
+            <option <php>if($edu['education']=="大专"){</php> selected="selected"<php>}</php>>大专</option>
+            <option <php>if($edu['education']=="本科"){</php> selected="selected"<php>}</php>>本科</option>
+            <option <php>if($edu['education']=="硕士"){</php> selected="selected"<php>}</php>>硕士</option>
+            <option <php>if($edu['education']=="博士"){</php> selected="selected"<php>}</php>>博士</option>
+          </select>
+        </small>
+        <div class="clear"></div>
+      </li>
+      
+      <li>
+        <span>在读时间</span>
+        <small><input id="" name="begintime" value="{$edu['begintime']|date="Y/m",###}–{$edu['endtime']|date="Y/m",###}" placeholder="如：2010.01-2013.12"/></small>
+        <div class="clear"></div>
+      </li>
+      </volist>
+      <php>}</php>
+    </ul> -->
+    
+    <!-- <ul class="sep_teams">
+      <div class="headTitle">语言能力</div>
+      <li>
+        <span>语言能力</span>
+        <small><input id="" name="" value="英语四级、普通话流利" placeholder="如：英语四级、普通话流利"/></small>
+        <div class="clear"></div>
+      </li>
+    </ul> -->
+    
+    <ul class="sep_teams">
+      <div class="headTitle">自我评价</div>
+      <!-- <li>
+        <span>擅长技能</span>
+        <small><input id="" name="" value="IOS、HTML5、JAVA、C#"/></small>
+        <div class="clear"></div>
+      </li> -->
+      <li>
+        <span>自我评价</span>
+        <small><textarea id="intro" name="intro" placeholder="">{$info['intro']}</textarea></small>
+        <div class="clear"></div>
+      </li>
+
+    </ul>
+    
+  </form>
+
+
+  <div class="deal">
+    <input type="button" value="确认修改" class="submit" onclick="submit()">
+  </div>
+  
+  
+  <script>
+  $(function(){
+  $("#mycity").citySelect({prov_value:"{$info['province']}", city_value:"{$info['city']}", zone_value:"{$info['zone']}"});
+  $("#job_city").citySelect({prov_value:"{$info['job_province']}", city_value:"{$info['job_city']}", zone_value:"{$info['job_zone']}"});
+  $("#native_city").citySelect({prov_value:"{$info['native_province']}", city_value:"{$info['native_city']}"});
+  
+  }) 
+    function submit(){
+      //$("form").submit();
+      $.post("{:U('Resume/saveResume')}",{
+      data:$('.addForm').serialize()
+    },function(data){
+      if(data.status == 1){
+        
+        alert(data.data);
+        location.href = "{:U('Resume/my_list')}";
+      }else{
+        alert(data.data);
+      }
+    },'json');
+    }
+    function add(){
+      $(".ink_submit").before(        
+        "<li>" +
+        " <span>所在公司</span>" +
+        " <small><input id='' name=''/></small>" +
+        " <div class='clear'></div>" +
+        "</li>" +
+        
+        "<li>" +
+        " <span>担任职位</span>" +
+        " <small><input id='' name=''/></small>" +
+        " <div class='clear'></div>" +
+        "</li>" +
+        
+        "<li>" +
+        " <span>在职时间</span>" +
+        " <small><input id='' name='' placeholder='如：2010.01-2010.12'/></small>" +
+        " <div class='clear'></div>" +
+        "</li>" +
+        
+        "<li>" +
+        " <span>工作地点</span>" +
+        " <small><input id='' name=''/></small>" +
+        " <div class='clear'></div>" +
+        "</li>" +
+        
+        "<li class='bottomLine'>" +
+        " <span>工作职责</span>" +
+        " <small><input id='' name=''/></small>" +
+        " <div class='clear'></div>" +
+        "</li>"
+      );
+    }
+    $("#city,#city2").click(function(){
+      $(".down").css("display","block");
+    });
+    $(".downClose").click(function(){
+      $(".down").css("display","none");
+    });
+  </script>
+
+</section>
+<include file="Public:footer"/>
+
+</body>
+</html>

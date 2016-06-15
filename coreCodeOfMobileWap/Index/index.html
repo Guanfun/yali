@@ -1,0 +1,57 @@
+<include file="Public:top_index"/>
+<link href="http://img.xinyali.net/Public/css/mobile_group/owl.carousel.css" type="text/css"  rel="stylesheet"/>
+	<link href="http://img.xinyali.net/Public/css/mobile_group/owl.theme.css" type="text/css"  rel="stylesheet"/>
+	<script src="http://img.xinyali.net/Public/js/mobile_group/addModule.js" language="JavaScript"></script>
+<script src="http://img.xinyali.net/Public/js/mobile_group/mobiles.js" language="JavaScript"></script>
+<script type="text/javascript" src="http://img.xinyali.net/Public/js/mobile_group/jquery.simplesidebar.js"></script>
+<script type="text/javascript" src="http://img.xinyali.net/Public/js/mobile_group/jquery.slider.min.js"></script>
+<link href="http://img.xinyali.net/Public/css/mobile_group/jquery.slider.css" type="text/css"  rel="stylesheet"/>
+<script>
+	function setTouchSlide(id, autoPlay, autoPage){
+		TouchSlide({
+			slideCell: id,
+			titCell: ".hd ul",
+			mainCell: ".bd ul",
+			effect: "left",
+			autoPlay: autoPlay,
+			autoPage: true,
+			switchLoad: "_src"
+		});
+		if(autoPage){
+			$(id+" .hd li").removeClass("off");
+		}else{
+			$(id+" .hd li").addClass("off");
+		}
+	}
+</script>
+			<!-- 内容区域 -->
+			<getMobilePack name="nav_css_group" content_type="0" client_type="4" member_id="$member_id" openid="$openid"/>
+			<ul id="sortable" class="space-top-bottom">
+				{$nav_css_group['html']}
+			</ul>
+			<include file="Public:footer"/>
+		</div>
+		<script>
+		$(document).ready(function(){
+			var group_js = {$nav_css_group['group_js']};
+			$.each(group_js,function(i,item){
+				setStyle(item.tags,item.tags_id);
+			});
+			var change_height = {$mobile_css_style['change_height']};
+			$.each(change_height,function(i,item){
+				resetSize(item.id,item.val,1);
+			});
+		});
+		/*function PlayOrPause(e,state){
+			//设置自动播放
+			if(state === 'play'){
+				$(e).slideshow().startTimer();
+			}
+			else if(state === 'pause'){
+				$(e).slideshow().stopTimer()
+			}
+		}*/
+
+		</script>
+	</body>
+</html>

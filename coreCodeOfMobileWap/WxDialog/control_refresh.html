@@ -1,0 +1,421 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>客服中心</title>
+    <link href="SKIN_HTML5/{$templet_name}/WxDialog/Css/dialog_control.css" rel="stylesheet" type="text/css" />
+    <script src="SKIN_HTML5/{$templet_name}/WxDialog/js/jquery-1.4.2.js" language="JavaScript" type="text/javascript"></script>
+    <script src="SKIN_HTML5/{$templet_name}/WxDialog/js/jquery.form.js" language="JavaScript" type="text/javascript"></script>
+    <link href="SKIN_HTML5/{$templet_name}/WxDialog/Css/control_control.css" rel="stylesheet" type="text/css" />
+   
+    <script src="SKIN_HTML5/{$templet_name}/WxDialog/js/jquery.form.js" language="JavaScript" type="text/javascript"></script>
+    <script type="text/javascript">
+        function sky_upfiles() {
+            var messtxt;
+            $("#sky_upform").ajaxSubmit({
+                type: 'post',
+                url: "{:U('WxDialog/dialog_ajaxupfile')}",
+                beforeSubmit: function () {
+                    $("#sky_txt").html("图片上传中...");
+                },
+                success: function (data) {
+                    if (data == "1") {
+                        messtxt = "上传成功！";
+                    } else if (data == "-1") {
+                        messtxt = "文件超过规定大小！";
+                    } else if (data == "-2") {
+                        messtxt = "文件类型不符!";
+                    } else if (data == "-3") {
+                        messtxt = "移动文件出错!";
+                    } else {
+                        messtxt = "未知错误!";
+                    }
+                    $("#sky_txt").html(messtxt);
+
+                },
+                resetForm: false,
+                clearForm: false
+            });
+
+        }
+
+    </script>
+           <script type="text/javascript">
+               function vMiddle() {
+                   var middleDiv = document.getElementById("wrap");
+                   var divHeight = middleDiv.offsetHeight;
+                   var bodyHeight = document.body.offsetHeight;
+                   if (bodyHeight > divHeight)
+                       middleDiv.style.marginTop = -divHeight / 2 + "px";
+                   else {
+                       middleDiv.style.marginTop = 0;
+                       middleDiv.style.top = 0;
+                   }
+               }
+</script>
+<style type="text/css">
+ 
+   #wrap{width:674px;margin:0 auto;position:absolute;top:10%;left:50%;margin-left:-400px;}
+</style>
+
+</head>
+<body>
+    <div id="wrap">
+        <div id="head">
+            【{$web_config['title']}】客服中心</div>
+        <div id="main">
+            <div id="left">
+                <div id="wrapper1">
+                    <ul id="msg_history">
+                      
+                    </ul>
+                </div>
+                   <div class="input-wrap">
+                    <input class="input" id="txt" type="text" oninput="choose();"  onkeypress="if(event.keyCode==13) {$('#send-btn').click();return false;}" />
+                    <a id="img-btn" class="img-btn" href="javascript:;"></a><a id="send-btn" class="send-btn"
+                        href="javascript:;">发&nbsp;送</a>
+                </div>
+                <form enctype="multipart/form-data" id="sky_upform" name="sky_upform" action="" method="post">
+                <input type="hidden" name="ctype" value="1" />
+                <input type="hidden" id="uid" name="uid" value="0" />
+                <input type="hidden" id="uid_page" name="uid_page" value="2" />
+                <input name="upfile" id="upfile" maxlength="20" size="40" type="file" value="" style="display: none;" />
+                </form>
+            </div>
+            <div id="right">
+                <ul id="userlist">
+                </ul>
+            </div>
+        </div>
+      
+        <script type="text/javascript">
+            function choose() {
+                var txt = $("#txt").val();
+                if (txt.length > 0) {
+                    $("#send-btn").css("display", "block");
+                }
+                else {
+                    $("#send-btn").css("display", "none");
+                }
+            }
+            $(function () {
+
+                /*上传图片开始*/
+                $(function () {
+                    $("#img-btn").click(function () {
+                        $("#upfile").click();
+                    });
+                    $("#upfile").change(function () {
+                        sky_upfiles();
+                    });
+                });
+                /*上传图片结束*/
+                $("#send-btn").click(function () {
+                    var txt = $("#txt").val();
+                    if (txt == "") {
+                        alert('请输入内容');
+                    }
+                    else {
+                        var toid = $("#uid").val();
+                        if (toid == "0") {
+                            alert('请选择聊天对象');
+                        }
+                        else {
+                            $.ajax({
+                                type: "Get",
+                                url: "{:U('WxDialog/dialog_addtalk')}",
+                                data: ({ fname: txt, uid: toid, ctype: 1, date: new Date().getTime() }),
+                                success: function (result) {
+                                    if (result == 0) {
+                                        alert('消息发送失败');
+                                        $("#send-btn").css("display", "none");
+                                    }
+                                    else {
+                                        $("#txt").val("");
+                                        $("#send-btn").css("display", "none");
+                                    }
+                                },
+                                error: function (request, status, error) {
+
+                                }
+                            });
+                        }
+                    }
+                });
+            });
+        </script>
+        <script type="text/javascript">
+            var arrayObj = new Array();
+            arrayObj.push(0);
+            var $ul = $("#userlist");
+            var i = 0;
+            function getUser() {
+                var updater_msg = {
+                    poll: function () {
+                        $.ajax({ url: "{:U('WxDialog/dialog_getuser')}",
+                            type: "GET",
+                            dataType: "text",
+                            data: { date: new Date().getTime() },
+                            success: updater_msg.onSuccess,
+                            error: updater_msg.onError
+                        });
+                    },
+                    onSuccess: function (data, dataStatus) {
+                        try {
+                            var dataObj = eval('(' + data + ')');
+                            /*消息记录开始*/
+                            for (var i = 0; i < dataObj.root.length; i++) {
+                                $(".userlist").each(function () {
+                                    arrayObj.push(this.id);
+                                });
+
+                                if (jQuery.inArray(dataObj.root[i]["id"], arrayObj) == -1) {
+                                    $.each(dataObj.root, function (index, item) {
+                                        if (arrayObj.indexOf(item["id"]) == -1) {
+                                            $ul.append("<li onclick=\"getMsg('" + item["id"] + "')\" id=\"" + item["id"] + "\" class=\"userlist\"><dl class=\"userinfo\"><dd><img src=\"" + item["headimgurl"] + "\" /><span id=\"countnum" + item["id"] + "\" class=\"countnum\" " + (parseInt(item["countnum"])==0?" style=\"display:none\"":null) + ">" + item["countnum"] + "</span></dd><dt>" + item["nickname"] + "</dt></dl></li>");
+                                        }
+                                    });
+                                }
+                                else {
+                                    $.each(dataObj.root, function (index, item) {
+                                        changenum(item["id"], item["countnum"]);
+                                    });
+
+                                    $ul.stop(true, true);
+                                }
+
+                               sort_user();
+                            }
+                            /*消息记录结束*/
+
+                        }
+                        catch (e) {
+                            //  alert(e);
+                        }
+
+                        interval = window.setTimeout(updater_msg.poll, 1000);
+                    },
+                    onError: function () {
+
+                    }
+                };
+                updater_msg.poll();
+            }
+            getUser();
+        </script>
+        <script>
+            $(function () {
+                $(".userlist").live("click", function () {
+                    var selfid0 = this.id.substr(1);
+                    $("#uid").val(selfid0);
+                    $("#msg_history").children("li").css("display", "none");
+                    $("#msg_history").children(".u" + selfid0).css("display", "block");
+                    $("#uid_page").val(2);
+                    var lastid = $('.' + this.id).last().attr("id");
+                    setTimeout(function () {
+                        window.location.hash = lastid;
+                    }, 0)
+                    var arrayUsers = new Array();
+                    arrayUsers.push(this.id);
+                    $("#userlist .on").each(function () {
+                        arrayUsers.push(this.id);
+                    });
+                    for (var i = 0; i < arrayUsers.length; i++) {
+                        var uid = arrayUsers[i].substr(1);                       
+                    }
+
+                    $("#userlist li").removeClass("on");
+                    $(this).addClass("on");
+
+
+                });
+
+            });
+            function changenum(id, val) {
+                if ( parseInt(val) == 0) {
+                    $("#countnum" + id).hide();
+                }
+                else {
+                    $("#countnum" + id).show();
+                }
+                $("#countnum" + id).html(val);
+            }
+
+            function sort_user() {
+                var arr_li = [];
+                var arr = [];
+                $(".countnum").each(function () {
+                    arr.push($(this).html());
+                    arr_li.push(this.id.substring(9));
+                });
+                arr.sort(function (a, b) {
+                    if (a > b) {
+                        return -1;
+                    }
+                    if (a == b) {
+                        return 0;
+                    }
+                    else {
+                        return 1;
+                    }
+                });
+                for (var i = 0; i < arr.length; i++) {
+                    var li, li_id;
+                    $(".countnum").each(function () {
+                        if ($(this).html() == arr[i]) {
+                            li_id = this.id.substring(9);
+                            li = $("#u" + li_id).attr("outerHTML");
+                            $("#u" + li_id).remove();
+                            $("#userlist").append(li);
+                        }
+                    });
+                  
+                }
+            }
+
+
+        </script>
+        <script type="text/javascript">
+            var arrayObj_1 = new Array();
+            arrayObj_1.push(0);
+            var $ul_1 = $("#msg_history");
+            var i = 0;
+            function getMsg(id) {
+                var page = parseInt($("#uid_page").val());
+                id = id.substr(1);
+                $("#msg_history").children("li").css("display", "none");
+                $("#msg_history").children(".u" + id).css("display", "block");
+                var updater_msg = {
+                    poll: function () {
+                        $.ajax({ url: "{:U('WxDialog/dialog_readdatabyid')}",
+                            type: "GET",
+                            dataType: "text",
+                            data: { page: page, uid:$("#uid").val(), date: new Date().getTime() },
+                            success: updater_msg.onSuccess,
+                            error: updater_msg.onError
+                        });
+                    },
+                    onSuccess: function (data, dataStatus) {
+                        try {
+                            var dataObj_1 = eval('(' + data + ')');
+                            /*消息记录开始*/
+                            for (var i = 0; i < dataObj_1.root.length; i++) {
+                                $(".msglist").each(function () {
+                                    arrayObj_1.push(this.id);
+                                });
+
+                                if (jQuery.inArray(dataObj_1.root[i]["id"], arrayObj_1) == -1) {
+                                    $.each(dataObj_1.root, function (index, item) {
+                                        if (arrayObj_1.indexOf(item["id"]) == -1) {
+                                            if (item["msgtype"].toString() == "0") {  //发出信息
+                                                $ul_1.append("<li id=\"" + item["id"] + "\" class=\"u" + item["uid"] + " " + item["class"] + "\"><dl class=\"dl_left\"><dd><img src=\"" + item["headimgurl"] + "\"></dd></dl><span class=\"span_left\"></span><span  class=\"left\">" + (item["filetype"].toString() == "0" ? item["content"] : "<img width=\"100\" src=\"http://<php>echo($_SERVER['HTTP_HOST']);</php>" + item["content"] + "\" />") + "</span></li>");
+                                            }
+                                            else {
+                                                $ul_1.append("<li id=\"" + item["id"] + "\" class=\"u" + item["uid"] + " " + item["class"] + "\"><span  class=\"right\">" + (item["filetype"].toString() == "0" ? item["content"] : "<img width=\"100\" src=\"http://<php>echo($_SERVER['HTTP_HOST']);</php>" + item["content"] + "\" />") + "</span><span class=\"span_right_control\"></span><dl class=\"dl_right\"><dd><img src=\"SKIN_HTML5/{$templet_name}/WxDialog/images/kf.jpg\"></dd></dl></li>");
+                                            }
+                                            setTimeout(function () {
+                                                window.location.hash = item["id"];
+                                            }, 0)
+                                        }
+                                    });
+                                }
+                                else {
+                                    $ul_1.stop(true, true);
+                                }
+                            }
+                            /*消息记录结束*/
+
+                        }
+                        catch (e) {
+                            //  alert(e);
+                        }
+
+
+                        interval = window.setTimeout(updater_msg.poll,1000);
+                    },
+                    onError: function () {
+                        //  alert("Poll error");
+                    }
+                };
+                updater_msg.poll();
+            }
+       
+        </script>
+    </div>
+    <!--页面刷新开始-->
+    <link rel="stylesheet" href="SKIN_HTML5/{$templet_name}/WxDialog/loading/Css/reset.css" />
+    <link rel="stylesheet" href="SKIN_HTML5/{$templet_name}/WxDialog/loading/Css/pulltorefresh_control.css" />
+    <script src="SKIN_HTML5/{$templet_name}/WxDialog/loading/Scripts/iscroll.js"></script>
+    <script src="SKIN_HTML5/{$templet_name}/WxDialog/loading/Scripts/pulltorefresh.js"></script>
+    <!--页面刷新结束-->
+    <!--页面刷新js开始-->
+    <script type="text/javascript">
+        var arrayObj_2 = new Array();
+        arrayObj_2.push(0);
+        refresher.init({
+            id: "wrapper1", //<------------------------------------------------------------------------------------┐
+            pullDownAction: Refresh
+        });
+        var generatedCount = 0;
+        function Refresh() {
+            var id = $("#uid").val();      
+            var page = parseInt($("#uid_page").val());
+            if (page == "2") {
+                $("#uid_page").val("3");
+            }
+            setTimeout(function () {	// <-- Simulate network congestion, remove setTimeout from production!
+                var el, li, i;
+                el = document.querySelector("#wrapper1 ul");
+                $("#uid_page").val((page == "2" ? 3 : page) + 1);                
+                /*分页读取数据开始*/
+                $.ajax({
+                    type: "Get",
+                    url: "{:U('WxDialog/dialog_readdatabyid_page')}",
+                    data: ({ page: page, uid: $("#uid").val(), date: new Date().getTime() }),
+                    success: function (data) {
+                        var dataObj_2 = eval('(' + data + ')');
+                        li = document.createElement('li');
+                        for (var i = 0; i < dataObj_2.root.length; i++) {
+                            $(".msglist").each(function () {
+                                arrayObj_2.push(this.id);
+                            });
+                            if (jQuery.inArray(dataObj_2.root[i]["id"], arrayObj_2) == -1) {
+                                $.each(dataObj_2.root, function (index, item) {
+                                    if (arrayObj_2.indexOf(item["id"]) == -1) {
+                                        if (item["msgtype"].toString() == "0") {  //发出信息
+                                            var li = "<li id=\"" + item["id"] + "\" class=\"u" + id + " " + item["class"] + "\"><dl class=\"dl_left\"><dd><img src=\"" + item["headimgurl"] + "\"></dd></dl><span class=\"span_left\"></span><span  class=\"left\">" + (item["filetype"].toString() == "0" ? item["content"] : "<img width=\"100\" src=\"http://<php>echo($_SERVER['HTTP_HOST']);</php>" + item["content"] + "\" />") + "</span></li>";
+                                        }
+                                        else {
+                                            var li = "<li id=\"" + item["id"] + "\" class=\"u" + id + " " + item["class"] + "\"><span  class=\"right\">" + (item["filetype"].toString() == "0" ? item["content"] : "<img width=\"100\" src=\"http://<php>echo($_SERVER['HTTP_HOST']);</php>" + item["content"] + "\" />") + "</span><span class=\"span_right_control\"></span><dl class=\"dl_right\"><dd><img src=\"SKIN_HTML5/{$templet_name}/WxDialog/images/kf.jpg\"></dd></dl></li>";
+                                        }
+
+                                        $(li).insertBefore($(".u" + id + ":eq(0)"));
+                                    }
+
+                                });
+
+
+                            }
+                          
+                        }
+                    },
+                    error: function (request, status, error) {
+
+                    }
+                });
+
+                /*分页读取数据结束*/
+
+                wrapper1.refresh();
+
+            }, 1000);
+          
+        }
+         
+    </script>
+    <!--页面刷新js结束-->
+</body>
+</html>

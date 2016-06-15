@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+	<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+	<meta content="no-cache" http-equiv="pragma">
+	<meta content="0" http-equiv="expires">
+	<meta content="telephone=no, address=no" name="format-detection">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<title>测试</title>
+	<link type="text/css" rel="stylesheet" href="PUBLIC_CSS/mobile_group/wap/base.css" />
+	<link rel="stylesheet" type="text/css" href="PUBLIC_CSS/mobile_group/superIndex.css">
+	<link type="text/css" rel="stylesheet" href="PUBLIC_CSS/mobile_group/normalize.css" />
+	<!--<link type="text/css" rel="stylesheet" href="PUBLIC_CSS/mobile_group/main.css" />-->
+	<link href="PUBLIC_CSS/mobile_group/packageIndex.css" type="text/css"  rel="stylesheet"/>
+	<!--<link href="PUBLIC_CSS/mobile_group/packageLayout.css" type="text/css"  rel="stylesheet"/>-->
+	<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="PUBLIC_JS/jquery.min.js"></script>
+	<script src="PUBLIC_JS/jquery-1.8.2.js" language="JavaScript"></script>
+	<script src="PUBLIC_JS/jquery-ui.js" language="JavaScript"></script>
+	<script type="text/javascript" src="PUBLIC_JS/mobile_group/jquery.simplesidebar.js"></script>
+	<script src="PUBLIC_JS/mobile_group/moduleJs.js" language="JavaScript"></script>
+	<include file="Public:css"/>
+</head>
+<body>
+<div id="navigate_iframe" name="mainFrame" class="mainFrame"  frameborder="0" allowtransparency="true">
+	<!--头部：开始-->
+	<assign  name="member_id" value="$member_id"/>
+	<assign  name="openid" value="$openid"/>
+看到测试是正常的
+	<!--头部：结束-->
+<link href="http://img.xinyali.net/Public/css/mobile_group/owl.carousel.css" type="text/css"  rel="stylesheet"/>
+	<link href="http://img.xinyali.net/Public/css/mobile_group/owl.theme.css" type="text/css"  rel="stylesheet"/>
+	<script src="http://img.xinyali.net/Public/js/mobile_group/addModule.js" language="JavaScript"></script>
+<script src="http://img.xinyali.net/Public/js/mobile_group/mobiles.js" language="JavaScript"></script>
+<script type="text/javascript" src="http://img.xinyali.net/Public/js/mobile_group/jquery.simplesidebar.js"></script>
+<script type="text/javascript" src="http://img.xinyali.net/Public/js/mobile_group/jquery.slider.min.js"></script>
+<link href="http://img.xinyali.net/Public/css/mobile_group/jquery.slider.css" type="text/css"  rel="stylesheet"/>
+<script>
+	$.post("{:U('Test/test_json')}",{},function(data){
+		alert(data.data);
+	},'json');
+</script>
+			<!-- 内容区域 -->
+
+	</body>
+</html>

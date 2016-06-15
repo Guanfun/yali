@@ -1,0 +1,119 @@
+<include file="Public:header" />
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet">
+<link href="SKIN_HTML5/{$templet_name}/css/lockbox.css" rel="stylesheet">
+</head>
+<body>
+<section id="container">
+    <header id="header">
+        <div class="top">
+            <a href="javascript:window.history.go(-1)" class="headerLeft"><img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+            <div class="hTitle">个人中心</div>
+        </div>
+    </header>
+   <summary class="LockBox">
+        <form action="{:U('Member/saveMember',array('openid'=>$openid,'member_id'=>$member_id))}" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="form-horizontal" id="frm-sub" name="frm-sub" onsubmit="return onsub()">
+            <input type="hidden" name="openid" value="<php>echo($_GET['openid']);</php>" />
+            <div class="message">
+            </div>
+            <table>
+                <tr>
+                    <td><i></i>&nbsp;用 户 名</td>
+                    <td>{$_G[username]}</td>
+                </tr>
+                <tr>
+                    <td><i></i>会员类型</td>
+                    <php>if($_G[type_int] == 1){</php>
+                    <td>企业用户</td>
+                    <php>}else{</php>
+                    <td>个人用户</td>
+                    <php>}</php>
+                </tr>
+                <tr>
+                    <td><i></i>电子邮箱</td>
+                    <td><input type="text" name="email" value="{$_G[email]}" class="lockbox_input" placeholder="请输您的邮箱，邮箱将用于找回密码"></td>
+                </tr>
+                <tr>
+                    <td><i></i>真实姓名</td>
+                    <td><input name="realname" id="nickname" type="text" class="lockbox_input" value="{$_G[realname]}" placeholder="请输您的姓名"></td>
+                </tr>
+                <tr>
+                    <td><i></i>&nbsp;&nbsp;性&nbsp;&nbsp;&nbsp;别&nbsp;&nbsp;</td>
+                    <td>
+                        <input name="sex" type="radio" value="2" <if condition="$_G[sex] eq 2">checked </if>/>
+                        保密
+                        <input name="sex" type="radio" value="0" <if condition="$_G[sex] eq 0">checked </if>/>
+                        男
+                        <input name="sex" type="radio" value="1" <if condition="$_G[sex] eq 1">checked </if>/>
+                        女
+                    </td>
+                </tr>
+                <tr>
+                    <td>QQ/微信</td>
+                    <td><input type="text" name="qq" id="qq" class="lockbox_input" value="{$_G['qq']}" placeholder="请输您的联系QQ或微信号"></td>
+                </tr>
+                <tr>
+                    <td><i></i>联系方式</td>
+                    <td><input type="text" name="phone" id="tel" class="lockbox_input" value="{$_G['phone']}" placeholder="请输您的手机号码，以便取得联系"></td>
+                </tr>
+                <tr>
+                    <td><i></i>联系地址</td>
+                    <td id="city_1">
+                        <select id="province" class="lockbox_address prov" name="province" required="required"></select>
+                        <select id="city" class="lockbox_address city" name="city" required="required"></select>
+                        <select id="zone" class="lockbox_address zone" name="zone" required="required"></select>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><input type="text" name="address" class="lockbox_input" id="addr" value="{$_G['address']}" placeholder="请输您的联系地址"></td>
+                </tr>
+                <tr>
+                    <td>兴趣爱好</td>
+                    <td><textarea name="hobby"  cols="" rows="" class="area">{$_G['hobby']}</textarea></td>
+                </tr>
+                <tr>
+                    <td>婚姻状况</td>
+                    <td>
+                        <input type="radio" name="marriage" value="0" <if condition="$_G[marriage] eq 0">checked </if>/> <label>未婚</label>
+                        <input type="radio" name="marriage" value="1" <if condition="$_G[marriage] eq 1">checked </if>/> <label>已婚</label>
+                        <input type="radio" name="marriage" value="2" <if condition="$_G[marriage] eq 2">checked </if>/> <label>保密</label>
+                    </td>
+                </tr>
+            </table>
+            <input type="submit" id="lockBox_but" value="保存" >
+        </form>
+    </summary>
+</section>
+<include file="Public:footer" />
+<!--4、此处引入js，2个jquery文件需带上-->
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/city.min.js"></script>
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/jquery.cityselect.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        //省市选择
+        $("#city_1").citySelect({prov_value:"{$_G['province']}", city_value:"{$_G['city']}",zone_value:"{$_G['zone']}"});
+    });
+    //验证
+        function onsub(){
+            var _url = $("#frm-sub").attr("action");
+            $.ajax({
+                url: _url,
+                type: 'GET',
+                dataType: 'json',
+                data:$('#frm-sub').serialize()
+            }).done(function(result) {
+                if(result.status==1){
+                    alert(result.data);
+                    window.location.href = "{:U('Member/index',array('openid'=>$openid,'member_id'=>$member_id))}";
+                }else{
+                    alert(result.data);
+                    return false;
+                }
+            });
+            return false;
+        }
+</script>
+</body>
+</html>

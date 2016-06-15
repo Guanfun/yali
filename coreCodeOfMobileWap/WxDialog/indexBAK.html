@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title></title>
+    <link href="SKIN_HTML5/{$templet_name}/WxDialog/Css/dialog.css" rel="stylesheet"
+        type="text/css" />
+    <link rel="stylesheet" href="SKIN_HTML5/{$templet_name}/WxDialog/Css/app.min.css">
+    <script src="SKIN_HTML5/{$templet_name}/WxDialog/js/jquery-1.4.2.js" language="JavaScript"
+        type="text/javascript"></script>
+    <script src="SKIN_HTML5/{$templet_name}/WxDialog/js/jquery.form.js" language="JavaScript"
+        type="text/javascript"></script>
+      <script type="text/javascript">
+          function sky_upfiles() {
+              var messtxt;
+              $("#sky_upform").ajaxSubmit({
+                  type: 'post',
+                  url: "{:U('WxDialog/dialog_ajaxupfile')}",
+                  beforeSubmit: function () {
+                      $("#sky_txt").html("图片上传中...");
+                  },
+                  success: function (data) {
+                      if (data == "1") {
+                          messtxt = "上传成功！";
+                      } else if (data == "-1") {
+                          messtxt = "文件超过规定大小！";
+                      } else if (data == "-2") {
+                          messtxt = "文件类型不符!";
+                      } else if (data == "-3") {
+                          messtxt = "移动文件出错!";
+                      } else {
+                          messtxt = "未知错误!";
+                      }
+                      $("#sky_txt").html(messtxt);
+
+                  },
+                  resetForm: false,
+                  clearForm: false
+              });
+
+          }
+
+    </script>
+</head>
+<body>
+    <div class="chat-wrap">
+       
+        <ul id="ul1" class="chat" style="margin-top: -10px; width:98%; margin:0 auto;">
+          <volist name="lists" id="lists">
+          <if condition="$lists.msgtype eq '0'">
+          <li id="{$lists['id']}" class="msglist li_left"><dl class="dl_left"><dd><img src="{$lists['headimgurl']}"></dd></dl><span class="span_left"></span><span  class="left">
+             <if condition="$lists.filetype eq '0'">
+             {$lists['content']}
+              <else/>
+              <img width="100" src="http://<php>echo($_SERVER['HTTP_HOST']);</php>{$lists['content']}" />
+             </if>
+             </span>             
+             </li>
+             <else />
+
+             <li id="{$lists['id']}" class="msglist li_right"><span  class="right">
+             <if condition="$lists.filetype eq '0'">
+             {$lists['content']}
+              <else/>
+              <img width="100" src="http://<php>echo($_SERVER['HTTP_HOST']);</php>{$lists['content']}" />
+             </if>
+             </span><span class="span_right"></span><dl class="dl_right"><dd><img src='<php>echo("http://".$_SERVER['HTTP_HOST'].substr($web_config['logo'],1))</php>'></dd></dl></li>
+            
+             </if>
+              
+          </volist>
+         <li class="li_right"><span  class="right"><php>echo(date("Y-m-d H:i:s"))</php>&nbsp;欢迎光临</span><span class="span_right"></span><dl class="dl_right"><dd><img src="SKIN_HTML5/{$templet_name}/WxDialog/images/kf.jpg"></dd></dl></li>
+        </ul>
+        <div class="input-wrap">
+            <input class="input" id="txt" type="text" oninput="choose();" />
+            <a id="img-btn" class="img-btn" href="javascript:;"></a><a id="send-btn" class="send-btn"
+                href="javascript:;">发&nbsp;送</a>
+        </div>
+    </div>
+    <form enctype="multipart/form-data" id="sky_upform" name="sky_upform" action="" method="post">
+    <input type="hidden" name="ctype" value="0" />
+    <input type="hidden" name="openid" value="{$openid}" />
+    <input type="hidden" name="member_id" value="{$member_id}" />
+    <input name="upfile" id="upfile" maxlength="20" size="40" type="file" value="" style="display: none;" onchange="sky_upfiles();" />
+    </form>
+     <script type="text/javascript">
+          var arrayObj = new Array();
+          arrayObj.push(0);
+          var $ul = $("#ul1");
+          var i = 0;
+          var openid = "{$openid}";
+          function getMsg() {
+              var updater_msg = {
+                  poll: function () {
+                      $.ajax({ url: "{:U('WxDialog/dialog_read')}",
+                          type: "GET",
+                          dataType: "text",
+                          data: { openid:openid,date: new Date().getTime() },
+                          success: updater_msg.onSuccess,
+                          error: updater_msg.onError
+                      });
+                  },
+                  onSuccess: function (data, dataStatus) {
+                      try {
+                          var dataObj = eval('(' + data + ')');
+                          /*消息记录开始*/
+                          for (var i = 0; i < dataObj.root.length; i++) {
+                              $(".msglist").each(function () {
+                                  arrayObj.push(this.id);
+                              });
+
+                              if (jQuery.inArray(dataObj.root[i]["id"], arrayObj) == -1) {
+                                  $.each(dataObj.root, function (index, item) {
+                                      if (arrayObj.indexOf(item["id"]) == -1) {
+                                          if (item["msgtype"].toString() == "0") {  //发出信息
+                                              $ul.append("<li id=\"" + item["id"] + "\" class=\"" + item["class"] + " li_left\"><dl class=\"dl_left\"><dd><img src=\"" + item["headimgurl"] + "\"></dd></dl><span class=\"span_left\"></span><span  class=\"left\">" + (item["filetype"].toString() == "0" ? item["content"] : "<img width=\"100\" src=\"http://<php>echo($_SERVER['HTTP_HOST']);</php>" + item["content"] + "\" />") + "</span></li>");
+                                          }
+                                          else {
+                                              $ul.append("<li id=\"" + item["id"] + "\" class=\"" + item["class"] + " li_right\"><span  class=\"right\">" + (item["filetype"].toString() == "0" ? item["content"] : "<img width=\"100\" src=\"http://<php>echo($_SERVER['HTTP_HOST']);</php>" + item["content"] + "\" />") + "</span><span class=\"span_right\"></span><dl class=\"dl_right\"><dd><img src=\"SKIN_HTML5/{$templet_name}/WxDialog/images/kf.jpg\"></dd></dl></li>");
+                                          }
+                                          setTimeout(function () {
+                                              window.location.hash = item["id"];
+                                          }, 500)
+                                      }
+                                  });
+                              }
+                              else {
+                                  $ul.stop(true, true);
+                              }
+                          }
+                          /*消息记录结束*/
+
+                      }
+                      catch (e) {
+                          //  alert(e);
+                      }
+
+
+                      interval = window.setTimeout(updater_msg.poll, 1000);
+                  },
+                  onError: function () {
+                      //  alert("Poll error");
+                  }
+              };
+              updater_msg.poll();
+          }
+          getMsg();
+    </script>
+    <script type="text/javascript">
+      
+        function choose() {
+            var txt = $("#txt").val();
+            if (txt.length > 0) {
+                $("#send-btn").css("display", "block");
+            }
+            else {
+                $("#send-btn").css("display", "none");
+            }
+        }
+        $(function () {
+            /*上传图片开始*/          
+                $("#img-btn").click(function () {
+                    $("#upfile").click();
+                });
+               
+            /*上传图片结束*/
+            $("#send-btn").click(function () {
+                var txt = $("#txt").val();
+                var openid = "{$openid}";
+                if (txt == "") {
+                    alert('请输入内容');
+                }
+                else {
+                    $.ajax({
+                        type: "Get",
+                        url: "{:U('WxDialog/dialog_addtalk')}",
+                        data: ({ fname: txt, openid: openid, ctype: 0, date: new Date().getTime() }),
+                        success: function (result) {
+                            if (result == 0) {
+                                alert('消息发送失败');
+                                $("#send-btn").css("display", "none");
+                            }
+                            else {
+                                $("#txt").val("");
+                                $("#send-btn").css("display", "none");
+                            }
+                        },
+                        error: function (request, status, error) {
+
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

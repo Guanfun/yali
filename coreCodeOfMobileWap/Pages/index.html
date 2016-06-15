@@ -1,0 +1,91 @@
+﻿<include file="Public:header"/>
+	<!--2、此处引入css文件-->
+	<link href="SKIN_HTML5/{$templet_name}/css/bin1.css" rel="stylesheet" type="text/css">
+	<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+	<I name="id" input="get.id" default="0" />
+	<I name="column_id" input="get.column_id" default="0" />
+	<getpagescolumn name="data_column" id="$column_id" />
+	<eq name="column_id" value="0">
+		<getPagescolumnList name="pages_column_list"/>
+		<assign name="column_id" value="$pages_column_list['0']['id']"/>
+	</eq>
+	<eq name="id" value="0">
+	<getPages name="Pages_list" column_id="$column_id" size="1" value="1"/>
+	<assign name="id" value="$Pages_list['list']['0']['id']"/>
+	</eq>
+	<getPages name="a" column_id="$column_id" size="1" p='1'/>
+	<volist name="a['list']" id='nav_vo' offset="0" >
+	<assign name="data_id_name" value="$nav_vo.title"/>
+	</volist>
+	<php>if($id){</php>
+		<getPagesview name="Pages_view" id="$id"/>
+	<php>}</php>
+<link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/navigator/navigator.css" />
+<link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/navigator/navigator.iscroll.css" />
+<link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/navigator/navigator.default.css" />
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/zepto/zepto.js"></script>
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/zepto/zepto.extend.js"></script>
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/zepto/zepto.ui.js"></script>
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/zepto/zepto.iscroll.js"></script>
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/widget/navigator.js"></script>
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/widget/navigator.iscroll.js"></script>
+<style>
+	#nav-smartSetup li{
+		margin-left: 1px;
+		line-height: 3em;
+		background: #fff;
+		font-weight: normal;
+		color:#999;
+	}
+	#nav-smartSetup li a{
+		line-height: 3em;
+		font-weight: normal;
+		color:#999;
+	}
+	#nav-smartSetup li a.cur{
+		color: #fff;
+	}
+</style>
+</head>
+
+<body>
+	
+	<include file="Public:top"/>   
+        
+	<!--3、此处加入主体内容，id="container"必带-->
+	<section id="container"> 
+	<getPages name="pages_list_nav" column_id="$column_id"/>
+		<if condition="$pages_list_nav['total'] gt 1">
+			<div class="shopinfo_bottom" id="nav-smartSetup">
+				<ul>
+					<volist name="pages_list_nav['list']" id="vo_nav">
+						<li>
+							<a <eq name="id" value="$vo_nav.id">class="cur"</eq> href="{:U('Pages/index',array('column_id'=>$vo_nav['column_id'],'id'=>$vo_nav['id'],'openid'=>$openid,'member_id'=>$member_id))}" >
+							<span>{$vo_nav['title']}</span>
+							</a>
+						</li>
+					</volist>
+				</ul>
+			</div>
+		</if>
+		<script type="text/javascript">
+			(function () {
+				Zepto('#nav-smartSetup').navigator();
+			})();
+		</script>
+		<div class="sug">
+			{$Pages_view.mobile_content|htmlspecialchars_decode}
+			
+		</div>
+		
+		<!-- <footer class="about_foot">
+			Copyright©2015-2023<br>
+			{$web_config['name']}
+		</footer> -->
+	</section>
+
+
+	<include file="Public:footer"/>
+	
+</body>
+</html>

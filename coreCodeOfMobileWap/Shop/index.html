@@ -1,0 +1,189 @@
+<i name="shop_industry" input="get.shop_industry" default="null" />
+<i name="province" input="get.province" default="null" />
+<I name="shop_search" input="get.shop_search" />
+<I name="city" input="get.city" default="null" />
+<I name="zone" input="get.zone" default="null" />
+<I name="page" input="get.page" default="1" />
+<I name="title" input="get.title" default="null" />
+<include file="Public:header" />
+<link href="SKIN_HTML5/{$templet_name}/css/index.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/style.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet">
+<link href="SKIN_HTML5/{$templet_name}/css/shopsList.css" rel="stylesheet">
+<link href="SKIN_HTML5/{$templet_name}/css/owl.carousel.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/owl.theme.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/font-awesome.min.css" rel="stylesheet">
+<link href="SKIN_HTML5/{$templet_name}/css/menu.css" rel="stylesheet" media="screen" type="text/css" />
+<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/menu.js" type="text/javascript"></script>
+
+</head>
+<body>
+
+<header id="header">
+    <div class="top">
+		<a href="javascript:window.history.go(-1)" class="headerLeft"><img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+        <div class="hTitle">入驻店铺</div>
+		<a href="#" class="headerRight"><span>筛选</span></a>
+    </div>
+</header>
+<section id="container">
+	<!--广告图-->
+	<include file="Public:banner" />
+	<div class="ruzhu_shop" >
+	<ul class="indust" id="indust">
+	<php>
+		$arrays=array(
+			array('id'=>16,'name'=>"陶瓷洁具类"),
+			array('id'=>17,'name'=>"玻璃洁具/卫浴镜"),
+			array('id'=>21,'name'=>"琉璃瓦/瓷砖"),
+			array('id'=>69,'name'=>"电器行业")
+		);
+		foreach($arrays as $name){
+			if($shop_industry==$name['id']){
+			</php>
+			<a href="javascript:;">
+				<li class="on">{$name['name']}</li>
+			</a>
+			<php>
+			}else{
+			</php>
+			<a href="{:U('Shop/index',array('shop_industry'=>$name['id']))}">
+			<li>{$name['name']}</li>
+			</a>
+			<php>
+		}
+		}
+	</php>
+	</ul>
+	<div class="query_shop" id="query_shop">
+	<form action="{:U('Shop/index')}" method="get" id="myform">
+		<input type="text" id="txt" name="title">
+		<input type="button" id="btn" value="搜索">
+	</div>
+	</div>
+	<script type="text/javascript">
+		var indust=document.getElementById('indust'),
+			query_shop=document.getElementById('query_shop'),
+			txt=document.getElementById('txt'),
+			btn=document.getElementById('btn'),
+			myform=document.getElementById('myform'),
+			number=1;
+		var en_number=0;
+			btn.onclick=function(){
+				// 等于1的话就打开
+				if(number==1){
+					btn.value="搜索/取消";
+					txt.focus();
+					yundong(indust,-80);
+					number=0;
+				}else if(number==0){
+					if(txt.value==""){
+					btn.value="搜索";
+					yundong(indust,0);
+					}else{
+						myform.submit();
+					}
+					number=1;
+				}
+			}
+			function yundong(obj,number){
+				time=setInterval(function(){
+					if(number>=0){
+						var ip=10;
+					}else{
+						var ip=-10;
+					}
+					if(en_number==number){
+						clearInterval(time);
+					}else{
+						en_number+=ip;
+						obj.style.left=en_number+"%";
+					}
+				},30);
+			}
+	</script>
+	<ul class="shop-list">
+
+		<getMemberShop name="shop_list"  size="10" p="$page" shop_industry="$shop_industry" province="$province" city="$city" zone="$zone" title="$title" />
+		<volist name="shop_list['list']" id="list">
+		<li>
+			<a href="http://{$list.domain}">
+			<php>if($list['company_logo']!=""){</php>
+				<img src="{$list.company_logo|show_Pic}">
+			<php>}else{</php>
+				<img src="/Public/nopic.jpg">
+			<php>}</php>
+				<h1>{$list.shop_name}</h1>
+				<div class="shopType">{$list.shop_description|htmlspecialchars_decode|strip_tags}</div>
+				<div>{$list.provinceName}</div>&nbsp;<div>{$list.cityName}</div><br>
+				<div>{$list.industryName}</div>
+				<button class="go_shop">进入店铺</button>
+			</a>
+		</li>
+		</volist>
+	</ul>
+<p id="loding_a" style="display: none;"><a href="javascript:;" style="text-align: center; color: blue;width: 100%;height: 2em;line-height: 2em;background: #999;display: block;">加载中...</a></p>
+	<php>
+		$p=1;
+		if(isset($_GET["page"]))
+		{
+		$p=$_GET["page"];
+		}
+		$totalPage=$shop_list['totalPage'];
+	</php>
+	<script type="text/javascript">
+		var p=1;
+		if(p<{$totalPage}){
+			window.onscroll=function(){
+				var OscrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+				if(OscrollTop==(document.documentElement.offsetHeight-document.documentElement.clientHeight)){
+					$('#loding_a').css('display','block');
+					$.ajax({
+						type:"POST",
+						url:"{:U('Shop/ajax_shop_centent')}?page="+p+"&shop_industry={$shop_industry}&province={$province}&city={$city}&zone={$zone}&title={$title}",
+						success:function(data){
+							var divs=$("<div></div>");
+							divs.html(data);
+							$(".shop-list").append(divs);
+							$('#loding_a').css('display','none');
+							p++;
+						}
+					});
+
+				}
+			}
+		}
+		
+	</script>
+	<div class="down">
+		<div class="floor"></div>
+		<p>筛选</p>
+		<a href="#" class="downClose">取消</a>
+		<include file="Public:city" />
+	</div>
+
+	<script>
+		var change_url="{:U('Shop/index',array('shop_industry'=>$shop_industry,'province'=>$province,'city'=>$city,'zone'=>$zone,'openid'=>$openid,'member_id'=>$member_id))}";
+		$('#page_select').change(function(){
+				location.href=change_url+"?page="+this.value;
+		});
+		$(".headerRight").click(function(){
+			$(".down").css("display","block");
+		});
+		$(".downClose").click(function(){
+			$(".down").css("display","none");
+		});
+		$('.go_shop').click(function(){
+			location.href=$(this).parent('a').attr('href');
+		});
+	</script>
+</section>
+<include file="Public:footer" />
+	<script src="SKIN_HTML5/{$templet_name}/js/owl.carousel.js" type="text/javascript"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/zepto.min.js"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/fx.js"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/script.js"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/getElements.js" type="text/javascript"></script>
+</body>
+</html>

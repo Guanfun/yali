@@ -1,0 +1,183 @@
+/*领取产品优惠券*/
+.product_activity_select{
+    width: 100%;
+    background: -ms-linear-gradient(top, #f8f8f8,  #fefefe);        /* IE 10 */
+    background:-moz-linear-gradient(top,#f8f8f8,#fefefe);/*火狐*/
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#f8f8f8), to(#fefefe));/*谷歌*/
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f8f8f8), to(#fefefe));      /* Safari 4-5, Chrome 1-9*/
+    background: -webkit-linear-gradient(top, #f8f8f8, #fefefe);   /*Safari5.1 Chrome 10+*/
+    background: -o-linear-gradient(top, #f8f8f8, #fefefe);
+    FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#f8f8f8,endColorStr=#fefefe); /*IE 6 7 8*/
+    height: 3em;
+    z-index: 999;
+    border-bottom: 1px solid #dddddd;
+    padding-top: 3em;
+}
+.shade{
+    display: none;
+    width: 100%;
+    height: 88%;
+    position: absolute;
+    left: 0;
+    top: 6em;
+    z-index: 998;
+    background: #333;
+    filter:alpha(opacity=30); /*IE滤镜，透明度70%*/
+    -moz-opacity:0.3; /*Firefox私有，透明度70%*/
+    opacity:0.3;/*其他，透明度70%*/
+}
+.product_activity_select>ul>li{
+    float: left;
+    height: 3em;
+    text-align: center;
+    width: 50%;
+    line-height: 3em;
+    position: relative;
+    z-index: 999;
+}
+.product_activity_select>ul>li a{
+    display: block;
+    height: 3em;
+    line-height: 3em;
+    border-radius: 0.25em;
+    z-index: 999;
+}
+.product_activity_select ul li ul{
+    display: none;
+    position: absolute;
+    top:3em;
+    left: 0;
+    background: #fff;
+    width: 100%;
+    z-index: 999;
+}
+.product_activity_select ul li ul li{
+    height: 3em;
+    text-align: center;
+    line-height: 3em;
+    z-index: 999;
+}
+.product_activity_content{
+    width: 100%;
+    overflow: hidden;
+    padding-bottom: 4em;
+}
+.product_activity_content li{
+    width: 94%;
+    padding:0 3%;
+    margin-top: 1em;
+    overflow: hidden;
+    border-bottom: 1px solid #ffdfc9;
+    border-top: 1px solid #ffdfc9;
+    background:url('../images/coupon.png') no-repeat #fff2ea;
+    background-size: 100% 100%;
+}
+.product_activity_main{
+    width: 52%;
+    padding:0.5em 2% 0.5em 0;
+    overflow: hidden;
+    display: block;
+    float: left;
+    /*border-bottom: 1px solid #ffe8d9;
+    border-top: 1px solid #ffe8d9;*/
+}
+.product_activity_main p:nth-child(1){
+    font-size: 1em;
+    line-height:1.5em;
+    color:#333;
+}
+.product_activity_main p:nth-child(2){
+    font-size: 0.8em;
+    line-height: 1.5em;
+    color:#666;
+}
+.product_activity_main p:nth-child(3){
+    font-size: 0.8em;
+    line-height: 1.5em;
+    color:#666;
+    text-align: right;
+}
+.product_activity_receive{
+    width:20%;
+    padding:1.1em 0;
+    float: left;
+    text-align: center;
+    background: #ffe8d9;
+    display: block;
+}
+.product_activity_receive p{
+    font-size: 1.2em;
+    line-height: 1.5em;
+    color:#f60;
+    text-align: center;
+}
+.product_activity_money{
+    width: 25%;
+    padding:0;
+    float: left;
+    text-align: center;
+    background: url("../images/price2.png") no-repeat top center;
+    background-size: 60%;
+}
+.product_activity_money p:nth-child(1){
+    font-size: 2em;
+    line-height: 2em;
+    color:#f60;
+    width: 100%;
+    overflow: hidden;
+    font-family: Microsoft YaHei, Helvitica, Verdana, Tohoma, Arial, san-serif;
+    font-weight: 600;
+}
+.product_activity_money p:nth-child(2){
+    font-size: 0.8em;
+    line-height: 1.5em;
+    color:#666;
+    width: 100%;
+    overflow: hidden;
+}
+/*我的优惠券*/
+.my_coupons_select{
+    width: 100%;
+    background: -ms-linear-gradient(top, #f8f8f8,  #fefefe);        /* IE 10 */
+    background:-moz-linear-gradient(top,#f8f8f8,#fefefe);/*火狐*/
+    background:-webkit-gradient(linear, 0% 0%, 0% 100%,from(#f8f8f8), to(#fefefe));/*谷歌*/
+    background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f8f8f8), to(#fefefe));      /* Safari 4-5, Chrome 1-9*/
+    background: -webkit-linear-gradient(top, #f8f8f8, #fefefe);   /*Safari5.1 Chrome 10+*/
+    background: -o-linear-gradient(top, #f8f8f8, #fefefe);
+    FILTER: progid:DXImageTransform.Microsoft.Gradient(gradientType=0,startColorStr=#f8f8f8,endColorStr=#fefefe); /*IE 6 7 8*/
+    height: 3em;
+    z-index: 999;
+    border-bottom: 1px solid #dddddd;
+    padding-top: 3em;
+}
+.my_coupons_select>ul>li{
+    float: left;
+    height: 3em;
+    text-align: center;
+    width:33.33%;
+    line-height: 3em;
+    position: relative;
+    z-index: 999;
+}
+.my_coupons_select>ul>li a{
+    display: block;
+    height: 3em;
+    line-height: 3em;
+    border-radius: 0.25em;
+    z-index: 999;
+}
+.my_coupons_select ul li ul{
+    display: none;
+    position: absolute;
+    top:3em;
+    left: 0;
+    background: #fff;
+    width: 100%;
+    z-index: 999;
+}
+.my_coupons_select ul li ul li{
+    height: 3em;
+    text-align: center;
+    line-height: 3em;
+    z-index: 999;
+}

@@ -1,0 +1,12 @@
+<i name="column_id" input="get.column_id" default="0" />
+<i name="cate_id" input="get.cate_id" default="0" />
+<getarticles name="articles_list" column_id="$column_id" cate_id="$cate_id" limit="1" is_page="1" size="10" />
+<volist name="articles_list['list']" id="lists">
+		<a href="{:U('Article/view',array('column_id'=>$lists['column_id'],'cate_id'=>$lists['cate_id'],'id'=>$lists['id'],'openid'=>$openid,'member_id'=>$member_id))}">
+			<li class="hasArr">
+				<p>{$lists['title']}</p>
+				<span>{$lists.addtime|msubstr=###,0,10}</span>
+			</li>
+		</a>	
+	</volist>
+	

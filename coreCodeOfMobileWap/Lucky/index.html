@@ -1,0 +1,30 @@
+﻿<include file="Public:header" />
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<body>
+    <include file="Public:top" />
+    <script>
+        $(".hTitle").html("幸运大抽奖");
+    </script>
+     <style>
+   *{ margin:0px; padding:0px; list-style:none;text-decoration:none;}
+   a:link,a:hover,a:visited{ color:#000; }
+   ul{ width:90%; margin:0 auto;}
+   #lucky_ul li{ clear:both ;line-height:30px;  padding-left:10px;font-size:0.8em ; border:1px solid #f00; border-radius:5px; margin-top:15px;}
+   .right{ text-align:right; display:block; float:right;}
+   .mylucky{ font-weight:bold; background:#f00; color:#fff; text-align:center;}
+   </style>
+    <main class="cd-main-content">
+   <img src="SKIN_HTML5/{$templet_name}/Lucky/lucky.jpg" style="width:100%; margin:0 atuo;" />
+    <section style="width: 98%;">
+        <div>
+         <ul id="lucky_ul">
+<li class="mylucky"><a style="color:#fff; text-align:center;" href="{:U('Lucky/mylucky',array('openid'=>$openid,'member_id'=>$member_id))}">我的抽奖记录</a></li>
+  <volist name="lists" id="lists">
+    <li><a href="{:U('Lucky/show',array('id'=>$lists['id'],'type'=>$lists['type'],'openid'=>$openid,'member_id'=>$member_id))}">{$lists.title}&nbsp;<span class="right">【结束时间:{$lists.endtime|date='Y-m-d',###}】</span></a></li>
+  </volist>
+</ul>
+        </div>
+    </section>
+</main>
+    <include file="Public:top_nav" />
+    <include file="Public:footer" />

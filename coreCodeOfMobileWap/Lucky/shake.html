@@ -1,0 +1,98 @@
+<!doctype html>
+<html><head>
+    <meta charset="UTF-8">
+    <title>摇一摇抽奖</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/Lucky/shake/style/style.css" />
+     <script src="http://libs.baidu.com/jquery/1.8.0/jquery.min.js"></script>
+</head>
+<body>
+
+<div id="hand" class="hand hand-animate"></div>
+<div id="loading" class="loading"></div>
+<div id="result" class="result">
+    <div class="pic"><img style="width:100%;height:100%;" id="lottery_result_img" /></div>
+    <div class="con">抽奖结果<br><strong id="lottery_result"></strong></div>
+</div>
+
+<script>
+    var SHAKE_THRESHOLD = 800;
+    var last_update = 0;
+    var x = y = z = last_x = last_y = last_z = 0;
+    if (window.DeviceMotionEvent) {
+        window.addEventListener('devicemotion', deviceMotionHandler, false);
+    } else {
+        alert('对不起,您的浏览器不支持摇一摇,请用微信扫描或者更换手机');
+    }
+    function deviceMotionHandler(eventData) {
+        var acceleration = eventData.accelerationIncludingGravity;
+        var curTime = new Date().getTime();
+        if ((curTime - last_update) > 100) {
+            var diffTime = curTime - last_update;
+            last_update = curTime;
+            x = acceleration.x;
+            y = acceleration.y;
+            z = acceleration.z;
+            var speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
+            var status = document.getElementById("status");
+
+            if (speed > SHAKE_THRESHOLD) {
+                doResult();
+            }
+            last_x = x;
+            last_y = y;
+            last_z = z;
+        }
+    }
+    function doResult() {
+        document.getElementById("result").className = "result";
+        document.getElementById("loading").className = "loading loading-show";
+        shake_sound_male();
+        var lotteryData = { result: 4 };
+        var msg = {
+        {$msg}
+        };
+        var img = {
+        {$img}
+         };
+        setTimeout(function () {
+            shake_match();
+            var lotteryURL = "{:U('Lucky/initlucky',array('openid'=>$openid,'member_id'=>$member_id,'id'=>$id))}";
+            var equal = "5";
+            jQuery.getJSON(lotteryURL, null, function (r) {
+                lotteryData.result = r.prite;
+                var luck = 0;
+                $.each(msg, function (n, value) {
+                    if (n == lotteryData.result) {
+                        luck = 1;
+                    }
+                });
+                if (luck == 1) {
+                    $("#lottery_result").html(msg[lotteryData.result]);
+                    $("#lottery_result_img").attr("src",img[lotteryData.result]);
+                    
+                }
+                else {
+                    $("#lottery_result").html("恭喜你,没中奖.继续摇手机吧");
+                    $("#lottery_result_img").attr("src", "SKIN_HTML5/{$templet_name}/Lucky/shake/img/noluck.gif");
+                }
+            });
+
+            //document.getElementById("hand").className = "hand";
+            document.getElementById("result").className = "result result-show";
+            document.getElementById("loading").className = "loading";
+        }, 1000);
+    }
+    function shake_sound_male() {
+        var shake_sound_male = document.getElementById('shake_sound_male');
+        shake_sound_male.play();
+    }
+    function shake_match() {
+        var shake_match = document.getElementById('shake_match');
+        shake_match.play();
+    }
+</script>
+ 
+<audio id="shake_sound_male" src="SKIN_HTML5/{$templet_name}/Lucky/shake/mp3/shake_sound_male.mp3" controls="controls" hidden="true"  ></audio>
+<audio id="shake_match" src="SKIN_HTML5/{$templet_name}/Lucky/shake/mp3/shake_match.mp3" controls="controls" hidden="true"  ></audio>
+</body></html>

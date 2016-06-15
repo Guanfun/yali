@@ -1,0 +1,693 @@
+
+
+/****banner 圆点状****/
+.focus{float: left; width:100%; height:auto;  margin:0 auto; position:relative; overflow:hidden;z-index: 1;}
+#focus2,#focus3 {margin-top: 0.5em;}
+#focus3 .bd li{height: 8em !important;}
+.hd{ width:100%; height:11px;  position:absolute; z-index:1; bottom:5px; text-align:right;  }
+.hd ul{ display:inline-block; height:5px; padding:3px 5px; /*background-color:rgba(255,255,255,0.7);*/ -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; font-size:0; vertical-align:top;}
+.hd ul li{ display:inline-block; width:5px; height:5px; -webkit-border-radius:5px; -moz-border-radius:5px; border-radius:5px; background:#fff; margin:0 5px;  vertical-align:top; overflow:hidden;}
+.hd ul .on{ background:#ff0107; }
+.bd{ position:relative; z-index:0; }
+.bd ul {float: left;width: 100%;}
+.bd li {float: left;width: 100%;/*height: 15em;*/}
+.bd li img{ width:100%; height:100%; background:url(images/loading.gif) center center no-repeat;  }
+.bd li a{float: left;width: 100%;height: 100%;-webkit-tap-highlight-color:rgba(0, 0, 0, 0); /* 取消链接高亮 */  }
+
+
+/****banner 长条状****/
+.focus2{float: left; width:100%;   margin:0 auto; position:relative; }
+.hd2{ float:left;width:100%; height:11px;  position:absolute; z-index:1; bottom:0; text-align:center;  }
+.hd2 ul{ display:inline-block; height:5px; padding:3px 5px; background-color:rgba(255,255,255,0.7); font-size:0; vertical-align:top;}
+.hd2 ul li{ display:inline-block; width:35px; height:2px; background:#8C8C8C; margin:0 1px; vertical-align:top; overflow:hidden;}
+.hd2 ul .on{ background:#d9261d;}
+.bd2{float: left;margin-bottom: 2em;}
+.bd2 li a{float: left;width: 100%;height: 100%;-webkit-tap-highlight-color:rgba(0, 0, 0, 0); /* 取消链接高亮 */  }
+
+
+/*搜索框*/
+.search{
+	float: left;
+	width: 96%;
+	padding: 0.5em 2%;
+    height: 2.5em;
+    line-height: 2.5em;
+    border-radius: 3px;
+}
+.select_box {
+    float: left;
+    width: 20%;
+    height: 100%;
+    border: solid 1px #dbdbdb;
+    border-radius: 0.25em 0 0 0.25em;
+    border-right: 0;
+    box-sizing: border-box;
+    position: relative;
+}
+.select_showbox {
+    float: left;
+    width: 100%;
+    height: 100%;
+    text-indent: 10%;
+    background: url(../images/titleRight3.png) no-repeat 90% center;
+    background-size: 0.5em 1em;
+}
+.select_option {
+    position: absolute;
+    top: 2.5em;
+    left: 0;
+    width: 100%;
+    background: #fff;
+    z-index: 100;
+    text-align: center;
+    border: 1px solid #dadada;
+    border-top: none;
+    box-sizing: border-box;
+}
+.select_option .selected {
+    background: #F3F3F3;
+}
+.searchInput {
+    width: 70%;
+    height: 100%;
+    float: left;
+    font-size: 1em;
+    color: #9c9c9c;
+    border: solid 1px #dbdbdb;
+    background: #fff;
+    /*border-radius: 0.25em 0 0 0.25em;*/
+    border-right: 0;
+    box-sizing: border-box;
+}
+.searchInput2 {
+    width: 90%;
+    height: 100%;
+    float: left;
+    font-size: 1em;
+    color: #9c9c9c;
+    border: solid 1px #dbdbdb;
+    background: #fff;
+    border-radius: 0.25em 0 0 0.25em;
+    border-right: 0;
+    box-sizing: border-box;
+}
+.searchInput input,.searchInput2 input {
+    float: left;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    font-size: 1em;
+    color: #9c9c9c;
+    /*padding-left: 2%;*/
+    text-indent: 1em;
+}
+.search button {
+    position: relative;
+    float: left;
+    cursor: pointer;
+    height: 100%;
+    width: 10%;
+    background: #fff;
+    border-radius: 0 0.25em 0.25em 0;
+    border: 1px solid #dbdbdb;
+    border-left: 0;
+    box-sizing: border-box;
+}
+.search button img{height: 60%;}
+
+
+/*标题*/
+.title {
+    float: left;
+    width: 100%;
+    font-size: 1em;
+    height: 3em;
+    line-height: 3em;
+    background: #fff url(../images/titleRight3.png) no-repeat 98% center;
+    background-size: 0.5em 1em;;
+    border-bottom: solid 1px #eee;
+    margin-top: 0.5em;
+}
+.titleLeft {
+    float: left;
+    margin-left: 1em;
+    font-size: 1em;
+    font-weight: bold;
+}
+.titleLeft img {
+    float: left;
+    height: 2em;
+}
+.titleright {
+    float: right;
+    font-size: 1em;
+    margin-right: 2em;
+}
+.titleright a {
+    float: left;
+}
+
+
+/*style1*/
+.style1{float: left;width: 100%;background: #FFF;}
+.style1 li{float:left;width: 25%;text-align: center;border: solid 1px #eee;box-sizing: border-box;}
+.style1 li a {
+    float: left;
+    width: 100%;
+}
+.style1 li div{float: left;width: 60%;height: 0;padding-bottom: 60%;margin: 1em 20% 0;}
+.style1 li img {width: 100%;/*border-radius: 50%;*/}
+.style1 li p {float: left;width: 100%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align: center;margin-bottom: 0.5em;margin-top: 0.5em;color: #666;}
+
+
+/*style2*/
+.style2{float: left;width: 100%;background: #FFF;}
+.style2 li{float:left;width: 25%;text-align: center;}
+.style2 li a {
+    float: left;
+    width: 100%;
+}
+.style2 li div{float: left;width: 60%;height: 0;padding-bottom: 60%;margin: 1em 20% 0;}
+.style2 li img {width: 100%;/*border-radius: 50%;*/}
+.style2 li p {float: left;width: 100%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align: center;margin-bottom: 0.5em;margin-top: 0.5em;color: #666;}
+
+
+/*style3*/
+.style3{float: left;width: 100%;background: #FFF;}
+.style3 li{float:left;width: 33.3%;text-align: center;border: solid 1px #eee;box-sizing: border-box;}
+.style3 li a {
+    float: left;
+    width: 94%;
+    margin: 0 3%;
+}
+.style3 li div{float: left;width: 60%;height: 0;padding-bottom: 60%;margin: 1em 20% 0;}
+.style3 li img {width: 100%;/*border-radius: 50%;*/}
+.style3 li p {float: left;width: 100%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align: center;margin-bottom: 0.5em;margin-top: 0.5em;color: #666;}
+
+
+/*style4*/
+.style4{float: left;width: 100%;background: #FFF;}
+.style4 li{float:left;width: 33.3%;text-align: center;}
+.style4 li a {
+    float: left;
+    width: 94%;
+    margin: 0 3%;
+}
+.style4 li div{float: left;width: 60%;height: 0;padding-bottom: 60%;margin: 1em 20% 0;}
+.style4 li img {width: 100%;/*border-radius: 50%;*/}
+.style4 li p {float: left;width: 100%;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;text-align: center;margin-bottom: 0.5em;margin-top: 0.5em;color: #666;}
+
+
+/*style5*/
+.style5{float: left;width: 100%;background: #FFF;}
+.style5 li{
+    float: left;
+    width: 50%;
+    text-align: center;
+    display: table;
+    table-layout: fixed;
+    border: solid 1px #eee;
+    box-sizing: border-box;
+}
+.style5 li a {
+    width: 100%;
+    display: table-row;
+    height: 5em;
+}
+.style5 li div:first-child{
+    width: 30%;
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+.style5 li div:last-child{
+	width: 70%;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: left;
+}
+.style5 li div:last-child span {
+    float: left;
+    width: 100%;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 1.2em;
+    height: 1.5em;
+    line-height: 1.5em;
+    white-space: nowrap;
+}
+.style5 li img {width: 2em;height: 2em;}
+
+
+/*style6*/
+.style6{float: left;width: 100%;background: #FFF;padding-bottom: 1em;}
+.style6 li{
+    float: left;
+    width: 33.3%;
+    text-align: center;
+    padding: 1em 0.5em 0;
+    box-sizing: border-box;
+}
+.style6 li a {
+    float: left;
+    width: 100%;
+    display: table-row;
+    font-size: 1em;
+    height: 2.5em;
+    line-height: 2.5em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    border: solid 1px #ad6f72;
+    color: #ad6f72;
+}
+
+
+/*style7*/
+.style7{float: left;width: 100%;background: #FFF;padding-bottom: 1em;padding: 0.5em;box-sizing: border-box;}
+.style7 li{
+    float: left;
+    width: 25%;
+    background: #626262;
+    text-align: center;
+    box-sizing: border-box;
+    margin-bottom: 0.5em;
+}
+.style7 li a {
+    float: left;
+    width: 100%;
+    display: table-row;
+    font-size: 1em;
+    height: 2.5em;
+    line-height: 2.5em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    border: solid 1px #eee;
+    color: #fff;
+}
+
+
+/*style8*/
+.style8{float: left;width: 100%;background: #FFF;}
+.style8 li{
+    float: left;
+    width: 100%;
+    text-align: center;
+    display: table;
+    table-layout: fixed;
+    border: solid 1px #eee;
+    box-sizing: border-box;
+}
+.style8 li a {
+    width: 100%;
+    display: table-row;
+    height: 4em;
+}
+.style8 li div:first-child{
+    width: 10%;
+    text-align: right;
+    display: table-cell;
+    vertical-align: middle;
+}
+.style8 li div:last-child{
+	width: 90%;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: left;
+}
+.style8 li div:last-child span {
+    float: left;
+    width: 90%;
+    padding: 0 5%;
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-size: 1.2em;
+    height: 1.5em;
+    line-height: 1.5em;
+    white-space: nowrap;
+    background: url(../images/titleRight2.png) no-repeat 98% center;
+    background-size: 0.5em 1em;
+}
+.style8 li img {width: 70%;}
+
+
+/*style9*/
+.style9{float: left;width: 100%;background: #FFF;}
+.style9 li{
+    float: left;
+    width: 50%;
+    /*height: 2.5rem;*/
+}
+/*.style9 li a{
+    float: left;
+}*/
+.style9 li a img {
+    float: left;
+    width: 100%;
+    height: 100%;
+    border: solid 1px #eee;
+    box-sizing: border-box;
+}
+
+
+/*style10*/
+.style10{float: left;width: 100%;background: #FFF;}
+.style10 li{
+    float: left;
+    width: 50%;
+}
+/*.style10 li a{
+    float: left;
+}*/
+.style10 .imgLeft,.style10 .imgRight{width: 50%;}
+.style10 .imgLeft img{
+    float: left;
+    width: 100%;
+    height: 100%;
+    border: solid 1px #eee;
+    box-sizing: border-box;
+}
+.style10 .imgRight img{
+    float: left;
+    width: 100%;
+    height: 100%;
+    border: solid 1px #eee;
+    box-sizing: border-box;
+}
+
+
+/*style11*/
+.style11 {
+    float: left;
+    width: 100%;
+}
+.style11 li {
+    float: left;
+    width: 50%;
+    border: solid 1px #eee;
+    box-sizing: border-box;
+}
+.style11 img {
+    float: left;
+    width: 100%;
+    /*height: 5rem;
+    border: solid 1px #eee;
+    box-sizing: border-box;*/
+}
+.style11 .proContent{
+	float: left;
+    width: 100%;
+    background: #fff;
+    box-sizing: border-box;
+    padding: 0.5em;
+}
+.style11 .proContent span {
+    float: left;
+    width: 100%;
+    font-size: 1em;
+    height: 3em;
+    line-height: 1.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+}
+.style11 .proContent .price {
+    float: left;
+    color: #cf0101;
+    font-weight: bolder;
+    font-size: 1.2em;
+    line-height: 1.5em;
+}
+.style11 .proContent .sell {
+    float: right;
+    font-size: 0.8em;
+    line-height: 2em;
+    color: #cbcbcb;
+}
+.rmb{
+    font-size: 0.6em;
+    font-style: normal;
+}
+
+/*style12*/
+.style12 {
+    float: left;
+    width: 100%;
+}
+.style12  li {
+    float: left;
+    width: 100%;
+    border-bottom: solid 1px #eee;
+}
+.style12 img {
+    float: left;
+    width: 30%;
+    height: 100%;
+}
+.style12 .proContent {
+    float: left;
+    width: 70%;
+    padding: 0.5em;
+    height: 100%;
+    box-sizing: border-box;
+    position: relative;
+	background: #fff;
+}
+.style12 .proTitle {
+    font-size: 1em;
+    max-height: 3em;
+    line-height: 1.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+}
+.style12 .proSell {
+    font-size: 0.8em;
+    color: #999;
+    line-height: 2em;
+}
+.style12 .proPrice {
+    position: absolute;
+    bottom: 0.5em;
+    font-size: 1em;
+    color: #cf0101;
+    font-weight: bolder;
+}
+
+
+/*style13*/
+.style13 {
+    float: left;
+    width: 100%;
+    background: #fff;
+    padding: 0.5em;
+    box-sizing: border-box;
+}
+.style13 li {
+    float: left;
+    width: 49.5%;
+    margin-bottom: 0.2em;
+    border: solid 1px #eee;
+    box-sizing: border-box;
+}
+.style13 a:nth-child(odd) li {
+    margin-right: 0.5%;
+}
+.style13 a:nth-child(even) li {
+    margin-left: 0.5%;
+}
+.style13 img {
+    width: 100%;
+}
+.style13 .newsContent {
+    float: left;
+    width: 100%;
+    background: #fff;
+    box-sizing: border-box;
+    padding: 0.5em;
+}
+.style13 .newsContent span {
+    float: left;
+    width: 100%;
+    text-align: center;
+    font-size: 1em;
+    height: 1.5em;
+    line-height: 1.5em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+}
+
+
+/*style14*/
+.style14 {
+    float: left;
+    width: 100%;
+    padding: 0.5em;
+    background: #FFF;
+    box-sizing: border-box;
+}
+.style14 li {
+    float: left;
+    width: 100%;
+    padding: 0.5em 0;
+    border-bottom: solid 1px #ccc;
+}
+.style14 img {
+    float: left;
+    width: 6em;
+    height: 6em;
+}
+.style14 .newsContent {
+    float: left;
+    /*width: 7.4rem;*/
+    /*padding: 0 0 0 0.5em;*/
+    /*height: 4em;*/
+    position: relative;
+}
+.style14 .newsTitle {
+    float: left;
+    width: 100%;
+    font-size: 1.2em;
+    color: #000;
+    height: 2em;
+    line-height: 2em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    padding-left: 0.5em;
+    box-sizing: border-box;
+}
+.style14 .newsDetails {
+    float: left;
+    width: 100%;
+    font-size: 1em;
+    color: #999;
+    line-height: 1.5em;
+    height: 3em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    padding-left: 0.5em;
+    box-sizing: border-box;
+}
+.style14 .newsHeader {
+    float: left;
+    width: 100%;
+    position: relative;
+    z-index: 0;
+}
+.style14 .newsHeader img {
+    float: left;
+    width: 100%;
+}
+.style14 .newsHeader span {
+    float: left;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2em;
+    line-height: 2em;
+    white-space: nowrap;
+    z-index: 100;
+    color: #FFF;
+    background: rgba(0,0,0,0.5);
+    font-size: 1em;
+    text-indent: 1em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/*style15*/
+.style15 {
+    float: left;
+    width: 96%;
+    padding: 1em 2%;
+    background: #FFF;
+}
+.style15 .newsHeader {
+    float: left;
+    width: 100%;
+    position: relative;
+    z-index: 0;
+}
+.style15 .newsHeader img {
+    float: left;
+    width: 100%;
+}
+.style15 .newsHeader span {
+    float: left;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2em;
+    line-height: 2em;
+    white-space: nowrap;
+    z-index: 100;
+    color: #FFF;
+    background: rgba(0,0,0,0.5);
+    font-size: 1em;
+    text-indent: 1em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.style15 .messagesList{float: left;width: 100%;/*padding: 0 2%;*/height: 12em;overflow: hidden;background: #FFF;/*border-bottom: solid 1px #4c4c4c;*/}
+.style15 .messagesList li{width: 97%;border-bottom: solid 1px #eee;white-space: nowrap;text-overflow: ellipsis;overflow: hidden;float: left;line-height: 3em;background: url(../images/point.png) 0 50% no-repeat;background-size: 0.4em 0.4em;padding-left: 3%;}
+.style15 .messagesTitle {float: left;width: 100%;text-overflow: ellipsis;overflow: hidden;white-space: nowrap;/*color: #000;*/}
+
+
+/*style16*/
+.style16 {
+    float: left;
+    width: 100%;
+}
+.style16 img {
+    float: left;
+    width: 100%;
+    /*height: 5rem;*/
+    border: solid 1px #eee;
+    box-sizing: border-box;
+}
+
+.enterpriseList {
+    float: left;
+    width: 96%;
+    padding: 0 2%;
+    background: #fff;
+}
+.enterpriseList span {
+	/*float: left;*/
+    font-size: 1em;
+    margin-right: 1em;
+    word-break: break-all;
+    line-height: 2em;
+}
+/*style16*/
+.style17 {
+    float: left;
+    width: 100%;
+}
+.style17 img {
+    float: left;
+    width: 100%;
+    border: solid 1px #eee;
+    box-sizing: border-box;
+}
+
