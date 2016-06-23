@@ -1,0 +1,142 @@
+<include file="Public:header"/>
+
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<!-- <link href="SKIN_HTML5/{$templet_name}/css/index.css" rel="stylesheet" type="text/css"> -->
+<link rel="stylesheet" href="SKIN_HTML5/{$templet_name}/css/baguetteBox.css">
+	<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.9.1.min.js" type="text/javascript"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/touchScroll.js" type="text/javascript"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/getElements.js" type="text/javascript"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/baguetteBox.js"></script>
+	<i name="column_id" input="get.column_id" default="0" />
+	<i name="cate_id" input="get.cate_id" default="0" />
+</head>
+<body>
+	<include file="Public:top" />
+	<getAlbumColumn name="album_column"/>
+	{$album_column|p}
+	<section id="container">
+		<!--一级分类-->
+		<ul class="typeTab">
+			<volist name="album_column['list']" id="album_col">
+				<eq name="column_id" value="$album_col['id']">
+					<assign name="data_column_name" value="$album_col['name']" />
+				</eq>
+			<li <php>if($column_id==$album_col['id']){</php>class="on"<php>}</php> id="tt{$i}">{$album_col.name}<img src="SKIN_HTML5/{$templet_name}/images/typeArrDown.png" /></li>
+			</volist>
+		</ul>
+		
+		<!--二级分类-->
+		<php>$ul=1;</php>
+		<volist name="album_column['list']" id="album_col">
+			<assign name="col_id" value="$album_col['id']" />
+			<getAlbumCategory name="album_category" column_id="$col_id"/>
+			{$album_category|p}
+			<ul class="typeContent" id="tc{$ul}">
+				<a href="{:U('WebAlbum/index',array('column_id'=>$album_col['id'],'openid'=>$openid,'member_id'=>$member_id))}"><li class="on">全部</li></a>
+				<volist name="album_category['list']" id="album_cate">
+					<eq name="cate_id" value="$album_cate['id']" >
+						<assign name="data_cate_name" value="$album_cate.name" />
+					</eq>
+					<a href="{:U('WebAlbum/index',array('column_id'=>$album_col['id'],'cate_id'=>$album_cate['id'],'openid'=>$openid,'member_id'=>$member_id))}">
+						<li>{$album_cate.name}</li>
+					</a>
+				</volist>
+			</ul>
+			<php>$ul+=1;</php>
+		</volist>
+		<div class="sunshade"></div>
+		<script>
+			$(".sunshade").click(function(){
+				$(this).fadeOut();
+				$("#tc1").slideUp(200);
+				$("#tc2").slideUp(200);
+			});
+			$("#tt1").click(function(){
+				$("#tt1").css("color","#f8f608");
+				$("#tt2").css("color","#FFF");
+				$("#tc2").slideUp(200);
+				//判断二级分类是否处于激活状态
+				if($("#tc1").css("display") == "none"){
+					$("#tc1").slideDown(200);
+					$(".sunshade").fadeIn();
+					$(this).find("img").attr("src","SKIN_HTML5/{$templet_name}/images/typeArrUp.png");
+					$(this).siblings().find("img").attr("src","SKIN_HTML5/{$templet_name}/images/typeArrDown.png");
+				}
+				else{
+					$("#tc1").slideUp(200);
+					$(".sunshade").fadeOut();
+					$(this).find("img").attr("src","SKIN_HTML5/{$templet_name}/images/typeArrDown.png");
+					$(this).siblings().find("img").attr("src","SKIN_HTML5/{$templet_name}/images/typeArrDown.png");
+				}
+			});
+			
+			$("#tt2").click(function(){
+				$("#tt2").css("color","#f8f608");
+				$("#tt1").css("color","#FFF");
+				$("#tc1").slideUp(200);
+				//判断二级分类是否处于激活状态
+				if($("#tc2").css("display") == "none"){
+					$("#tc2").slideDown(200);
+					$(".sunshade").fadeIn();
+					$(this).find("img").attr("src","SKIN_HTML5/{$templet_name}/images/typeArrUp.png");
+					$(this).siblings().find("img").attr("src","SKIN_HTML5/{$templet_name}/images/typeArrDown.png");
+				}
+				else{
+					$("#tc2").slideUp(200);
+					$(".sunshade").fadeOut();
+					$(this).find("img").attr("src","SKIN_HTML5/{$templet_name}/images/typeArrDown.png");
+					$(this).siblings().find("img").attr("src","SKIN_HTML5/{$templet_name}/images/typeArrDown.png");
+				}
+			});
+		</script>
+
+		<getAlbumList name="album_list" column_id="$column_id" cate_id="$cate_id" />
+		<div class="designTitle">
+			<php>if($cate_id){</php>
+			{$data_cate_name}
+			<php>}else if($column_id&&!$cate_id){</php>
+			{$data_column_name}
+			<php>}else{</php>
+			全部
+			<php>}</php>
+		</div>
+		<div class="design">
+	        <div class="baguetteBox gallery">
+				<volist name="album_list['list']" id="album">
+		        <a href='{$album.thumb|show_Pic=###,0,0,1,"SKIN_HTML5/$templet_name/images/default_bg.png"}' data-caption="{$album.title}" cid="{$album.id}">
+					<img src='{$album.thumb|show_Pic=###,320,320,1,"SKIN_HTML5/$templet_name/images/default_bg.png"}'>
+				</a>
+				</volist>
+		    </div>
+        </div>
+        
+        <form action="#" class="choice hiden"><!-- method="post"-->
+        	<input type="hidden" id="cid" value=""/>
+        	<!-- <span><img src="SKIN_HTML5/{$templet_name}/images/choice.png" />免费申请设计</span> -->
+        </form>
+        <!--触发显示相册事件，全屏显示-->
+        <script>
+	        window.onload = function() {
+			    baguetteBox.run('.baguetteBox', {
+			        buttons: true
+			    });
+			};
+        	$(".gallery a").click(function(){
+				$(".choice").removeClass("hiden");//显示申请按钮
+        	});
+        	$(".choice span").click(function(){
+        		//$("#cid").val();
+        		$("form").submit();
+        	});
+        </script>
+        
+	</section>
+	<include file="Public:footer" />
+	<!-- <script src="SKIN_HTML5/{$templet_name}/js/zepto.min2.js"></script> -->
+	<!-- <script src="SKIN_HTML5/{$templet_name}/js/script.js"></script> -->
+	<!--
+	<script src="js/fx.js"></script>
+	-->
+	
+</body>
+</html>

@@ -1,0 +1,187 @@
+<i name="shop_industry" input="get.shop_industry" default="null" />
+<i name="province" input="get.province" default="null" />
+<I name="city" input="get.city" default="null" />
+<I name="zone" input="get.zone" default="null" />
+<include file="Public:header" />
+<link href="SKIN_HTML5/{$templet_name}/css/superIndex.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/owl.carousel.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/owl.theme.css" rel="stylesheet" type="text/css">
+<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js" type="text/javascript"></script>
+<!--<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/touchScroll.js"></script>-->
+</head>
+
+<body>
+	
+	<header id="header">
+		<div class="top">
+		    <div class="headerLeft">
+		    	<i class="home_open">
+		    		<!--<a href="Index.html">
+		    			<img src="SKIN_HTML5/{$templet_name}/images/logo.png" />
+		    		</a>-->
+		    	</i>
+		    </div>
+			<div class="hTitle">
+				{$web_config['name']}
+			</div>
+			<php>if(!$isWeixins){</php>
+			<div class="headerRight">
+				<i class="nav_open">
+					<if condition="!$_G[uid]">
+					<a href="{:U('Login/index')}">登录</a>
+					<a href="{:U('Register/index')}">注册</a>
+					<else/>
+						<a href="{:U('Member/index')}">{$_G['realname']|default=$_G['username']}</a>
+						<if condition="$_G[is_shop] eq 0">
+							<a href="{:U('Mshop/apply')}">申请开店</a>
+							<else />
+							<a href="{$_G[shop_domain]}" target="_blank">
+							我的店铺
+							</a>
+						</if>
+					</if>
+				</i>
+			</div>
+			<php>}</php>
+		</div>
+	</header>
+	  	
+	<section id="container">
+		<include file="Public:banner" />
+		<!--搜索框-->
+		<form class="search" action="{:U('Product/index',array('openid'=>$openid,'member_id'=>$member_id))}" method="get">
+			<div class="select_box">
+				<div class="select_showbox">供应</div>
+				<ul class="select_option" style="display: none;">
+					<li action="{:U('Product/index')}" name="keywords" class="selected">供应</li>
+					<li action="{:U('Productbuy/index')}" name="title">求购</li>
+					<li action="{:U('Shop/index')}" name="title">商店</li>
+				</ul>
+			</div>
+			<div class="searchInput">
+				<input type="text" name="keywords" id="search" placeholder="请输入关键词"><!--title-->
+			</div>
+	  		<button type="submit"><img src="SKIN_HTML5/{$templet_name}/images/search_for.png" /></button>
+	  	</form>
+	  	<script>
+	  		$(".select_showbox").click(function(){
+				$(".select_option").slideToggle(200);
+	  		});
+			var action="";
+			var name="keywords";
+	  		$(".select_option li").click(function(){
+	  			$(".select_showbox").html($(this).html());
+				$(".select_option li").removeClass("selected");
+	  			$(this).addClass("selected");
+	  			$(".select_showbox").removeClass("active");
+				$(".select_option").slideToggle(200);
+				action=$(this).attr('action');
+				name=$(this).attr('name');
+				$('.search').attr("action",action);
+				$('#search').attr("name",name);
+	  		});
+
+
+	  	</script>
+		<include file="Index:style1" />
+		<include file="Index:style2" />
+		<include file="Index:style3" />
+		<include file="Index:style4" />
+		<include file="Index:style5" />
+		<include file="Index:style6" />
+		<include file="Index:style7" />
+		<include file="Index:style8" />
+		<include file="Index:style9" />
+		<include file="Index:style10" />
+		<include file="Index:style11" />
+	<include file="Index:getnav" /><!--带信息导航-->
+		<include file="Index:style12" />
+		<include file="Index:style13" />
+		<include file="Index:style14" />
+		<include file="Index:style15" />
+		<include file="Index:style16" />
+		<include file="Index:style17" />
+
+		<!--广告图-->
+
+		<getwebads name="webads" ad_type="1" p="1" seat_id="1" map="7335"/>
+		<div id="focus2" class="focus">
+			<notempty name="webads">
+				<div class="bd">
+					<ul>
+						<volist name="webads['list']" id="webAd">
+							<notempty name="webAd['mobile_thumb']">
+								<li>
+									<a href="<php>if($isWeixins){echo(str_replace('http://','http://weixin.',$webAd['url']));}else{echo($webAd['url']);}</php>">
+										<img src="{$webAd.mobile_thumb|show_Pic}" />
+									</a>
+								</li>
+							</notempty>
+						</volist>
+					</ul>
+				</div>
+				<div class="hd">
+					<ul>
+						<li class="on"></li>
+					</ul>
+				</div>
+			</notempty>
+		</div>
+		<!--入驻品牌-->
+		<getMemberShop name="shop_list" size="8" shop_industry="$shop_industry" province="$province" city="$city" zone="$zone" map="7333"/>
+		<notempty name="shop_list['total']">
+		<div class="title">
+			<div class="titleLeft">入驻品牌</div>
+			<div class="titleright">
+				<a href="{:U('Shop/index',array('shop_industry'=>$shop_industry,'province'=>$province,'city'=>$city,'zone'=>$zone,'openid'=>$openid,'member_id'=>$member_id))}">
+					更多
+				</a>
+			</div>
+		</div>
+		<ul class="style2">
+			<volist name="shop_list['list']" id="list">
+			<li>
+				<a href="http://{$list.domain}">
+					<div><img src="{$list.company_logo|show_Pic}" alt="{$list.shop_name}"></div>
+				</a>
+			</li>
+			</volist>
+		</ul>
+		</notempty>
+		<!--广告图-->
+		<php>$banner_val=3;</php>
+		<!--<include file="Public:banner" />-->
+		<getwebads name="webads" ad_type="1" p="1" seat_id="1" map="7336"/>
+		<div id="focus3" class="focus">
+			<notempty name="webads">
+				<div class="bd">
+					<ul>
+						<volist name="webads['list']" id="webAd">
+							<notempty name="webAd['mobile_thumb']">
+								<li>
+									<a href="<php>if($isWeixins){echo(str_replace('http://','http://weixin.',$webAd['url']));}else{echo($webAd['url']);}</php>">
+										<img src="{$webAd.mobile_thumb|show_Pic}" />
+									</a>
+								</li>
+							</notempty>
+						</volist>
+					</ul>
+				</div>
+				<div class="hd">
+					<ul>
+						<li class="on"></li>
+					</ul>
+				</div>
+			</notempty>
+		</div>
+		
+	</section>
+	<include file="Public:footer" />
+	<script src="SKIN_HTML5/{$templet_name}/js/owl.carousel.js" type="text/javascript"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/zepto.min.js"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/fx.js"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/script.js"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/getElements.js" type="text/javascript"></script>
+</body>
+</html>

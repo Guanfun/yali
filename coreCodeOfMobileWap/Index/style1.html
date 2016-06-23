@@ -1,0 +1,12 @@
+<getNavigation name="navigation_1" is_tree="1" is_mobile="1" tem="2" map="7314"/>
+<if condition="Count($navigation_1) gt 0">
+<ul class="style6">
+    <volist name="navigation_1" id="nav">
+    <li>
+        <a href='<eq name="nav.type" value="1" >{$nav.url|U=###} <else/> {$nav.url}</eq>'>
+        {$nav.name}
+        </a>
+    </li>
+    </volist>
+</ul>
+</if>

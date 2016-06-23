@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><title>
+
+</title><meta name="format-detection" content="telephone=no" /><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" /><link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/Lucky/bigwheel/css/style.css" />
+    <script src="http://libs.baidu.com/jquery/1.8.0/jquery.min.js"></script>
+    <script src="SKIN_HTML5/{$templet_name}/Lucky/bigwheel/js/jQueryRotate.2.2.js"></script>
+</head>
+<body>
+    <div id="container" class="lottery_bg">
+        <div id="main">
+            <div class="lottery wrap">
+                <div id="lottery">
+                    <img id="imgs" src="SKIN_HTML5/{$templet_name}/Lucky/bigwheel/images/disc-rotate.gif" viewbox="0 0 352 30" style="position: absolute;
+                        left: 32px; top: 32px; width: 255px; height: 255px;" id="imgs" class="image" />
+                    <div class="arrow">
+                    </div>
+                    <div class="lot-btn first">
+                        <span></span>
+                    </div>
+                </div>
+            </div>
+            <div class="lty_list_hd">
+                <h1>
+                </h1>
+            </div>
+            <div class="lty_list_bd">
+                <volist name="lists" id="lists">
+                <p> {$lists.prize_title}:{$lists.prize}</p>
+               </volist>
+            </div>
+        </div>
+    </div>
+    <div id="msg">
+        <h2>
+            恭喜！中了1等奖</h2>
+        <a class="btn">确定</a>
+    </div>
+    <div id="cover">
+    </div>
+    <script>
+        var lotteryData = { result: 4 };
+        var msg = {
+            {$msg}
+        };
+      
+        jQuery(function () {
+            var lotteryURL = "{:U('Lucky/initlucky',array('openid'=>$openid,'member_id'=>$member_id,'id'=>$id))}";
+            var equal = "6";
+            jQuery(".lot-btn").click(function () {
+                jQuery.getJSON(lotteryURL, null, function (r) {
+                    lotteryData.result = r.prite;
+                    start(5 * 360 + (360 / equal) * r.prite - 360 / equal / 2);
+                });
+                function start(end) {
+                    for (var i = 0; i <= 5000000; i++) {
+                        jQuery("#imgs").rotate({
+                            animateTo: i,
+                            duration: 5000,
+                            callback: function () {                         
+                                showMsg(lotteryData.result);
+                            }
+                        });
+                        if (i >= end) {
+                            break;
+                        }
+                    }
+                }
+                function showMsg(prite) {
+                if(prite=="5")
+                {
+                alert("再接再厉");
+                }
+                else
+                {
+                    alert("恭喜你抽中:"+msg[prite]);
+                    }
+                  window.location = "{:U('Lucky/show',array('openid'=>$openid,'member_id'=>$member_id,'id'=>$id,'type'=>$type))}";
+                 
+                }
+            })
+            jQuery(".btn").click(function () {
+                jQuery("#cover").hide();
+                jQuery("#msg").hide();
+                var con = confirm('是否继续抽奖');
+                if (con) {
+                    window.location = "bigwheel.html";
+                } else {
+                    window.location = "bigwheel.html";
+                }
+
+            })
+            $(document).ajaxError(function () {
+                alert("网络超时！");
+            });
+        });
+    </script>
+</body>
+</html>

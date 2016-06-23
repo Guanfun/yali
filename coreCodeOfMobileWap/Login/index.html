@@ -1,0 +1,116 @@
+﻿<I name="back_url" input="get.back_url"/>
+<include file="Public:header" />
+	<!--2、此处引入css文件-->
+	<link href="SKIN_HTML5/{$templet_name}/css/login.css" rel="stylesheet" type="text/css">
+	<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+	<header id="header">
+		<div class="top">
+			<div class="headerLeft">
+				<i class="home_open">
+					<a href="javascript:window.history.go(-1)">
+						<img src="SKIN_HTML5/{$templet_name}/images/back2.png" />
+					</a>
+				</i>
+			</div>
+			<div class="hTitle">
+				登录
+			</div>
+		</div>
+	</header>
+<!--3、此处加入主体内容，id="container"必带-->
+	<section id="container">
+		<div class="ink_content">
+			<form name="myForm"  class="form-horizontal ink_form" method="post" role="form" id="loginForm" action="<php>echo($isWeixins?'/Front/Login/weixinMember.html':'/Front/Login/login.html');</php>">
+				<input type="hidden" name="openid" value="{$wxuser_config['openid']}" />
+				<input type="hidden" name="member_id" value="{$wxuser_config['member_id']}" />
+				<input type="hidden" name="headimgurl" value="{$wxuser_config['headimgurl']}" />
+				<input type="hidden" name="nickname" value="{$wxuser_config['nickname']}" />
+				<input type="hidden" name="backurl" value="{$backurl}" />
+				<input type="hidden" name="column_id"  value='<php>echo($_GET["column_id"])</php>' />
+				<input type="hidden" name="cate_id"  value='<php>echo($_GET["cate_id"])</php>' />
+				<input type="hidden" name="id"  value='<php>echo($_GET["id"])</php>' />
+				<div class="form-group">
+				<div class="login_text"><span>用户名</span><input type="text" name="username" required="required" placeholder="手机 / 用户名 / 邮箱"></div>
+				<div class="login_text"><span>登录密码</span><input type="password" name="password" required="required" placeholder="请输入密码"></div>
+				<notempty name="login_code">
+				<div class="login_text">
+					<input type="text" class="verify"  name="code" required="required" placeholder="输入验证码" />
+					<img id="verifyImg" src="{:U('Login/verify')}"/>
+				</div>
+				</notempty>
+				</div>
+				<div class="ink_submit">
+					<php>if($isWeixins){</php>
+					<input type="submit" value="登录/注册/绑定" class="submit">
+					<php>} else{</php>
+					<input type="submit" value="登录" class="submit">
+					<php>}</php>
+					<a href="{:U('Login/fin_pasword')}" class="forgot">找回密码</a>
+				</div>
+				<php>if(!$isWeixin){</php>
+				<div class="ink_register">
+					<a class="go_register" href="{:U('Register/index')}">
+						前往注册
+					</a>
+				</div>
+				<php>}</php>
+			</form>
+		</div>
+	</section>
+<include file="Public:footer" />
+	<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+	<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+	<include file="Public:form_validation" />
+	<notempty name="login_code">
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#verifyImg').click(function(){
+				fresh_verify('verifyImg',$(this).attr('src'));
+			});
+		});
+		//重载验证码
+		function fresh_verify(id,u){
+			var urls=u.split("?");
+			var url = urls[0] + '?rand=/'+Math.random();
+			$('#'+id).attr('src',url);
+		}
+	</script>
+	</notempty>
+	<php>if(!$isWeixins){</php>
+	<script>
+		$(document).ready(function () {
+			$('#loginForm').formValidation({
+				fields: {
+					username: nb_check.username,
+					password: nb_check.password
+				}
+			}).on('success.form.fv', function (e) {
+				e.preventDefault();
+				var $form = $(e.target);
+				$.post($form.attr('action'), $form.serialize(), function (s) {
+						if (s.status == '1') {
+							alert('登录成功');
+							var back_url="{$_SERVER['HTTP_REFERER']}";
+							if(back_url)
+							{
+								window.location.href =back_url;
+							}
+							else
+							{
+								location.href ="{:U('Member/index',array('openid'=>$openid,'member_id'=>$member_id))}";
+							}
+						}
+						else {
+							alert(s.data);
+						}
+					$form.formValidation('disableSubmitButtons', false);
+				}, 'json');
+			});
+		});
+	</script>
+	<php>}</php>
+</body>
+</html>

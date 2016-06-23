@@ -1,0 +1,65 @@
+<include file="Public:header" />
+<link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/index.css">
+<link href="SKIN_HTML5/{$templet_name}/css/style.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<header id="header">
+    <div class="top">
+		<a href="javascript:window.history.go(-1)" class="headerLeft"><img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+        <div class="hTitle">我的足迹</div>
+		<a class="headerRight"><span id="edit">编辑</span></a>
+    </div>
+</header>
+<section id="container">
+	<ul class="product-list">
+		<volist name="list" id="vo">
+		<li id="record_{$vo['id']}">
+			<a href="{:U('Product/view',array('id'=>$vo['id'],'openid'=>$openid,'member_id'=>$member_id))}">
+				<img src="{$vo['thumb']|show_Pic}">
+				<h1>{$vo['name']}</h1>
+				<small class="sales">浏览时间：{$vo.addtime|msubstr=###,0,10}</small><br />
+				<big class="pay">&yen;{$vo['unit_price']}</big>
+				<php>if($vo['product']['score']){</php>
+				<big class="pay">积分：{$vo['product']['score']}</big>
+				<php>}</php>
+				<div class="clear"></div>
+			</a>
+			<a href="javascript:;" onclick="cancleMorehistory({$vo['id']})" class="delete">删除</a>
+		</li>
+		</volist>
+	</ul>
+</section>
+<include file="Public:footer" />
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<script>
+	$("#edit").click(function(){
+		if($(this).html() == "编辑"){
+			$(this).html("确认");
+			$(".delete").each(function(){
+				$(this).css("cssText","display:block !important");
+			});
+		}
+		else{
+			$(this).html("编辑");
+			$(".delete").each(function(){
+				$(this).css("cssText","display:none !important");
+			});
+		}
+	});
+	function cancleMorehistory(k){
+		if(confirm("取消后就再也不能随时查看我了，确定要取消吗?")){
+			$.get("{:U('product/removeproductId',array('openid'=>$openid,'member_id'=>$member_id))}", { id: k }, function (data) {
+				alert(data.data);
+				if(data.status==1){
+					$('#record_'+k).remove();
+				}
+			},'json');
+		}
+
+	}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,152 @@
+<include file="Public:header" />
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/order_detail.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<header id="header">
+    <div class="top">
+        <div class="headerLeft">
+            <i class="home_open">
+                <a href="javascript:window.history.go(-1)">
+                    <img src="SKIN_HTML5/{$templet_name}/images/back2.png" />
+                </a>
+            </i>
+        </div>
+        <div class="hTitle">
+            订单详情
+        </div>
+        <div class="headerRight">
+        </div>
+    </div>
+</header>
+<!--3、此处加入主体内容，id="container"必带-->
+<section id="container">
+    <volist name="list" id="vo">
+    <div class="order_view_order_details">
+       <img src="SKIN_HTML5/{$templet_name}/images/order_1.png">
+        <p>{$vo['status_name']}</p>
+        <p>订单金额（含运费）：¥{$vo['total']}</p>
+        <p>运费金额：¥0.00</p>
+    </div>
+    <div class="clearfix"></div>
+    <div class="order_view_address">
+        <img src="SKIN_HTML5/{$templet_name}/images/order_2.png"/>
+        <p>收件人：{$vo['realname']}<tel>{$vo['phone']}</tel></p>
+        <p>收货地址：{$vo['province']}{$vo['city']}{$vo['zone']}{$vo['address']}</p>
+    </div>
+    <div class="clearfix"></div>
+    <div class="order_view_pro_details">
+        <a>
+            <div class="order_view_pro_header">
+                <img src="SKIN_HTML5/{$templet_name}/images/order_3.png" />
+                <p>{$web_config['name']}</p>
+                <img src="SKIN_HTML5/{$templet_name}/images/order_go.png" />
+            </div>
+        </a>
+        <div class="clearfix"></div>
+        <div class="order_view_pro_detail">
+            <volist name="vo['order_list']" id="v">
+            <li>
+                <div class="order_pro_pic">
+                    <img src="{$v['thumb']}">
+                </div>
+                <div class="order_pro_title">
+                    <p>{$v['name']}</p>
+                    <p>{$v[attr_val]}请放心拍下，客户会联系您</p>
+                </div>
+                <div class="order_pro_total">
+                    <p>{$v['price']}元</p>
+                    <p>X{$v['num']}</p>
+                </div>
+            </li>
+            </volist>
+        </div>
+        <div class="clearfix"></div>
+        <div class="order_view_pay">
+            <p>运费：<r>¥0.00</r></p>
+            <p>实付款（含运费）：<r>¥{$vo['total']}</r></p>
+        </div>
+        <div class="clearfix"></div>
+        <div class="order_view_order_number">
+            <p>订单号：{$vo['order_no']}</p>
+        </div>
+        <div class="clearfix"></div>
+        <div class="order_view_tel">
+            <a href="tel:{$web_config['tel']}">
+                <img src="SKIN_HTML5/{$templet_name}/images/tel.png" />
+                联系卖家
+            </a>
+        </div>
+        <div class="clearfix"></div>
+        <div class="order_view_time">
+            <p>成交时间：{$vo['addtime']|msubstr=###,0,10}</p>
+            <p>自动取消时间：</p>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="order_view_submit">
+        <php>if($vo['status']==0){</php>
+        <input type="submit" class="order_view_order_Pay" onclick="order_pay();" value="确认付款"  />
+        <input type="button" class="order_view_cancel" onclick="delUserOrder({$vo['id']});" value="取消订单" />
+        <php>}</php>
+        <php>if($vo['status']==1){</php>
+                <p>订单已付款，等待出货</p>
+        <php>}</php>
+        <php>if($vo['status']==4){</php>
+        <p>货物已经发出，请注意确认收货</p>
+        <input type="submit" class="order_view_order_Pay" onclick="TakeOver({$vo['id']});" value="确认收货"  />
+        <php>}</php>
+        <php>if($vo['status']==5){</php>
+        <input type="button" class="order_view_cancel" value="产品评论" />
+        <input type="submit" class="order_view_order_Pay" onclick="cancleThisOrder({$vo['id']})" value="申请售后"  />
+        <php>}</php>
+        <php>if($vo['status']==7){</php>
+        <p>售后申请已经提交，请耐心等候，我们会尽快为您安排处理</p>
+        <php>}</php>
+        <php>if($vo['status']==8){</php>
+        <p>您的售后申请已经通过，如有疑问，请联系客服</p>
+        <php>}</php>
+        <php>if($vo['status']==10){</php>
+        <p>您的售后申请未通过，如有疑问，请联系客服</p>
+        <input type="submit" class="order_view_order_Pay" onclick="cancleThisOrder({$vo['id']})" value="再次申请售后"  />
+        <php>}</php>
+    </div>
+        <php>$vo_id=$vo['order_no'];</php>
+    </volist>
+</section>
+<!--4、此处引入js，2个jquery文件需带上-->
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+<script>
+    function order_pay(){
+        var url="{:CU('Pay/order_pay/',array('order_no'=>$vo_id,'openid'=>$openid,'member_id'=>$member_id))}";
+        location.href=url;
+    }
+    function delUserOrder(id) {
+        if (id) {
+            if (confirm("是否确定取消订单?")) {
+                $.get("{:U('BuyerOrder/cancleUserOrder',array('openid'=>$openid,'member_id'=>$member_id))}", { id: id }, function (data) {
+                    alert(data.data);
+                    if (data.status == '1') {
+                        $('#delorder_' + id).remove();
+                        location.href ="{:U('BuyerOrder/user_order',array('openid'=>$openid,'member_id'=>$member_id,'status_value'=>0))}";
+                    }
+                }, 'json');
+            }
+        }
+    }
+    function TakeOver(id) {
+        if (id) {
+            if (confirm("是否确定收货?")) {
+                $.get("{:U('BuyerOrder/takeOverProduct',array('openid'=>$openid,'member_id'=>$member_id))}", { id:id }, function (data) {
+                    alert(data.data);
+                    if (data.status == '1') {
+                        location.href ="{:U('BuyerOrder/user_order',array('openid'=>$openid,'member_id'=>$member_id,'status_value'=>5))}";
+                    }
+                }, 'json');
+            }
+        }
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,71 @@
+<i name="column_id" input="get.column_id" default="0" />
+<i name="cate_id" input="get.cate_id" default="0" />
+<i name="id" input="get.id"/>
+<getDownloadView name="download" id="$id" />
+<include file="Public:header" />
+<link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/global.css">
+<link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/download.css">
+</head>
+<body>
+<header id="header">
+    <div class="top">
+        <div class="headerLeft">
+            <i class="home_open">
+                <a href="javascript:window.history.go(-1)">
+                    <img src="SKIN_HTML5/{$templet_name}/images/back2.png" />
+                </a>
+            </i>
+        </div>
+        <div class="hTitle">
+            {$download.title}
+        </div>
+    </div>
+</header>
+<section id="container">
+    <div class="down_detail">
+        <header class="down_top">
+            <img class="logo" src="{$download.thumb|show_Pic=###,150,150,0}">
+            <h2 class="title">{$download.title}</h2>
+            <if condition="$download['size'] gt 1000000">
+                <php>
+                    $size=$download['size']/1000000;
+                    $unit=M;
+                    $size=number_format($size, 2, '.', '')
+                </php>
+                <elseif condition="($download['size'] gt 1000) AND ($download['size'] lt 1000000)"/>
+                <php>
+                    $size=$download['size']/1000;
+                    $unit=K;
+                    $size=number_format($size, 2, '.', '')
+                </php>
+                <elseif condition="($download['size'] lt 1000)" />
+                <php>
+                    $size=$download['size'];
+                    $unit=B;
+                    $size=number_format($size, 2, '.', '')
+                </php>
+                <else />
+            </if>
+            <span class="mb">大小：{$size}{$unit}</span>
+            <empty name="download['file']">
+                <a class="down" href="{$download.url}">下载</a>
+                <else />
+                <a class="down" href="{$download.file}">下载</a>
+            </empty>
+            <div class="clear"></div>
+        </header>
+
+        <article class="detail_pg">
+            <header class="title">下载详情</header>
+            <div class="text">
+                <p>
+                    {$download.description|htmlspecialchars_decode|strip_tags}
+                </p>
+            </div>
+        </article>
+    </div>
+</section>
+<include file="Public:footer" />
+
+</body>
+</html>

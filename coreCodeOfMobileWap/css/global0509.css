@@ -1,0 +1,512 @@
+﻿@charset "utf-8";
+/*ie兼容Html5*/
+/* ==========================================================================
+   HTML5 的显示定义
+   ========================================================================== */
+
+/**
+ * 正确的'block'在IE6/7/8/9和Firefox3没有定义显示。
+ */
+article,aside,dialog,footer,header,section,footer,nav,figure,menu{
+    display:block
+}
+/**
+ * 正确的'inline-block'在IE6/7/8/9和Firefox3没有定义显示。
+ */
+audio,
+canvas,
+video {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+}
+/**
+ * 防止现代浏览器显示`audio`不受管制。
+ * 在iOS 5的设备中移除多余的高度。
+ */
+
+audio:not([controls]) {
+    display: none;
+    height: 0;
+}
+
+/**
+ * 地址造型不会出现在IE7/8/9，火狐3和Safari4。
+ * 已知问题：没有IE6的支持。
+ */
+
+[hidden] {
+    display: none;
+}
+/**
+ * 1. 正文奇怪的缩放在IE6/7，当body中`font-size在使用
+ *    `EM为单位设置。
+ * 2. 方向更改后预防的iOS文字大小调整，而无需禁用
+ *    用户缩放。
+ */
+html {
+    font-size: 100%; /* 1 */
+    -ms-text-size-adjust: 100%; /* 2 */
+    -webkit-text-size-adjust: 100%; /* 2 */
+}
+@media screen and (max-width:320px){
+    body{font-size:12px;}
+}
+@media screen and (min-width:321px) and (max-width:640px){
+    body{font-size:14px;}
+}
+@media screen and (min-width:641px) and (max-width:768px){
+    body{font-size:18px;}
+}
+@media screen and (min-width:769px) and (max-width:960px){
+    body{font-size:20px;}
+}
+@media screen and (min-width:961px) and (max-width:1024px){
+    body{font-size:26px;}
+}
+@media screen and (min-width:1025px){
+    body{font-size:32px;}
+}
+body {
+    margin:0 auto;
+    height:100%;
+    font-family:"微软雅黑",Arial,Verdana,Helvetica,"黑体","Times New Roman",sans-serif;
+    /*line-height:1.5em;*/
+    background:#efeff4;
+    color: #333333;
+}
+html,body,button,input,select,textarea{
+    border:0;
+    margin:0;
+    padding:0;
+}
+html,body,h1,h2,h3,h4,h5,h6,dl,dt,dd,ul,ol,li,th,td,p,blockquote,pre,form,fieldset,legend,input,button,textarea,hr{
+    padding:0;
+    margin:0;
+}
+ul {
+    list-style:none;
+}
+li{
+    list-style-type: none;
+}
+img {
+    border:0;
+}
+
+a{
+    cursor: pointer;
+    text-decoration:none;
+    color: #000;
+}
+/**
+ * Chrome和其它浏览器之间的地址`outline`大纲不一致。
+ */
+
+/*a:focus {
+    outline: thin dotted;
+}*/
+
+/*a:hover{
+    color: #ff9600;
+}*/
+.clearfix:after {
+    content:"\200B";
+    display:block;
+    height:0;
+    clear:both;
+}
+.clearfix {*zoom:1;}/*IE/7/6*/
+.clear{clear:both}
+.filter{
+    filter:alpha(opacity=70); /*IE滤镜，透明度70%*/
+    -moz-opacity:0.7; /*Firefox私有，透明度70%*/
+    opacity:0.7;/*其他，透明度70%*/
+}
+.vertical{
+    display: table-cell;
+    vertical-align:middle;
+    text-align:center;
+    *display: block;
+    /**font-size: 130px;*/
+    *font-family:Arial;
+}
+.textSpace{
+    overflow: hidden;
+    -o-text-overflow:ellipsis;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    *white-space: nowrap;
+    display: block;
+}
+.fr{
+    float: right !important;
+}
+.fl{
+    float: left !important;
+}
+b{
+    font-weight: bold;
+}
+/**
+ * 1. 避免错误的WebKit在Android 4.0的。*where (2)破坏了原生`audio`和`video`的控制。
+ * 2. 正确无力样式可点击`input`类型的iOS。
+ * 3. 提高可用性和光标风格的一致性图像类型之间 `input`及其他。
+ * 4. 在不影响正常的文本输入框在IE 7中移除内部间隔。已知问题：内部间隔保持在IE 6。
+ */
+
+button,
+html input[type="button"], /* 1 */
+input[type="reset"],
+input[type="submit"] {
+    -webkit-appearance: button; /* 2 */
+    cursor: pointer; /* 3 */
+    *overflow: visible;  /* 4 */
+}
+/**
+ * 1. 地址框大小设置为内容框在IE8/9。
+ * 2. 在IE8/9中移除多余的填充。
+ * 3. 在IE7中取出多余的填充。
+ *    已知问题：多余的填充仍然在IE 6。
+ */
+
+input[type="checkbox"],
+input[type="radio"] {
+    box-sizing: border-box; /* 1 */
+    padding: 0; /* 2 */
+    *height: 1.2em; /* 3 */
+    *width: 1.2em; /* 3 */
+}
+/**
+ * 1. 地址`appearance`设置‘searchfield’在Safari5和Chrome。
+ * 2. 地址`box-sizing`设置为`border-box`在Safari5和Chrome（包括`-moz`以面向未来的）。
+ */
+/*input[type="search"] {
+    -webkit-appearance: textfield; 
+    -moz-box-sizing: content-box;
+    -webkit-box-sizing: content-box; 
+    box-sizing: content-box;
+}*/
+/**
+ * 移除内部填充和搜索在Safari5和Chrome取消按钮 在OS X
+ */
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+/**
+ * 删除表格单元格之间的最大间距。
+ */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/****header****/
+#header,#header2{position:fixed;top:0;left:0;z-index:999;/*overflow:hidden;*/width:100%;height:3em;-webkit-transition:all .3s cubic-bezier(.165,.84,.44,1);-moz-transition:all .3s cubic-bezier(.165,.84,.44,1);-o-transition:all .3s cubic-bezier(.165,.84,.44,1);transition:all .3s cubic-bezier(.165,.84,.44,1); border-bottom:1px solid #e5e5e5}
+.top{/*background:#FFF url(../images/topBg.jpg) no-repeat center;background-size:100% 100%;*/width:100%;height:100%;background: #fff;}
+.home_open img {height: 1.5em;margin: 0.75em 1em;}
+#header.head{height:3em;background:#0977c4}
+#header.head i{top:0.1em}
+#header .wrap{position:relative;overflow:hidden}
+.hTitle {
+    position: absolute;
+    margin: 0 25% 0 25%;
+    width: 50%;
+    color: #000;
+    text-align: center;
+    font-weight: 400;
+    font-size: 1.5em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    line-height: 2em;
+}
+.hTitle a{display:block;color:#fff;font-weight:400;font-size:1.1em;line-height:2.5em}
+#header i{/*position: absolute;*/display: block;/*width: 2em;*/height: 3em}
+.headerLeft {
+    float: left;
+    /*width: 20%;*/
+}
+.headerLeft img {
+    width: auto;
+    height: 1.5em;
+    margin: 0.75em;
+}
+.headerRight {
+    height: 3em;
+    position: absolute;
+    top: 0;
+    right: 0;
+    width:25%;
+    overflow: hidden;
+}
+.headerRight a {
+     display: block;
+    font-weight: 400;
+    font-size: 1em;
+    height: 3em;
+    padding-right: 5%;
+    line-height: 3em;
+    font-style: initial;
+    float: right;
+    width: 45%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+
+}
+
+/****主体内容****/
+#container{position:relative;overflow-x:hidden;width:100%;height:100%;margin-bottom:4.5em;margin-top:3em;}
+
+/*footer*/
+#footer{position: fixed;bottom: 0;left: 0;z-index: 10;width: 100%;height: 4em;border-top: solid 1px #ddd;background: #fff;}
+#footer li{float:left;width:25%;/*height:3em;*/text-align:center;/*line-height: 1em;*/    margin: 0.5em 0 0.25em 0;}
+#footer span{display: block;margin:0 auto;width:1.2em;height:1.2em;margin-bottom: 0.2em;}
+/*普通状态下显示的背景图*/
+#footer li span{background-size: 100% 100% !important;}
+#footer li:nth-child(1) span{background: url(../images/footer1.png) no-repeat 0 center;}
+#footer li:nth-child(2) span{background: url(../images/footer2.png) no-repeat 0 center;}
+#footer li:nth-child(3) span{background: url(../images/footer3.png) no-repeat 0 center;}
+#footer li:nth-child(4) span{background: url(../images/footer4.png) no-repeat 0 center;}
+/*选中状态下显示的背景图*/
+#footer li:nth-child(1)[class=on] span{background: url(../images/footer11.png) no-repeat 0 center;}
+#footer li:nth-child(2)[class=on] span{background: url(../images/footer21.png) no-repeat 0 center;}
+#footer li:nth-child(3)[class=on] span{background: url(../images/footer31.png) no-repeat 0 center;}
+#footer li:nth-child(4)[class=on] span{background: url(../images/footer41.png) no-repeat 0 center;}
+#footer i{color:#9f9f9f;font-style:normal;font-size:0.9em;line-height: 1.7em;font-weight:lighter;width: 100%;float: left;}
+#footer .on i{color: #43a3d1;}
+
+/*分页*/
+.pagePreNext {
+    float: left;
+    width: 100%;
+    padding: 0.5em 2%;
+    box-sizing: border-box;
+    margin-bottom: 2em;
+    margin-top: 1em;
+
+}
+.pagePreNext a {
+    float: left;
+    width: 25%;
+    font-size: 1em;
+    height: 2em;
+    line-height: 2em;
+    background: #f60;
+    color: #fff;
+    border-radius: 0.25em;
+    text-align: center;
+}
+.pagePreNext a.no{
+    background: #999;
+}
+.page_num {
+    float: left;
+    width: 50%;
+    text-align: center;
+    line-height: 2em;
+    font-size: 1em;
+}
+.page_num select {
+    width: 30%;
+}
+
+/*input::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
+    color:#b1b1b1;font-size: 1em;
+}
+input:-moz-placeholder, textarea:-moz-placeholder {
+    color:#b1b1b1;font-size: 1em;
+}
+input::-moz-placeholder, textarea::-moz-placeholder {
+    color:#b1b1b1;font-size: 1em;
+}
+input:-ms-input-placeholder, textarea:-ms-input-placeholder {
+    color:#b1b1b1;font-size: 1em;
+}*/
+#login_out{
+    width: 90%;
+    margin: 0 5%;
+    background: #007cc2;
+    border-radius: 0.25em;
+    line-height: 2.5em;
+    color: #fff
+}
+
+.modal-open {
+    overflow: hidden
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1040;
+    display: none;
+    overflow: hidden;
+    -webkit-overflow-scrolling: touch;
+    outline: 0
+}
+
+.modal.fade .modal-dialog {
+    -webkit-transition: -webkit-transform .3s ease-out;
+    -o-transition: -o-transform .3s ease-out;
+    transition: transform .3s ease-out;
+    -webkit-transform: translate(0,-25%);
+    -ms-transform: translate(0,-25%);
+    -o-transform: translate(0,-25%);
+    transform: translate(0,-25%)
+}
+
+.modal.in .modal-dialog {
+    -webkit-transform: translate(0,0);
+    -ms-transform: translate(0,0);
+    -o-transform: translate(0,0);
+    transform: translate(0,0)
+}
+
+.modal-open .modal {
+    overflow-x: hidden;
+    overflow-y: auto
+}
+
+.modal-dialog {
+    position: relative;
+    width: auto;
+    margin: 30% 1em;
+}
+
+.modal-content {
+    position: relative;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #999;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    outline: 0;
+    -webkit-box-shadow: 0 3px 9px rgba(0,0,0,.5);
+    box-shadow: 0 3px 9px rgba(0,0,0,.5)
+}
+
+.modal-backdrop {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    background-color: #000
+}
+
+.modal-backdrop.fade {
+    filter: alpha(opacity=0);
+    opacity: 0
+}
+
+.modal-backdrop.in {
+    filter: alpha(opacity=50);
+    opacity: .5
+}
+
+.modal-header {
+    min-height: 16.43px;
+    padding: 15px;
+    border-bottom: 1px solid #e5e5e5
+}
+
+.modal-header .close {
+    margin-top: -2px
+}
+
+.modal-title {
+    margin: 0;
+    line-height: 1.42857143
+}
+
+.modal-body {
+    position: relative;
+    padding: 1.5em 1em;
+}
+
+.modal-footer {
+    padding: 1.5em;
+    text-align: right;
+    border-top: 1px solid #e5e5e5
+
+}
+
+.modal-footer .btn+.btn {
+    margin-bottom: 0;
+    margin-left: 5px
+}
+
+.modal-footer .btn-group .btn+.btn {
+    margin-left: -1px
+}
+
+.modal-footer .btn-block+.btn-block {
+    margin-left: 0
+}
+
+.modal-scrollbar-measure {
+    position: absolute;
+    top: -9999px;
+    width: 50px;
+    height: 50px;
+    overflow: scroll
+}
+
+@media (min-width:768px) {
+    .modal-dialog {
+        width: 600px;
+        margin: 30px auto
+    }
+
+    .modal-content {
+        -webkit-box-shadow: 0 5px 15px rgba(0,0,0,.5);
+        box-shadow: 0 5px 15px rgba(0,0,0,.5)
+    }
+
+    .modal-sm {
+        width: 300px
+    }
+}
+
+@media (min-width:992px) {
+    .modal-lg {
+        width: 900px
+    }
+}
+
+/*弹出模拟框*/
+.modal .modal-dialog .modal-content{
+    /* color:#7abd54;*/
+    text-align: center;
+    font-size: 1em;
+    overflow: hidden;
+    width: 100%;
+}
+.modal-body{
+    font-size: 1.2em;
+    min-height: 2.5em;
+    line-height: 2.5em;
+}
+.modal .modal-dialog .modal-content .modal-footer{
+    overflow: hidden;
+}
+.modal-footer .btn{
+    width: 45%;
+    float: right;
+    padding:0.5em 0;
+    background:  #007cc2;
+    color:#fff;
+    text-align: center;
+    border-radius: 0.25em;
+}
+.modal-footer .btn-danger,#sure{
+    background:  #3388ff;
+    margin-right: 8% !important;
+}

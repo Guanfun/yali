@@ -1,0 +1,74 @@
+<I name="column_id" input="get.column_id" />
+<I name="cate_id" input="get.cate_id" />
+<I name="id" input="get.id" default="0" />
+<I name="is_hot" input="get.is_hot" default="0" />
+<I name="is_new" input="get.is_new" default="0" />
+<I name="sales_promotion" input="get.sales_promotion" default="0" />
+<I name="sales_id" input="get.sales_id" default="0" />
+<I name="is_map" input="get.is_map" />
+<I name="keywords" input="get.keywords" default="0" />
+<I name="order" input="get.order" default="orderid"/>
+<I name="sort" input="get.sort" default="desc"/>
+<php>
+    if($web_config['list_num']==0){
+    $web_config['list_num']=10;
+    }
+    if($keywords=="0" && $sales_promotion!=1){
+</php>
+<getProducts name="products_list" column_id="$column_id" cate_id="$cate_id" limit="1"  is_page="1" is_hot="$is_hot" is_new="$is_new" map="$is_map" order="$order" sort="$sort" list_row="{$web_config['list_num']}" />
+<php>}else if($sales_promotion==1){</php>
+<php>if($sales_id){</php>
+<getTimeDiscountDetailPro name="products_list" id="$sales_id" size="999"/>
+<php>}</php>
+<php>}else{</php>
+<assign name="article_categorys_list" value="0" />
+<getProducts name="products_list" proname="$keywords" size="999" p="1" />
+<php>}</php>
+<volist name="products_list['list']" id="lists">
+    <a href="{:U('Product/view',array('column_id'=>$lists['column']['0']['id'],'cate_id'=>$lists['cate_id'],'id'=>$lists['id'],'openid'=>$openid,'member_id'=>$member_id))}">
+        <li class="imgDiv">
+            <div class="imgDivOut">
+                <div class="imgDivInner">
+                    <div class="imgBorder">
+                        <div class="imgBorderInner">
+                            <img class="imgFinal" src='{$lists.thumb|show_Pic=###,300,300,6,"SKIN_HTML5/$templet_name/images/default_bg.png"}' />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="proContent">
+                <span><notempty name="lists['discount']"><var>{$lists.discount}折</var></notempty>{$lists['name']}</span>
+                <notempty name="sales_promotion">
+                    <div class="price">
+                        <var class="rmb">&yen;</var>{$lists.discount_price}
+                    </div>
+                    <else />
+                    <eq name="lists['pay_type']" value="0">
+                        <div class="price">
+                            <var class="rmb">&yen;</var>{$lists.unit_price}
+                        </div>
+                    </eq>
+                    <eq name="lists['pay_type']" value="1">
+                        <div class="price">
+                            积分：{$lists.score}
+                        </div>
+                    </eq>
+                    <eq name="lists['pay_type']" value="2">
+                        <div class="price add_score">
+                            <var class="rmb">&yen;</var>{$lists.unit_price}<var class="rmb">+积分</var>{$lists.score}
+                        </div>
+                    </eq>
+                </notempty>
+                <div class="sell">已售{$lists.sales}</div>
+            </div>
+        </li>
+    </a>
+</volist>
+<php>
+    $pageCount=$web_config["list_num"];
+    $totalCount=$products_list["total"];
+    $totalPage=($totalCount%$pageCount==0?$totalCount/$pageCount:(int)($totalCount/$pageCount)+1);
+</php>
+<script>
+    totalpage={$totalPage};
+</script>

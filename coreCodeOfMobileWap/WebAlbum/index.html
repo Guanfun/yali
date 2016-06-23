@@ -1,0 +1,102 @@
+﻿<include file="Public:header" />
+	<i name="column_id" input="get.column_id" default="0"/>
+	<i name="cate_id" input="get.cate_id" default="0" />
+	<i name="id" input="get.id" default="0" />
+	<php>
+		if($id)
+		{
+		$url=U('WebAlbum/view',array('cate_id'=>$cate_id,'id'=>$id,'openid'=>$openid,'member_id'=>$member_id));
+		header("Location:$url");
+		exit();
+		}
+	</php>
+	<!--2、此处引入css文件-->
+	<link href="SKIN_HTML5/{$templet_name}/css/superIndex.css" rel="stylesheet" type="text/css">
+	<link href="SKIN_HTML5/{$templet_name}/css/bin1.css" rel="stylesheet" type="text/css">
+	<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<if condition="($column_id eq 0) AND ($cate_id eq 0)">
+		<getAlbumCategory name="album_category" />
+	<elseif condition="($column_id eq 0) AND ($cate_id neq 0) OR ($column_id neq 0) AND ($cate_id neq 0)" />
+		<getAlbumCategoryDetail name="cate" id="$cate_id"/>
+	<else />
+		<getAlbumColumnDetail name="column" id="$column_id"/>
+		<getAlbumCategory name="album_category" column_id="$column_id"/>
+</if>
+<header id="header">
+		<div class="top">
+		    <div class="headerLeft">
+		    	<i class="home_open">
+		    		<a href="javascript:window.history.go(-1)">
+		    			<img src="SKIN_HTML5/{$templet_name}/images/back2.png" />
+		    		</a>
+		    	</i>
+		    </div>
+			<div class="hTitle">
+				<if condition="($column_id eq 0) AND ($cate_id eq 0)">
+						相册列表
+					<elseif condition="($column_id eq 0) AND ($cate_id neq 0) OR ($column_id neq 0) AND ($cate_id neq 0)" />
+						{$cate.name}
+					<else />
+						{$column.name}
+				</if>
+			</div>
+		</div>
+	</header>     
+        
+	<!--3、此处加入主体内容，id="container"必带-->
+	<section id="container">
+		<if condition="($column_id eq 0) AND ($cate_id neq 0) OR ($column_id neq 0) AND ($cate_id neq 0)">
+			<!--<div class="title">
+				<div class="titleLeft">{$cate.name}</div>
+			</div>-->
+			<getAlbumList name="album_list" cate_id="$cate_id"/>
+			<ul class="style4">
+				<volist name="album_list['list']" id="album">
+					<li>
+						<a href="{:U('WebAlbum/view',array('column_id'=>$album['column_id'],'cate_id'=>$album['cate_id'],'id'=>$album['id'],'openid'=>$openid,'member_id'=>$member_id))}">
+							<div style="overflow: hidden"><img src="{$album.thumb|show_Pic=###,180,180,0}"/></div>
+							<p>{$album.title}</p>
+						</a>
+					</li>
+				</volist>
+			</ul>
+		<else />
+
+			<volist name="album_category" id="cate_list">
+				<a href="{:U('WebAlbum/index',array('column_id'=>$cate_list['column_id'],'cate_id'=>$cate_list['id'],'openid'=>$openid,'member_id'=>$member_id))}">
+					<div class="title">
+					<div class="titleLeft">{$cate_list.name}</div>
+					</div>
+				</a>
+			</div>
+			<getAlbumList name="album_list" size="6" cate_id="$cate_list['id']" map="$map" column_id="$cate_list['column_id']" />
+			<ul class="style4">
+				<volist name="album_list['list']" id="album">
+				<li>
+					<a href="{:U('WebAlbum/view',array('column_id'=>$album['column_id'],'cate_id'=>$album['cate_id'],'id'=>$album['id'],'openid'=>$openid,'member_id'=>$member_id))}">
+						<div style="overflow: hidden"><img src="{$album.thumb|show_Pic=###,180,180,0}"/></div>
+						<p>{$album.title}</p>
+					</a>
+				</li>
+				</volist>
+			</ul>
+			</volist>
+		</if>
+		<!--
+		<div class="pagePreNext">
+			<a href="javascript:;" class="no">上一页</a>
+			<div class="page_num">第
+				<select id="page_select" onchange="javascript:window.location=this.value">
+					<option value="" selected="selected">1</option>
+					<option value="">2</option>
+				</select> 页 共 2 页
+			</div>
+			<a href="javascript:;">下一页</a>
+		</div>-->
+	</section>
+	<include file="Public:footer" />
+	
+</body>
+</html>

@@ -1,0 +1,105 @@
+<I name="cart_return" input="get.cart_return" />
+<I name="id" input="get.id" />
+<include file="Public:header" />
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet">
+<link href="SKIN_HTML5/{$templet_name}/css/address.css" rel="stylesheet">
+
+</head>
+<body>
+<header id="header">
+    <div class="top">
+        <a href="javascript:window.history.go(-1)" class="headerLeft"><img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+        <div class="hTitle"><empty name="id">添加地址<else />编辑地址</empty></div>
+    </div>
+</header>
+<!--3、此处加入主体内容，id="container"必带-->
+<!--{$one|p}-->
+<section id="container">
+    <form id="addressViewForm" class="form-horizontal" role="form" action="{$action_url}" autocomplete="on">
+        <input type="hidden" name="openid"  value='{$openid}'/>
+        <input type="hidden" name="id"  value="{$one[id]}" />
+        <input type="hidden" name="ref" value="{$ref}" />
+    <div class="add_address form-group ">
+        <input type="hidden" name="is_default" value="1" />
+        <input class="add_address_input" type="text" name="realname" placeholder="收件人" autofocus="autofocus"  required="required" value="{$one.realname}"/>
+        <input class="add_address_input" type="text" name="phone" placeholder="联系电话"  required="required" value="{$one.phone}"/>
+        <div id="city_1">
+        <span><select id="province" class="add_address_address prov" name="province"  required="required"></select></span>
+        <span><select id="city" class="add_address_address city" name="city"  required="required"></select></span>
+        <span><select id="zone" class="add_address_address zone" name="zone"  required="required"></select></span>
+        </div>
+        <input class="add_address_input" type="text" name="address" placeholder="详细地址" required="required" value="{$one.address}" />
+    </div>
+    <input type="submit" class="add_address_submit" value="确认" />
+    <input type="reset" class="add_address_btn" value="重置" />
+    </form>
+    <form id="cart_order" action="{:U('Cart/order')}" method="get">
+        <php>if(!$order_cart_id['id']){</php>
+        <volist name="order_cart_id" id="vo" >
+            <input id="id_{$vo['product_id']}" class="item_checkbox" type="hidden" value="{$vo['value']}" cart="{$vo['web_id']}-{$key}" name="id[{$vo['web_id']}][]">
+        </volist>
+        <php>}else{</php>
+        <volist name="order_cart_id" id="vo" >
+            <input type="hidden" name="{$key}" value="{$vo}"/>
+        </volist>
+        <php>}</php>
+        <input type="hidden" name="openid" value='{$openid}'/>
+        <input type="hidden" name="member_id" value='{$member_id}'/>
+    </form>
+</section>
+<!--4、此处引入js，2个jquery文件需带上-->
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/city.min.js"></script>
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/jquery.cityselect.js"></script>
+<include file="Public:form_validation" />
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#city_1").citySelect({prov_value:"{$one.province|default=2}", city_value:"{$one.city|default=3411}",zone_value:"{$one.zone|default=500}"});
+        $('#addressViewForm').formValidation({
+            fields: {
+                realname: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入收货人'
+                        }
+                    }
+                },
+                city: {
+                    validators: {
+                        notEmpty: {
+                            message: '请选择地区'
+                        }
+                    }
+                },
+                address: {
+                    validators: {
+                        notEmpty: {
+                            message: '请输入详细地址'
+                        }
+                    }
+                },
+                phone: nb_check.phone
+            }
+        }).on('success.form.fv', function (e) {
+            e.preventDefault();
+            var $form = $(e.target);
+            $.get($form.attr('action'), $form.serialize(), function (s) {
+                if (s.status == '1') {
+                    var order_cart="{$cart_return}";
+                    $form.formValidation('disableSubmitButtons', true);
+                    if(order_cart=="1"){
+                        $("#cart_order").submit();
+                    }else{
+                        location.href = "{:U('Member/address',array('openid'=>$openid,'member_id'=>$member_id))}";
+                    }
+                } else {
+                    alert(s.data);
+                    $form.formValidation('disableSubmitButtons', false);
+                }
+            }, 'json');
+        });
+    });
+</script>
+</body>
+</html>

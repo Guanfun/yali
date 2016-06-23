@@ -1,0 +1,215 @@
+﻿<include file="Public:header" />
+	<!--2、此处引入css文件-->
+	<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+	<link href="SKIN_HTML5/{$templet_name}/css/index_yoyo.css" rel="stylesheet" type="text/css">
+	<link href="SKIN_HTML5/{$templet_name}/css/member.css" rel="stylesheet" type="text/css">
+    <style>
+        .notice{
+            position: relative;
+            width: 2.5em;
+            height: 2.5em;
+            overflow: hidden;
+            text-align: center;
+            margin:0.25em;
+        }
+        .notice img{
+            width: 100%;
+        }
+        .notice p{
+            position: absolute;
+            width: 1.2em;
+            height: 1.2em;
+            top: 0;
+            right: 0;
+            border-radius: 50%;
+            line-height: 1.2em;
+            font-size: 0.8em;
+            text-align: center;
+            background: #f60;
+        }
+    </style>
+</head>
+
+<body>
+<header id="header">
+    <div class="top">
+        <a href="javascript:window.history.go(-1)" class="headerLeft"><img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+        <div class="hTitle">
+            个人中心
+        </div>
+        <php>if($_G['member_system_message']>0){</php>
+        <a href="{:U('Member/member_system',array('openid'=>$openid,'member_id'=>$member_id))}" class="headerRight">
+            <div class="notice">
+                <img src="SKIN_HTML5/{$templet_name}/images/notice.png" />
+                <p>{$_G['member_system_message']}</p>
+            </div>
+        </a>
+        <php>}</php>
+        <!--<a class="headerRight"><span>新增</span></a>-->
+    </div>
+</header>
+	<!--3、此处加入主体内容，id="container"必带-->
+	<section id="container">
+        <div class="user">
+            <a class="head_portrait" href="{:U('Member/LockBox',array('openid'=>$openid,'member_id'=>$member_id))}">
+                <php>if($is_sales){</php>
+                <img src="{$headimgurl}" style="max-width:100%" />
+                <php>}else{</php>
+                <img src="SKIN_HTML5/{$templet_name}/images/touxiang.png">
+                <php>}</php>
+            </a>
+            <div class="member_user">
+                <a class="user_name" href="{:U('Member/LockBox',array('openid'=>$openid,'member_id'=>$member_id))}">
+                    {:$_G['realname']}[{:$_G['username']}]
+                </a>
+                <div class="clear"></div>
+                <a class="integral" href="{:U('Score/index',array('openid'=>$openid,'member_id'=>$member_id))}">
+                    <img src="SKIN_HTML5/{$templet_name}/images/icon_top1.png">
+                    <small>积分</small><big>{$_G['credit']|default="0"}</big>
+                </a>
+                <getMemberSign name="member_sign" uid="$_G['uid']"/>
+                <div class="integral member_sign ml1 fr">
+                    <img src="SKIN_HTML5/{$templet_name}/images/icon_top2.png">
+                    <small>
+                        <php>if($member_sign['status']=="1"){</php>
+                        {$member_sign.data}
+                        <php>}else{</php>
+                        签到
+                        <php>}</php>
+                    </small>
+                </div>
+            </div>
+            <a href="{:U('Member/LockBox',array('openid'=>$openid,'member_id'=>$member_id))}" class="seT">
+                <img src="SKIN_HTML5/{$templet_name}/images/SeT.png">
+            </a>
+        </div>
+        <div class="clear"></div>
+        <!--<div class="column vice_list">
+            <a href="{:U('ProductActivity/index',array('openid'=>$openid,'member_id'=>$member_id))}">
+                <img src="SKIN_HTML5/{$templet_name}/images/icon1.png">
+                <span>领取优惠券</span>
+            </a>
+            <a href="{:U('Distribute/withdraw_index',array('openid'=>$openid,'member_id'=>$member_id))}">
+                <img src="SKIN_HTML5/{$templet_name}/images/icon2.png">
+                <span>提现</span>
+            </a>
+            <div class="clear"></div>
+        </div>-->
+        <div class="hr"></div>
+
+        <div class="column order">
+            <header class="order_title">
+                <h3>我的订单</h3>
+                <a class="more" href="{:U('BuyerOrder/user_order',array('openid'=>$openid,'member_id'=>$member_id))}">查看全部订单</a>
+                <div class="clear"></div>
+            </header>
+            <nav class="order_nav">
+                <a href="{:U('BuyerOrder/user_order',array('openid'=>$openid,'member_id'=>$member_id,'status_value'=>'0'))}">
+                    <img src="SKIN_HTML5/{$templet_name}/images/icon3.png">
+                    <span>待付款</span>
+                </a>
+                <a href="{:U('BuyerOrder/user_order',array('openid'=>$openid,'member_id'=>$member_id,'status_value'=>'1'))}">
+                    <img src="SKIN_HTML5/{$templet_name}/images/icon4.png">
+                    <span>待发货</span>
+                </a>
+                <a href="{:U('BuyerOrder/user_order',array('openid'=>$openid,'member_id'=>$member_id,'status_value'=>'4'))}">
+                    <img src="SKIN_HTML5/{$templet_name}/images/icon5.png">
+                    <span>待收货</span>
+                </a>
+                <a href="{:U('BuyerOrder/user_order',array('openid'=>$openid,'member_id'=>$member_id,'status_value'=>'7'))}">
+                    <img src="SKIN_HTML5/{$templet_name}/images/icon6.png">
+                    <span>退换货</span>
+                </a>
+                <div class="clear"></div>
+            </nav>
+        </div>
+
+        <div class="hr"></div>
+
+        <div class="column con_major">
+            <a href="{:U('ProductActivity/my_coupons',array('openid'=>$openid,'member_id'=>$member_id))}">
+                <img src="SKIN_HTML5/{$templet_name}/images/icon7.png">
+                <span>优惠券</span>
+            </a>
+            <a href="{:U('Cart/index',array('openid'=>$openid,'member_id'=>$member_id))}">
+                <img src="SKIN_HTML5/{$templet_name}/images/icon8.png">
+                <span>购物车</span>
+            </a>
+            <a href="{:U('Collect/collect_product',array('openid'=>$openid,'member_id'=>$member_id))}">
+                <img src="SKIN_HTML5/{$templet_name}/images/icon9.png">
+                <span>我的收藏</span>
+            </a>
+            <a href="{:U('Member/address',array('openid'=>$openid,'member_id'=>$member_id))}">
+                <img src="SKIN_HTML5/{$templet_name}/images/icon10.png">
+                <span>收货地址</span>
+            </a>
+            <a href="{:U('Member/change_Alipay_password',array('openid'=>$openid,'member_id'=>$member_id))}">
+                <img src="SKIN_HTML5/{$templet_name}/images/icon11.png">
+                <span>支付密码</span>
+            </a>
+            <!--<a href="#">
+                <img src="SKIN_HTML5/{$templet_name}/images/icon12.png">
+                <span>联系客服</span>
+            </a>-->
+            <a href="{:U('Collect/scan_record',array('openid'=>$openid,'member_id'=>$member_id))}">
+                <img src="SKIN_HTML5/{$templet_name}/images/icon13.png">
+                <span>我的足迹</span>
+            </a>
+            <a href="{:U('Member/system_message',array('openid'=>$openid,'member_id'=>$member_id))}">
+                <img src="SKIN_HTML5/{$templet_name}/images/icon14.png">
+                <span>消息提醒</span>
+            </a>
+            <!--<a href="#">
+                <img src="SKIN_HTML5/{$templet_name}/images/icon15.png">
+                <span>分销中心</span>
+            </a>-->
+            <a href="{:U('Mshop/index',array('openid'=>$openid,'member_id'=>$member_id))}">
+                <img src="SKIN_HTML5/{$templet_name}/images/setting.png">
+			<span>
+				<if condition="$_G[is_shop] eq 0">
+                    <if condition="$_G['shop_status'] eq 1">
+                        开店审核中
+                        <else />
+                        我要开店
+                    </if>
+                    <else />
+                    店铺管理
+                </if>
+			</span>
+            </a>
+            <a href="{:U('Member/change_password',array('openid'=>$openid,'member_id'=>$member_id))}">
+                <img src="SKIN_HTML5/{$templet_name}/images/loginpassword.png">
+                <span>登录密码</span>
+            </a>
+            <a href="{:U('Login/logOut')}">
+                <img src="SKIN_HTML5/{$templet_name}/images/out.png">
+                <span>退出登录</span>
+            </a>
+        </div>
+
+        <div class="hr"></div>
+	</section>
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+<include file="Public:footer" />
+	<!--4、此处引入js，2个jquery文件需带上-->
+    <script>
+        $('#login_out').click(function(){
+            location.href="{:U('Login/logOut')}";
+        });
+    $('.member_sign').click(function(){
+        var uid ="{$_G['uid']}";
+        <php>if($isWeixins){</php>$.get<php>}else{</php>$.post<php>}</php>("{:U('Member/member_sign',array('openid'=>$openid,'member_id'=>$member_id))}", { uid: uid}, function (s) {
+            if (s.status == '1'){
+                alert(s.data);
+                location.reload();
+            }
+            if (s.status == '0') {
+                alert(s.data);
+            }
+        }, 'json');
+    });
+</script>
+
+</body>
+</html>

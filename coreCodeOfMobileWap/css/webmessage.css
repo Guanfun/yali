@@ -1,0 +1,104 @@
+.LockBox{
+    margin:2% 0;
+    padding:2%;
+    width: 96%;
+    font-size: 1em;
+    line-height: 1.5em;
+    background: #fff;
+    overflow: hidden;
+}
+.LockBox table{
+    border:none;
+    width: 100%;
+    border-collapse: collapse;
+}
+.LockBox tr{
+    border-bottom:1px solid #e6e6e6;
+    padding:0.2em;
+    line-height: 3em;
+}
+.LockBox tr td:nth-child(1){
+    width: 5em;
+}
+.LockBox .lockbox_input{
+    border: none;
+    padding: 0 0.4em;
+    line-height: 1.5em;
+    width: 90%;
+    outline:none;
+    font-size: 1.2em;
+}
+.LockBox input[type="radio"] {
+    display: none;
+}
+.LockBox input {
+    border: 1px solid #ccc;
+    width: 83%;
+    border-radius: 0.25em;
+    padding-left: 0.5em;
+    box-sizing: border-box;
+}
+.LockBox span{
+    width: 15%;
+    display: inline-block;
+}
+.LockBox label{
+    padding:0.1em 0 0.1em 1.5em;
+    font-size: 1em;
+    margin-left: 1em;
+    cursor: pointer;
+    background: url(../images/bg.gif) no-repeat left 0.2em;
+    background-size: 1.6em 3.2em;
+}
+.LockBox label.checked {
+    background-position: left -2em;
+}
+.LockBox .lockbox_address{
+    /*border: 1px solid #dfdff4;*/
+	border: none;
+	margin-left: 0.1em;
+	padding: 0.2em;
+	line-height: 2.5em;
+	height: 2.5em;
+	width: 30%;
+	outline: none;
+	border-radius: 0.25em;
+	text-align: center;
+	font-size: 1em;
+}
+.LockBox #lockBox_but {
+    width: 98%;
+    margin: 0.5em 1%;
+    text-align: center;
+    background: #32cd00;
+    height: 3em;
+    line-height: 3em;
+    color: #fff;
+    border-radius: 0.25em;
+    border: none;
+    font-size: 1em;
+    font-family: Microsoft YaHei, Helvitica, Verdana, Tohoma, Arial, san-serif;
+}
+/****�޸ĸ�����Ϣ****/
+.LockBox #nickname, .LockBox #qq, .LockBox #phone, .LockBox #tel, .LockBox #addr, .LockBox #email{line-height: 2.5em;/*padding: 1%;*/}
+.LockBox dd {font-size: 1em;line-height: 3em;}
+.xxprovince,.xxcity,.xxzone {height: 2.5em;border: 1px solid #E2E2E2;}
+input[name="sex"] {width: 1.2em;height: 1.2em;}
+.msg-textarea {
+    width: 83%;
+    height: 100px;
+    border: 1px solid #ccc;
+    border-radius: 0.25em;
+    margin: 0.5em 0 0 0;
+    padding: 0.5em;
+    box-sizing: border-box;
+}
+.tie{position:relative; top:-3em; }
+.but{float:left;text-align:center;/*width:99%!important;*/background:#FF5D00!important;border:0;border-radius:5px;display:block;color:#fff!important;font-size:1.2em;line-height:2.2em}
+.ch1{color:#FF5D00;font-size:1.2em;text-align:center;line-height:2em;font-weight:lighter;}
+h2{text-align:center;font-weight:lighter;font-size:1em;font-weight:lighter;}
+ontent{position:relative;overflow-x:hidden;width:100%;background:#fff;height:100%;}
+.NewsTop{background:#fff;width:100%;padding:0.5em 0 0.7em 0;border-bottom:2px solid #FF5D00;}
+.NewsBar{background:#fff;width:100%;padding:0.2em 0;border-bottom:2px solid #FF5D00;}
+h1{color:#FF5D00;font-size:1.2em;text-align:center;line-height:2em;font-weight:lighter;}
+h2{text-align:center;font-weight:lighter;font-size:1em;font-weight:lighter;}

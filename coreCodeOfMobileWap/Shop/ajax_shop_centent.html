@@ -1,0 +1,24 @@
+<i name="shop_industry" input="get.shop_industry" default="null" />
+<i name="province" input="get.province" default="null" />
+<I name="shop_search" input="get.shop_search" />
+<I name="city" input="get.city" default="null" />
+<I name="zone" input="get.zone" default="null" />
+<I name="page" input="get.page" default="1" />
+<I name="title" input="get.title" default="null" />
+<getMemberShop name="shop_list"  size="10" p="$page" shop_industry="$shop_industry" province="$province" city="$city" zone="$zone" title="$title" />
+		<volist name="shop_list['list']" id="list">
+		<li>
+			<a href="http://{$list.domain}">
+			<php>if($list['company_logo']!=""){</php>
+				<img src="{$list.company_logo|show_Pic}">
+			<php>}else{</php>
+				<img src="/Public/nopic.jpg">
+			<php>}</php>
+				<h1>{$list.shop_name}</h1>
+				<div class="shopType">{$list.shop_description|htmlspecialchars_decode|strip_tags}</div>
+				<div>{$list.provinceName}</div>&nbsp;<div>{$list.cityName}</div><br>
+				<div>{$list.industryName}</div>
+				<button class="go_shop">进入店铺</button>
+			</a>
+		</li>
+		</volist>

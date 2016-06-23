@@ -1,0 +1,91 @@
+<include file="Public:header" />
+</head>
+<body>
+<include file="Public:top" />
+<link rel="stylesheet" href="SKIN_HTML5/{$templet_name}/css/global.css" />
+<link rel="stylesheet" href="SKIN_HTML5/{$templet_name}/css/buyerorder.css" />
+<!--3、此处加入主体内容，id="container"必带-->
+<section id="container">
+    <div class="order_view_order_details">
+       <img src="SKIN_HTML5/{$templet_name}/images/order_1.png">
+        <p>待付款</p>
+        <p>订单金额（含运费）：&yen;{$cart['total_price']}</p>
+        <p>运费金额：&yen;0.00</p>
+    </div>
+    <div class="clearfix"></div>
+    <div class="order_view_address">
+        <img src="SKIN_HTML5/{$templet_name}/images/order_2.png"/>
+        <p>收件人：个人<tel>1374568567</tel></p>
+        <p>收货地址：广东省广州市禅城区</p>
+    </div>
+    <div class="clearfix"></div>
+    <div class="order_view_pro_details">
+        <a>
+            <div class="order_view_pro_header">
+                <img src="images/order_3.png" />
+                <p>专用汽车定制用品</p>
+                <img src="images/order_go.png" />
+            </div>
+        </a>
+        <div class="clearfix"></div>
+        <div class="order_view_pro_detail">
+            <li>
+                <div class="order_pro_pic">
+                    <img src="images/img.png" />
+                </div>
+                <div class="order_pro_title">
+                    <p>田园家居田园家居田园家居田园家居田园家居</p>
+                    <p>规格：黑色款 时间：请放心拍下，客户会联系您</p>
+                </div>
+                <div class="order_pro_total">
+                    <p>478.8元</p>
+                    <p>X1</p>
+                </div>
+            </li>
+        </div>
+        <div class="clearfix"></div>
+        <div class="order_view_pay">
+            <p>运费：<r>&yen;0.00</r></p>
+            <p>实付款（含运费）：<r>&yen;289.00</r></p>
+        </div>
+        <div class="clearfix"></div>
+        <div class="order_view_order_number">
+            <p>订单号：201510111112456416</p>
+        </div>
+        <div class="clearfix"></div>
+        <div class="order_view_tel">
+            <a><img src="images/tel.png" />联系卖家</a>
+        </div>
+        <div class="clearfix"></div>
+        <div class="order_view_time">
+            <p>成交时间：2015-5468946565</p>
+            <p>自动取消时间：2015-5468946565</p>
+        </div>
+    </div>
+    <div class="clearfix"></div>
+    <div class="order_view_submit">
+        <input type="submit" class="order_view_order_Pay" value="确认付款"  />
+        <input type="button" class="order_view_cancel" value="取消订单" />
+    </div>
+</section>
+<!--4、此处引入js，2个jquery文件需带上-->
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/js_afun.js"></script>
+<script>
+    function delUserOrder(id) {
+        if (id) {
+            if (confirm("是否确定取消订单?")) {
+                $.get("{:U('BuyerOrder/cancleUserOrder',array('openid'=>$openid,'member_id'=>$member_id))}", { id: id }, function (data) {
+                    alert(data.data);
+                    if (data.status == '1') {
+                        $('#delorder_' + id).remove();
+                        window.location.href = window.location.href;
+                    }
+                }, 'json');
+            }
+        }
+    }
+</script>
+</body>
+</html>

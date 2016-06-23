@@ -1,0 +1,467 @@
+<include file="Public:header" />
+<link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/index.css">
+<link href="SKIN_HTML5/{$templet_name}/css/style.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/bin1.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="SKIN_HTML5/{$templet_name}/css/menu.css" rel="stylesheet" type="text/css"/>
+<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/menu.js" type="text/javascript"></script>
+</head>
+<body>
+<header id="header">
+    <div class="top">
+		<a href="javascript:window.history.go(-1)" class="headerLeft"><img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+        <div class="hTitle">申请开店</div>
+    </div>
+</header>
+<section id="container">
+	<if condition="$memberinfo.status eq 1 ">
+		<div style="width: 90%;padding:20% 5% 0;text-align: center;">
+		你已经提交了申请，请耐心<span style="color:#007cc2 ">等待审核</span> ！<br /><br />申请时间{$memberinfo.apply_time|date="Y-m-d H:i:s",###}
+		</div>
+		<elseif condition="$memberinfo.status eq 2"/>你已经成功开店！
+		<else />
+		<form  action="" method="post" accept-charset="utf-8" enctype="multipart/form-data" class="form-horizontal addForm" id="frm-sub" name="frm-sub" onsubmit="return false"><!-- method="post"-->
+			<ul class="sep_teams">
+				<li>
+					<span>店铺域名</span>
+					<input type="hidden" class="form-control" name="shop_domain" value="{$domain}" id="shop_domain" />
+					<small>{$domain}{$hzdomain}</small>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<span>店铺名称</span>
+					<small><input id="shopName" name="shop_name" required="required"/></small>
+					<div class="message" id="shopName_message"></div>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<span>店铺行业</span>
+					<small>
+						<select id="industry_id" name="industry" >
+							<foreach name="industry" item="ind">
+								<option value="{$ind.id}" >{$ind.name}</option>
+							</foreach>
+						</select>
+					</small>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<span>公司名称</span>
+					<small><input id="companyName" name="company_name" required="required"/></small>
+					<div class="message" id="companyName_message"></div>
+					<div class="clear"></div>
+				</li>
+
+				<li>
+					<span>身份证号码</span>
+					<small><input id="IDCardNum" name="id_num" required="required"/></small>
+					<div class="clear"></div>
+					<div class="message" id="IDCardNum_message"></div>
+				</li>
+				<li>
+					<span>身份证正面</span>
+					<small><input id="positive" name="positive" type="file" required="required" onchange="uploadImage('positive')"/>
+						<div class="file_bg" id="positive_file_bg">上传图片</div>
+						<div class="file_txt" id="positive_file_txt">支持jpg/png, 不超过2MB</div>
+						<img src="" id="positive_view" />
+					</small>
+					<input type="hidden" id="positive_id_img" name="positive_id_img"/>
+					<div class="message" id="positive_message"></div>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<span>身份证反面</span>
+					<small><input id="opposite" name="opposite" type="file" required="required" onchange="uploadImage('opposite')"/>
+						<div class="file_bg" id="opposite_file_bg">上传图片</div>
+						<div class="file_txt" id="opposite_file_txt">支持jpg/png, 不超过2MB</div>
+						<img src="" id="opposite_view" />
+					</small>
+					<input type="hidden" id="opposite_id_img" name="opposite_id_img"/>
+					<div class="message" id="opposite_message"></div>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<span>营业执照</span>
+					<small><input id="licence" name="licence" type="file" required="required" onchange="uploadImage('licence')" />
+						<div class="file_bg" id="licence_file_bg">上传图片</div>
+						<div class="file_txt" id="licence_file_txt">支持jpg/png, 不超过2MB</div>
+						<img src="" id="licence_view" />
+					</small>
+					<input type="hidden" id="licences" name="licences"/>
+					<div class="message" id="licence_message"></div>
+					<div class="clear"></div>
+				</li>
+				<li>
+					<span>所在地</span>
+					<small>
+						<div class="fl" id="selectCity">
+						<select id="province" name="province" >
+						</select>
+						<select id="city" name="city" >
+						</select>
+						<select id="zone" name="zone">
+						</select>
+						</div>
+					</small>
+					<div class="message" id="city_message"></div>
+					<div class="clear"></div>
+				</li>
+
+				<li>
+					<span>详细地址</span>
+					<small><input id="address" name="address" required="required"/></small>
+					<div class="message" id="address_message"></div>
+					<div class="clear"></div>
+				</li>
+
+				<li>
+					<span>店铺描述</span>
+					<small>
+						<textarea id="description" name="shop_description" required="required"></textarea>
+					</small>
+					<div class="clear"></div>
+				</li>
+			</ul>
+		</form>
+		<div class="deal">
+			<input type="button" value="确认申请" class="submit" onclick="from_submit()">
+		</div>
+		<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/city.min.js"></script>
+		<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/jquery.cityselect.js"></script>
+		<script>
+			/**
+			 * 检查身份证号的合法性
+			 * @returns
+			 */
+			function check_idcard(idcard){
+				if (idcard.length == 15) {
+					return isValidityBrithBy15IdCard(idcard);
+				}else if (idcard.length == 18){
+					alert("18");
+					var a_idCard = idcard.split("");// 得到身份证数组
+					if (isValidityBrithBy18IdCard(idcard)&&isTrueValidateCodeBy18IdCard(a_idCard)) {
+						return true;
+					}
+					return false;
+				}
+				return false;
+			}
+			var Wi = [ 7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2, 1 ];// 加权因子;
+			var ValideCode = [ 1, 0, 10, 9, 8, 7, 6, 5, 4, 3, 2 ];// 身份证验证位值，10代表X;
+			function isTrueValidateCodeBy18IdCard(a_idCard) {
+				var sum = 0; // 声明加权求和变量
+				if (a_idCard[17].toLowerCase() == 'x') {
+					a_idCard[17] = 10;// 将最后位为x的验证码替换为10方便后续操作
+				}
+				for ( var i = 0; i < 17; i++) {
+					sum += Wi[i] * a_idCard[i];// 加权求和
+				}
+				valCodePosition = sum % 11;// 得到验证码所位置
+				if (a_idCard[17] == ValideCode[valCodePosition]) {
+					return true;
+				}
+				return false;
+			}
+			function isValidityBrithBy18IdCard(idCard18){
+				var year = idCard18.substring(6,10);
+				var month = idCard18.substring(10,12);
+				var day = idCard18.substring(12,14);
+				var temp_date = new Date(year,parseFloat(month)-1,parseFloat(day));
+				// 这里用getFullYear()获取年份，避免千年虫问题
+				if(temp_date.getFullYear()!=parseFloat(year) || temp_date.getMonth()!=parseFloat(month)-1 || temp_date.getDate()!=parseFloat(day)){
+					return false;
+				}
+				return true;
+			}
+			function isValidityBrithBy15IdCard(idCard15){
+				var year =  idCard15.substring(6,8);
+				var month = idCard15.substring(8,10);
+				var day = idCard15.substring(10,12);
+				var temp_date = new Date(year,parseFloat(month)-1,parseFloat(day));
+				// 对于老身份证中的你年龄则不需考虑千年虫问题而使用getYear()方法
+				if(temp_date.getYear()!=parseFloat(year) || temp_date.getMonth()!=parseFloat(month)-1 || temp_date.getDate()!=parseFloat(day)){
+					return false;
+				}
+				return true;
+			}
+		</script>
+		<script>
+			$("#selectCity").citySelect({prov_value:"", city_value:"", zone_value:""});
+			function from_submit(){
+			if(!$('#shopName').val()){
+				$("#shopName_message").html('请填写店铺名称').fadeIn(200).fadeOut(4000);
+				}else if(!$('#companyName').val()){
+				$('#companyName_message').html('请填写公司名称').fadeIn(200).fadeOut(4000);
+				}else if(!$('#IDCardNum').val()){
+					$('#IDCardNum_message').html('请填写身份证号').fadeIn(200).fadeOut(4000);
+				}else if(!check_idcard($('#IDCardNum').val())){
+					$('#IDCardNum_message').html('身份证不对').fadeIn(200).fadeOut(4000);
+				}else if(!$('#positive_id_img').val()){
+					$("#positive_message").html('请上传身份证正面').fadeIn(200).fadeOut(4000);
+					$("#positive_file_txt").hide(200).fadeIn(6000);
+				}else if(!$('#opposite_id_img').val()){
+					$("#opposite_message").html('请上传身份证反面').fadeIn(200).fadeOut(4000);
+					$("#opposite_file_txt").hide(200).fadeIn(6000);
+				}else if(!$('#licences').val()){
+					$("#licence_message").html('请上传营业执照').fadeIn(200).fadeOut(4000);
+					$("#licence_file_txt").hide(200).fadeIn(6000);
+				}else if(!$('#city').val()){
+					$('#city_message').html('请选择所在地').fadeIn(200).fadeOut(4000);
+					$('#zone').hide(200).fadeIn(4000);
+				}else if(!$('#address').val()){
+					$("#address_message").html('请填写详细地址').fadeIn(200).fadeOut(4000);
+				}else{
+					//$(".message").html('正确的，调试中');return false;
+					//验证用户的邮箱与手机在数据库是否存在重复
+					$.post("{:U('Mshop/saveShopApplyInfo')}",{
+						shop_domain:$('#shop_domain').val(),
+						shop_industry:$('#industry_id').val(),
+						shop_name:$('#shopName').val(),
+						company_name:$('#companyName').val(),
+						address:$('#address').val(),
+						province:$('#province').val(),
+						city:$('#city').val(),
+						zone:$('#zone').val(),
+						id_num:$('#IDCardNum').val(),
+						positive_id_img:$('#positive_id_img').val(),
+						opposite_id_img:$('#opposite_id_img').val(),
+						licences:$('#licences').val()
+					},function(data){
+						if(data.status == 1){
+							window.location.reload();
+						}else{
+							$(".message").html(data.data);
+						}
+					},'json');
+				}
+			}
+			function uploadImage(id){
+				$.ajaxFileUpload({
+					url:"{:U('Mshop/savePhoto')}?id=" + id,
+					secureuri:false,
+					fileElementId:id,
+					dataType:'json',
+					success:function(data){
+						if(data.status==1){
+							$("#"+id+"_view").attr('src',data.src).css("display","block");
+							$("#"+id+"_file_bg").html("上传成功");
+							$("#"+id+"_file_txt").css("display","none");
+							if(id == 'licence'){
+								$("#"+id+"s").val(data.src);
+							}else{
+								$("#"+id+"_id_img").val(data.src);
+							}
+						}else{
+							alert('上传失败');
+						}
+					}
+
+				});
+			}
+
+			jQuery.extend({
+
+				createUploadIframe: function(id, uri)
+				{
+					//create frame
+					var frameId = 'jUploadFrame' + id;
+
+					if(window.ActiveXObject) {
+						var io = document.createElement('<iframe id="' + frameId + '" name="' + frameId + '" />');
+						if(typeof uri== 'boolean'){
+							io.src = 'javascript:false';
+						}
+						else if(typeof uri== 'string'){
+							io.src = uri;
+						}
+					}
+					else {
+						var io = document.createElement('iframe');
+						io.id = frameId;
+						io.name = frameId;
+					}
+					io.style.position = 'absolute';
+					io.style.top = '-1000px';
+					io.style.left = '-1000px';
+
+					document.body.appendChild(io);
+
+					return io
+				},
+				createUploadForm: function(id, fileElementId)
+				{
+					//create form
+					var formId = 'jUploadForm' + id;
+					var fileId = 'jUploadFile' + id;
+					var form = $('<form  action="" method="POST" name="' + formId + '" id="' + formId + '" enctype="multipart/form-data"></form>');
+					var oldElement = $('#' + fileElementId);
+					var newElement = $(oldElement).clone();
+					$(oldElement).attr('id', fileId);
+					$(oldElement).before(newElement);
+					$(oldElement).appendTo(form);
+					//set attributes
+					$(form).css('position', 'absolute');
+					$(form).css('top', '-1200px');
+					$(form).css('left', '-1200px');
+					$(form).appendTo('body');
+					return form;
+				},
+
+				ajaxFileUpload: function(s) {
+					// TODO introduce global settings, allowing the client to modify them for all requests, not only timeout
+					s = jQuery.extend({}, jQuery.ajaxSettings, s);
+					var id = s.fileElementId;
+					var form = jQuery.createUploadForm(id, s.fileElementId);
+					var io = jQuery.createUploadIframe(id, s.secureuri);
+					var frameId = 'jUploadFrame' + id;
+					var formId = 'jUploadForm' + id;
+					// Watch for a new set of requests
+					if ( s.global && ! jQuery.active++ )
+					{
+						jQuery.event.trigger( "ajaxStart" );
+					}
+					var requestDone = false;
+					// Create the request object
+					var xml = {}
+					if ( s.global )
+						jQuery.event.trigger("ajaxSend", [xml, s]);
+					// Wait for a response to come back
+					var uploadCallback = function(isTimeout)
+					{
+						var io = document.getElementById(frameId);
+						try
+						{
+							if(io.contentWindow)
+							{
+								xml.responseText = io.contentWindow.document.body?io.contentWindow.document.body.innerHTML:null;
+								xml.responseXML = io.contentWindow.document.XMLDocument?io.contentWindow.document.XMLDocument:io.contentWindow.document;
+
+							}else if(io.contentDocument)
+							{
+								xml.responseText = io.contentDocument.document.body?io.contentDocument.document.body.innerHTML:null;
+								xml.responseXML = io.contentDocument.document.XMLDocument?io.contentDocument.document.XMLDocument:io.contentDocument.document;
+							}
+						}catch(e)
+						{
+							jQuery.handleError(s, xml, null, e);
+						}
+						if ( xml || isTimeout == "timeout")
+						{
+							requestDone = true;
+							var status;
+							try {
+								status = isTimeout != "timeout" ? "success" : "error";
+								// Make sure that the request was successful or notmodified
+								if ( status != "error" )
+								{
+									// process the data (runs the xml through httpData regardless of callback)
+									var data = jQuery.uploadHttpData( xml, s.dataType );
+									// If a local callback was specified, fire it and pass it the data
+									if ( s.success )
+										s.success( data, status );
+
+									// Fire the global callback
+									if( s.global )
+										jQuery.event.trigger( "ajaxSuccess", [xml, s] );
+								} else
+									jQuery.handleError(s, xml, status);
+							} catch(e)
+							{
+								status = "error";
+								jQuery.handleError(s, xml, status, e);
+							}
+
+							// The request was completed
+							if( s.global )
+								jQuery.event.trigger( "ajaxComplete", [xml, s] );
+
+							// Handle the global AJAX counter
+							if ( s.global && ! --jQuery.active )
+								jQuery.event.trigger( "ajaxStop" );
+
+							// Process result
+							if ( s.complete )
+								s.complete(xml, status);
+
+							jQuery(io).unbind()
+
+							setTimeout(function()
+							{	try
+							{
+								$(io).remove();
+								$(form).remove();
+
+							} catch(e)
+							{
+								jQuery.handleError(s, xml, null, e);
+							}
+
+							}, 100)
+
+							xml = null
+
+						}
+					}
+					// Timeout checker
+					if ( s.timeout > 0 )
+					{
+						setTimeout(function(){
+							// Check to see if the request is still happening
+							if( !requestDone ) uploadCallback( "timeout" );
+						}, s.timeout);
+					}
+					try
+					{
+						// var io = $('#' + frameId);
+						var form = $('#' + formId);
+						$(form).attr('action', s.url);
+						$(form).attr('method', 'POST');
+						$(form).attr('target', frameId);
+						if(form.encoding)
+						{
+							form.encoding = 'multipart/form-data';
+						}
+						else
+						{
+							form.enctype = 'multipart/form-data';
+						}
+						$(form).submit();
+
+					} catch(e)
+					{
+						jQuery.handleError(s, xml, null, e);
+					}
+					if(window.attachEvent){
+						document.getElementById(frameId).attachEvent('onload', uploadCallback);
+					}
+					else{
+						document.getElementById(frameId).addEventListener('load', uploadCallback, false);
+					}
+					return {abort: function () {}};
+
+				},
+
+				uploadHttpData: function( r, type ) {
+					var data = !type;
+					data = type == "xml" || data ? r.responseXML : r.responseText;
+					// If the type is "script", eval it in global context
+					if ( type == "script" )
+						jQuery.globalEval( data );
+					// Get the JavaScript object, if JSON is used.
+					if ( type == "json" )
+						eval( "data = " + data );
+					// evaluate scripts within html
+					if ( type == "html" )
+						jQuery("<div>").html(data).evalScripts();
+					//alert($('param', data).each(function(){alert($(this).attr('value'));}));
+					return data;
+				}
+			})
+		</script>
+	</if>
+</section>
+<include file="Public:footer" />
+</body>
+</html>

@@ -1,0 +1,169 @@
+<if condition="$list">
+        <div class="Content" >
+            <!--{$list|p}-->
+            <volist name="list" id="vo" key="key">
+                <php>if($vo['web_id']==C('WEB_ID') && $vo['status']<6){</php>
+                    <div class="membeorder_list">
+                        <a href="{:U('Order/order_detail',array('openid'=>$openid,'member_id'=>$member_id,'order_id'=>$vo['id']))}" >
+                        <div class="membeorder_list_No">
+                            <a href="{$vo.shop_url}">
+                                <div class="shopName">店铺：{$vo.shop_name}</div>
+                            </a>
+                        </div>
+                        <div class="membeorder_list_No">
+                            <div class="membeorder_list_No_left">订单号:{$vo['order_no']}</div>
+                            <div class="membeorder_list_No_right">{$vo['status_name']}</div>
+                        </div>
+                        <volist name="vo['product']" id="v" key='k'>
+                            <a href="{:U('Product/view',array('id'=>$v['product_id'],'openid'=>$openid,'member_id'=>$member_id))}">
+                            <div class="membeorder_list_pro">
+                                <div class="membeorder_list_pro_img">
+                                    <img src="{$v['thumb']|show_Pic}">
+                                </div>
+                                <div class="membeorder_list_pro_txt">
+                                    {$v['web_id']}{$v['name']}
+                                </div>
+                                <div class="membeorder_list_pro_num">￥&nbsp;&nbsp;{$v[unit_price]}
+                                    <span>×&nbsp;{$v[num]}</span>
+                                </div>
+                            </div>
+                            </a>
+                        </volist>
+                        <div class="membeorder_list_total">
+                            共{$v[num]}件商品&nbsp;&nbsp;运费:{$vo[shipping_money]}&nbsp;实付
+                            <span>￥{:number_format($vo[total]+$vo[shipping_money],2)}
+                            </span>
+                        </div>
+                        </a>
+                        <php>if($vo['status']=="0"){</php>
+                        <div class="membeorder_list_button">
+                            <ul>
+                                <li>
+                                    <a href="{:CU('Pay/order_pay/',array('order_no'=>$vo['order_no'],'openid'=>$openid,'member_id'=>$member_id))}" class="current">
+                                    付款
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:;" onclick="delUserOrder({$vo['id']});">
+                                        取消订单
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{:U('Order/order_detail',array('openid'=>$openid,'member_id'=>$member_id,'order_id'=>$vo['id']))}" >
+                                        查看订单
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <php>}</php>
+                        <php>if($vo['status']=="3"){</php>
+                        <div class="membeorder_list_button">
+                            <ul>
+                                <li>
+                                    <a href="{:U('BuyerOrder/apply_return_list',array('openid'=>$openid,'member_id'=>$member_id,'order_id'=>$vo['id']))}">
+                                        申请售后
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{:U('Order/order_detail',array('openid'=>$openid,'member_id'=>$member_id,'order_id'=>$vo['id']))}" >
+                                        查看订单
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <php>}</php>
+                        <php>if($vo['status']=="4"){</php>
+                        <div class="membeorder_list_button">
+                            <ul>
+                                <li>
+                                    <a class="current" href="javascript:;" onclick="TakeOver({$vo['id']})">
+                                        确认收货
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{:U('Order/order_detail',array('openid'=>$openid,'member_id'=>$member_id,'order_id'=>$vo['id']))}" >
+                                        查看订单
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{:U('BuyerOrder/apply_return_list',array('openid'=>$openid,'member_id'=>$member_id,'order_id'=>$vo['id']))}">
+                                        申请售后
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{:U('BuyerOrder/shipping',array('openid'=>$openid,'member_id'=>$member_id,'shipping_id'=>$vo['shipping_id'],'send_no'=>$vo['send_no']))}">
+                                        物流信息
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <php>}</php>
+                        <php>if($vo['status']=="5"){</php>
+                        <div class="membeorder_list_button">
+                            <ul>
+                                <li>
+                                    <a href="{:U('BuyerOrder/product_comment',array('openid'=>$openid,'member_id'=>$member_id,'order_no'=>$vo['order_no']))}">
+                                        <php>if($vo['product'][0]['is_comment']=="0"){</php>产品评论<php>}else{</php>追加评论<php>}</php>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{:U('BuyerOrder/apply_return_info',array('openid'=>$openid,'member_id'=>$member_id,'order_id'=>$vo['id']))}">
+                                        申请售后
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{:U('Order/order_detail',array('openid'=>$openid,'member_id'=>$member_id,'order_id'=>$vo['id']))}" >
+                                        查看订单
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <php>}</php>
+                    </div>
+                <php>}else{</php>
+                <php>if($vo['web_id']==C('WEB_ID')&&$vo['status']>5){</php>
+                <div class="member_return">
+                    <div class="member_return_list">
+                        <a href="{:U('BuyerOrder/apply_return_info',array('openid'=>$openid,'member_id'=>$member_id,'order_id'=>$vo['id'],'service_no'=>$vo['service_no']))}" >
+                        <div class="membeorder_list_No">
+                            <div class="membeorder_list_No_left">订单号:{$vo['order_no']}</div>
+                            <div class="membeorder_list_No_right"><span>{$vo['status_name']}</span></div>
+                        </div>
+                        <volist name="vo['product']" id="v" key='k'>
+                        <div class="membeorder_list_pro">
+                            <div class="membeorder_list_pro_img">
+                                <img src="{$v['thumb']|show_Pic}">
+                            </div>
+                            <div class="membeorder_list_pro_txt">
+                                {$v['web_id']}{$v['name']}
+                            </div>
+                            <div class="membeorder_list_pro_num">￥&nbsp;&nbsp;{$v[unit_price]}
+                                <span>×&nbsp;{$v[num]}</span>
+                            </div>
+                        </div>
+                        </volist>
+                        </a>
+                        <div class="membeorder_list_total membeorder_list_line">
+                            交易金额：￥{$vo['total']}&nbsp;&nbsp;退款金额：{$vo['total']}
+                        </div>
+                    </div>
+                    <!---中间间隔--->
+                    <div class="membercenter-line"></div>
+                </div>
+                <php>}</php>
+                <php>}</php>
+            </volist>
+        </div>
+    </volist>
+<else />
+    <div class="Content" >
+        <div class="membeorder_none"><i><img src="SKIN_HTML5/{$templet_name}/images/member-note .png"></i>
+            <span>您还没有相关的订单！</span>
+            <div class="membeorder_none_btn">
+                <a href="{:U('Index/index',array('openid'=>$openid,'member_id'=>$member_id))}">
+                    继续随便逛逛
+                </a>
+            </div>
+        </div>
+    </div>
+</if>

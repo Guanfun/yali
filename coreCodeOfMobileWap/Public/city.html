@@ -1,0 +1,22 @@
+<ul id="accordion" class="accordion">
+
+</ul>
+<script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/city.min.js"></script>
+<script>
+    var url="{:U('Shop/index')}";
+    var h="";
+    var total = new Array();
+    $.each(region,function(i,address){
+        total.push(address);
+    });
+    $.each(total,function(i,prov){
+        h+="<li>";
+        h+="<div class='link'>"+prov.name+"<i class='fa fa-chevron-down'></i></div><ul class='submenu'>";
+        h+="<li><a href="+url+"?province="+prov.id+">"+prov.name+"全部</a></li>";
+        $.each(prov.child,function(i,citys){
+            h+="<li><a href="+url+"?province="+prov.id+"&city="+citys.id+">"+citys.name+"</a></li>";
+        });
+        h+="</ul></li>";
+    });
+    $("#accordion").html(h);
+</script>

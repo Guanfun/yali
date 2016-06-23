@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>简介详情</title>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+<meta content="no-cache" http-equiv="pragma">
+<meta content="0" http-equiv="expires">
+<meta content="telephone=yes, address=yes" name="format-detection">
+<meta name="apple-mobile-web-app-capable" content="yes"> 
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
+
+<link rel="stylesheet" type="text/css" href="css/index.css">
+<link href="css/style.css" rel="stylesheet" type="text/css">
+<link href="css/global.css" rel="stylesheet" type="text/css">
+<link href="css/bin1.css" rel="stylesheet" type="text/css">
+<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="css/menu.css" rel="stylesheet" type="text/css"/>
+<script src="js/jquery.min.js"></script>
+<script src="js/menu.js" type="text/javascript"></script>
+</head>
+
+<body>
+
+<header id="header">
+    <div class="top">
+		<a href="javascript:window.history.go(-1)" class="headerLeft"><img src="images/back2.png"></a>
+        <div class="hTitle">简介详情</div>
+		<!--<a class="headerRight" onclick="submit()"><span>保存</span></a>-->
+    </div>
+</header>
+
+
+<section id="container">
+	
+	<form class="addForm" action="MemberCenter.html"><!-- method="post"-->
+		<ul class="sep_teams">
+			<div class="headTitle">基本资料</div>
+			<li class="ava">
+				<span>头像</span>
+				<small>
+					<img src="images/dujiaoshou.jpg">
+				</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>姓名</span>
+				<small>都教授</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>出生年份</span>
+				<small>1990年</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>婚姻状况</span>
+				<small>未婚</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>手机号码</span>
+				<small>13188888888</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>邮箱</span>
+				<small>dujiaoshou@yundu.com</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>户口</span>
+				<small>佛山</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>状态</span>
+				<small>最快可以一个星期入职</small>
+				<div class="clear"></div>
+			</li>
+		</ul>
+		
+		<ul class="sep_teams">
+			<div class="headTitle">职业意向</div>
+			<li>
+				<span>期望行业</span>
+				<article>互联网/移动互联网/电子商务;房地产开发/建筑/建材/工程;家具/家电</article>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>期望职能</span>
+				<small>WEB前端开发工程师</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>期望地点</span>
+				<small>广东佛山</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>期望年薪</span>
+				<small>2000-3000元</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>目前年薪</span>
+				<small>2000-3000元</small>
+				<div class="clear"></div>
+			</li>
+		</ul>
+		
+		<ul class="sep_teams">
+			<div class="headTitle">工作经历</div>
+			<li>
+				<span>所在公司</span>
+				<small>佛山市鸭梨科技有限公司</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>担任职位</span>
+				<small>网页设计师</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>在职时间</span>
+				<small>2010.01-2010.12</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>工作地点</span>
+				<small>广东佛山</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li class="bottomLine">
+				<span>工作职责</span>
+				<small>网页版面设计</small>
+				<div class="clear"></div>
+			</li>
+			
+			<!--后台循环读取工作经历-->
+			<div id="workExp" style="display: none;">
+				<li>
+					<span>所在公司</span>
+					<small>佛山市鸭梨科技有限公司</small>
+					<div class="clear"></div>
+				</li>
+				
+				<li>
+					<span>担任职位</span>
+					<small>网页设计师</small>
+					<div class="clear"></div>
+				</li>
+				
+				<li>
+					<span>在职时间</span>
+					<small>2010.01-2010.12</small>
+					<div class="clear"></div>
+				</li>
+				
+				<li>
+					<span>工作地点</span>
+					<small>广东佛山</small>
+					<div class="clear"></div>
+				</li>
+				
+				<li class="bottomLine">
+					<span>工作职责</span>
+					<small>网页版面设计</small>
+					<div class="clear"></div>
+				</li>
+			</div>
+			
+			<div class="ink_submit">
+				<input type="button" value="更多" class="submit" onclick="show()">
+			</div>
+		</ul>
+		
+		<ul class="sep_teams">
+			<div class="headTitle">教育经历</div>
+			<li>
+				<span>所读学校</span>
+				<small>华南师范大学</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>专业名称</span>
+				<small>艺术设计</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>学历</span>
+				<small>本科</small>
+				<div class="clear"></div>
+			</li>
+			
+			<li>
+				<span>在读时间</span>
+				<small>2010.01-2013.12</small>
+				<div class="clear"></div>
+			</li>
+		</ul>
+		
+		<ul class="sep_teams">
+			<div class="headTitle">语言能力</div>
+			<li>
+				<span>语言能力</span>
+				<small>英语四级、普通话流利</small>
+				<div class="clear"></div>
+			</li>
+		</ul>
+		
+		<ul class="sep_teams lastTeam">
+			<div class="headTitle">自我评价</div>
+			<li>
+				<span>擅长技能</span>
+				<article>IOS、HTML5、JAVA、C#</article>
+				<div class="clear"></div>
+			</li>
+			<li>
+				<span>自我评价</span>
+				<article>本人除了具备电工知识外，还有对房地产的物业管理有较好的认知与操作。比如：如何提高自己的服务意识，如何强化与业主间的沟通，如何对装修人员的管理，在装修期间如何对进出人员的管理......尤其进了广州越秀城建地产公司属下的广州城建开发物业有限公司之后，公司对员工的要求是挺高的，不但技能要好，而且物业管理ISO体系文件的培训与考核。另外，我在二沙岛的花城苑与云影花园的高尚住宅干了多年，还在天河区的一处高层商业楼任职过。故，对高尚住宅和高层写字楼的技能和物业管理，都有着实质性地接触和物业的管理经验。再则，本人对弱电的知识和家电的维修也有实质性地接触和维护技能。还有，也给某公司的高层人士开过车及负责过某单位的物料运输。最后，本人对电脑的维护及办公软件的运用也有一定的实质性的知识。</article>
+				<div class="clear"></div>
+			</li>
+		</ul>
+		
+	</form>
+		
+	<script>
+		function show(){
+			$("#workExp").toggle();
+			if($(".ink_submit input").val() == '更多'){
+				$(".ink_submit input").val("收起");
+			}else{
+				$(".ink_submit input").val("更多");
+			}
+		}
+	</script>
+
+	<div class="deal">
+		<input type="button" value="通知面试" class="submit">
+	</div>
+
+</section>
+
+	<footer id="footer">
+		<ul>
+			<li><a href="Index.html"><span></span><i>首页</i></a></li>
+            <li><a href="Shop_Index.html"><span></span><i>招商加盟</i></a></li>
+            <li><a href="Product_Index.html"><span></span><i>产品信息</i></a></li>
+            <li><a href="OpenShop.html"><span></span><i>我要加盟</i></a></li>
+		</ul>
+	</footer>
+
+</body>
+</html>

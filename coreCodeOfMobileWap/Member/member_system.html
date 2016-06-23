@@ -1,0 +1,68 @@
+<include file="Public:header" />
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/system_message.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<header id="header">
+    <div class="top">
+        <a href="javascript:window.history.go(-1)" class="headerLeft"><img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+        <div class="hTitle">
+            系统消息
+        </div>
+        <!--<a class="headerRight"><span>����</span></a>-->
+    </div>
+</header>
+<!--3、此处加入主体内容，id="container"必带-->
+<section id="container">
+    <div class="system_content">
+        <ul>
+            <volist name="list['list']" id="vo">
+            <li id="{$vo.id}">
+                <p class="system_status" id="{$vo['is_read']}" <php>if($vo['is_read']==1){</php>style="color:#333;"<php>}else{</php>style="color:#f60;"<php>}</php>>{$vo['content']}</p>
+                <p>{$vo['addtime']|msubstr=###,2,8}</p>
+                <p class="system_main">{$vo['content']}</p>
+            </li>
+            </volist>
+        </ul>
+        <php>
+            $page=1;
+            if(isset($_GET["p"]))
+            {
+            $page=$_GET["p"];
+            }
+        </php>
+        <php>if($list['totalPage']>1){</php>
+        <div class="page_list">
+        <a <php>if($page-1>0){</php> href={:U('Member/member_system',array('openid'=>$openid,'member_id'=>$member_id,p=>$page-1))}<php>}else{</php>href="javascript:;"<php>}</php> >
+            上一页
+        </a>
+        <a <php>if($page < $list['totalPage']){</php> href={:U('Member/member_system',array('openid'=>$openid,'member_id'=>$member_id,p=>$page+1))}<php>}else{</php>href="javascript:;"<php>}</php> >
+            下一页
+        </a>
+        </div>
+        <php>}</php>
+    </div>
+</section>
+<include file="Public:footer" />
+<!--4、此处引入js，2个jquery文件需带上-->
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+<script>
+    $("li").click(function(){
+        var id=$(this).attr("id");
+        var li=$(this);
+        var sid=$(this).children("p.system_status").attr("id");
+        if(sid=="0") {
+            $.get("{:U('Member/saveMemberSystem',array('openid'=>$openid,'member_id'=>$member_id))}", {id: id}, function (s) {
+                if (s.status == "1") {
+                    li.children("p.system_main").slideToggle();
+                    li.children("p.system_status").css("color","#333");
+                }
+            }, 'json');
+        }else{
+            li.children("p.system_main").slideToggle();
+        }
+    });
+</script>
+</body>
+</html>

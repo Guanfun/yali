@@ -1,0 +1,14 @@
+﻿*{margin:0px; padding:0px; font-size:12px; overflow:hidden;}
+.on{ background:#fdeca9;}
+ul,li{ margin:0px; padding:0px; list-style:none; overflow:auto; border-bottom:1px solid #79bbe0;}
+#main{width:700px; margin:10px auto 0px; position:relative;}
+#head{ width:100%;height:80px; background:url(../images/top_bg.png) repeat-x; line-height:80px; font-size:20px; font-weight:bold; color:#fff; text-align:center;}
+#left{width:350px; height:500px; float:left; border:1px solid #79bbe0; overflow:hidden;}
+#right{width:340px; float:left; border:1px solid #79bbe0;}
+.userinfo{ width:320px; text-align:center; margin:0 auto; padding-top:3px;}
+.userinfo dd{width:45px; float:left; overflow:hidden; position:relative;}
+.userinfo dd img{ width:45px; height:45px;}
+.userinfo dt{ width:220px; float:left;padding-left:5px; text-align:left; padding-top:5px;}
+.userinfo dd span{ position:absolute; top:0px; right:0px; color:#fff; background:#ea5c4e; padding:3px; border-radius:3px;}
+#msg_history,#userlist{ height:500px; width:100%;} 
+.msglist{ width:90%; margin:0 auto; padding-top:5px;}

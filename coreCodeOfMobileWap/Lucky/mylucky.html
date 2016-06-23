@@ -1,0 +1,33 @@
+﻿<include file="Public:header" />
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<body>
+    <include file="Public:top" />
+    <script>
+        $(".hTitle").html("我的抽奖记录");
+    </script>
+     <style>
+   *{ margin:0px; padding:0px; list-style:none;text-decoration:none;}
+   a:link,a:hover,a:visited{ color:#000; }
+  .myluckylist{width:90%; margin:0 atuo;clear:both ;line-height:30px;  padding-left:10px;font-size:0.8em ; border:1px solid #f00; border-radius:5px; margin:5px auto 0px;}
+   .right{ text-align:right; display:block; float:right;}
+  dt{ font-weight:bold;}
+   </style>
+    <main class="cd-main-content">
+   <img src="SKIN_HTML5/{$templet_name}/Lucky/lucky.jpg" style="width:100%; margin:0 atuo;" />
+    <section style="width: 98%;">
+    
+  <volist name="lists" id="lists">
+   <dl class="myluckylist">
+      <dt>活动名称:{$lists['title']}</dt>
+      <dd>奖项:{$lists['prize_title']}</dd>
+      <dd>获奖时间:{$lists['addtime']|date='Y-m-d',###}</dd>
+      <dd>是否已兑奖:{$lists['status']==0?"未兑奖":"已兑奖"}</dd>
+      <dd>兑奖时间:<if condition="$lists['exchange_time'] eq '0'">暂无 <else />{$lists['exchange_time']|date='Y-m-d',###}</if></dd>
+    
+    </dl>
+  </volist>
+
+    </section>
+</main>
+    <include file="Public:top_nav" />
+    <include file="Public:footer" />

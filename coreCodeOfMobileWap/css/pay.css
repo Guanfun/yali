@@ -1,0 +1,104 @@
+/*订单支付确认*/
+.Order_pay_content{
+    width: 96%;
+    padding:2%;
+    overflow: hidden;
+    font-size: 1em;
+    line-height: 1.5em;
+    color:#333;
+}
+.pay_order_no{
+    background: #5f759d;
+    width: 100%;
+    font-size: 1.2em;
+    line-height: 2em;
+    overflow: hidden;
+    color:#fff;
+    text-align: center;
+}
+.pay_order_details{
+    width: 96%;
+    padding:1em 2%;
+    overflow: hidden;
+    background: #fff;
+}
+.pay_order_details h3{
+    line-height: 2em;
+    text-align: center;
+}
+.pay_order_details table{
+    width: 100%;
+    border:none;
+    border-collapse: collapse;
+}
+.pay_order_details table tr{
+    border-bottom: 1px solid #e6e6e6;
+    padding:0.2em;
+    line-height: 2em;
+}
+.pay_order_details table tr td:nth-child(1){
+    width: 5em;
+}
+.pay_order_details table tr td:nth-child(2){
+    padding-left: 1em;
+}
+.pay_order_details table tr td{
+    font-size: 1em;
+    text-align: left;
+}
+.Order_pay_content h1{
+    background: #fff;
+    padding:0.5em 0;
+}
+.add_address_submit{
+    width: 96%;
+    margin: 1% 2% 2%;
+    padding:0.25em;
+    text-align: center;
+    background: #ff4f4f;
+    color: #fff;
+    font-size: 1em;
+    line-height: 2em;
+    border-radius: 0.25em;
+}
+.payWay{
+    width: 100%;padding:0.5em 0;overflow: hidden;    background: #fff;
+}
+.payWay ul{
+    width: 70%;
+    overflow: hidden;
+}
+.payWay li{float: right;
+    padding:0;
+    margin-right:5%;
+    text-align: center;
+    border: 1px solid #eee;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    background: #fff;
+    color:#fff;
+    width:40%;
+}
+.payWay li img{
+    max-width: 100%;
+}
+.payWay li.on{
+    border: 1px solid #5f759d;
+    background: #5f759d;
+}
+.total_fee{
+    width: 30%;
+    float: left;
+    text-align: center;
+    display:block;
+    background: #fff;
+    padding: 0.5em 0;
+}
+.total_fee p{
+    font-size: 1.2em;
+    line-height: 1.5em;
+}
+orange{
+    color:#f60;
+}

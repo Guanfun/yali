@@ -1,0 +1,123 @@
+<include file="Public:header" />
+<link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/index.css">
+<link href="SKIN_HTML5/{$templet_name}/css/style.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+</head>
+
+<body>
+
+<header id="header">
+    <div class="top">
+		<a href="javascript:window.history.go(-1)" class="headerLeft"><img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+        <div class="hTitle">店铺分类</div>
+		<a class="headerRight"><span>新增</span></a>
+    </div>
+</header>
+
+
+
+<section id="container">
+	
+	<div class="addInfo">
+		<input placeholder="请输入店铺分类" />
+		<button id="submit">确认</button>
+		<button id="cancel">取消</button>
+	</div>
+	<div class="floor2"></div>
+	
+	<ul class="myShopType">
+		<li class="no_bg">
+			<p>9月份新品上架</p>
+			<input value=""/>
+			<div><a href="#">删除</a></div>
+			<div><a href="#" class="edit">编辑</a></div>
+		</li>
+		
+		<li class="no_bg">
+			<p>10月份新品上架</p>
+			<input value=""/>
+			<div><a href="#">删除</a></div>
+			<div><a href="#" class="edit">编辑</a></div>
+		</li>
+		
+		<li class="no_bg">
+			<p>11月份新品上架</p>
+			<input value=""/>
+			<div><a href="#">删除</a></div>
+			<div><a href="#" class="edit">编辑</a></div>
+		</li>
+		
+		<li class="no_bg">
+			<p>12月份新品上架</p>
+			<input value=""/>
+			<div><a href="#">删除</a></div>
+			<div><a href="#" class="edit">编辑</a></div>
+		</li>
+		
+		<li class="no_bg">
+			<p>1月份新品上架</p>
+			<input value=""/>
+			<div><a href="#">删除</a></div>
+			<div><a href="#" class="edit">编辑</a></div>
+		</li>
+	</ul>
+	
+	<div class="pagePreNext">
+		<a href="javascript:;" class="no">上一页</a>
+		<div class="page_num">第
+			<select id="page_select" onchange="javascript:window.location=this.value">
+				<option value="" selected="selected">1</option>
+				<option value="">2</option>
+			</select> 页 共 2 页
+		</div>
+		<a href="javascript:;">下一页</a>
+	</div>
+	
+	<script>
+		$(".headerRight").click(function(){
+			$(".addInfo input").attr("value","");
+			$(".addInfo").css("display","block");
+			$(".floor2").css("display","block");
+		});
+		$("#cancel").click(function(){
+			$(".addInfo").css("display","none");
+			$(".floor2").css("display","none");
+		});
+		$("#submit").click(function(){
+			$(".addInfo").css("display","none");
+			$(".floor2").css("display","none");
+			$(".myShopType").prepend(
+				"<li class='no_bg'>" +
+				"<p>" + $(".addInfo input").val() + "</p>" +
+				"<input value=''/>" +
+				"<div><a href='#'>删除</a></div>" +
+				"<div><a href='#' class='edit'>编辑</a></div>" +
+				"</li>"
+			);
+		});
+		$(".edit").click(function(){
+			if($(this).html() == '编辑'){
+				$(this).text("确认");
+				$(this).parent().siblings('p').css("display","none");
+				$(this).parent().siblings('input').css("display","block");
+				$(this).parent().siblings('input').val(
+					$(this).parent().siblings('p').html()
+				);
+			}
+			else{
+				$(this).text("编辑");
+				$(this).parent().siblings('input').css("display","none");
+				$(this).parent().siblings('p').css("display","block");
+				$(this).parent().siblings('p').html(
+					$(this).parent().siblings('input').val()
+				);
+			}
+		});
+	</script>
+	
+	
+</section>
+<include file="Public:footer" />
+</body>
+</html>

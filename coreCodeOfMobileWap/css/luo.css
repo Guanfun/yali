@@ -1,0 +1,28 @@
+/*新闻内页上下分页*/
+.page{width:90%; padding:5% 5% 10% 5%;background:#eee;border-top:1px dotted #ccc; }
+.page P,.page span{
+	font-size: 1em;
+	line-height: 1.5em;
+}
+.page img{
+	max-width: 100%;
+	text-align: center;
+}
+.pre{float:left;  display:block;  padding:0.2em 0.1em; color:#fff; background:#999; width:18%; border:1px solid #ccc; border-radius:5px;font-size: 1em;}
+.next{float:right; display:block; padding:0.2em 0.1em; color:#fff; background:#999; width:18%;  border:1px solid #ccc;border-radius:5px;font-size: 1em;}
+.bottom{width:100%; padding:2.2% 0;background:#eee; }
+
+.modal-footer .btn{
+    width: 45%;
+    float: right;
+    padding:0.5em 0;
+    background: rgb(253,154,52);
+    color:#fff;
+    text-align: center;
+    border-radius: 0.25em;
+}
+.modal-footer .btn-danger,#sure{
+    background: rgb(255,104,1);
+    margin-right: 8% !important;
+    display: none;
+}

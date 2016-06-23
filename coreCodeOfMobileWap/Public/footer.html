@@ -1,0 +1,39 @@
+
+			<!--尾部：开始-->
+			<getMobilePack name="footer_css_group" content_type="2" client_type="4" member_id="$member_id" openid="$openid"/>
+			<footer id="footer">
+				{$footer_css_group['html']}
+			</footer>
+			<!--尾部：结束-->
+			<script>
+		$(document).ready(function(){
+			$( '.sidebar' ).css("display","none");
+			$(".subNav").click(function(){
+				// 修改数字控制速度， slideUp(500)控制卷起速度
+				$(this).next(".navContent").slideToggle(500);
+			});
+		});
+			//更换菜单按钮、侧边菜单的方向
+			function changeSide(e,div_id){
+				var sidebarID = '#open-sb-new-'+div_id;
+				var pick = '#open-sb-'+div_id;
+				if($(sidebarID).css("display") === 'none'){
+					$( sidebarID ).simpleSidebar({
+						settings: {
+							opener: pick,
+							wrapper: '.wrapper',
+							animation: {
+								duration: 500,
+								easing: 'easeOutQuint'
+							}
+						},
+						sidebar: {
+							align: e,
+							width: 200,
+							closingLinks: 'a'
+						}
+					});
+					$(pick).click();
+				}
+			}
+		</script>

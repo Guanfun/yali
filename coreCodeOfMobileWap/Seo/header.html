@@ -1,0 +1,3 @@
+<title>{$seo_title|default=$web_config['title']}</title>
+<meta name="keywords" content="{$seo_keywords|default=$web_config['keywords']}" />
+<meta name="description" content="{$seo_description|default=$web_config['description']|htmlspecialchars_decode|strip_tags|msubstr=###,0,150}" />

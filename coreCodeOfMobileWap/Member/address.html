@@ -1,0 +1,131 @@
+<I name="cart_return" input="get.cart_return" />
+<include file="Public:header" />
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet">
+<link href="SKIN_HTML5/{$templet_name}/css/address.css" rel="stylesheet">
+</head>
+<body>
+<header id="header">
+    <div class="top">
+        <a href="javascript:window.history.go(-1)" class="headerLeft"><img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+        <div class="hTitle">地址管理</div>
+    </div>
+</header>
+<section id="container">  
+    <summary class="addmanager">
+            <table>
+                <volist name="list" id="vo">
+                    <tr class="address_manager_list">
+                        <td class="address_manager_input">
+                            <input type="radio" class="Lockbox_check" id="check_{$i}" value="{$vo[id]}" <eq name="vo['is_default']" value="1">checked="checked"</eq> >
+                            <label name="sex" <eq name="vo['is_default']" value="1">class="checked"</eq> for="check_{$i}"></label></label>
+                        </td>
+                        <td class="address_manager_txt">
+                            <div class="address_manager_txt_address">
+                            {$region[$vo[province]][name]}{$region[$vo[city]][name]}{$region[$vo[zone]][name]}{$vo[address]}
+                            </div>
+                            <div class="address_manager_txt_name">
+                                <b>{$vo[realname]}</b>
+                                <span>{$vo[phone]}</span>
+                            </div>
+                        </td>
+                        <td class="address_manager_edit">
+                            <a href="javascript:;" onclick="editAddress('{$vo[id]}')">
+                                <img src="SKIN_HTML5/{$templet_name}/images/address-bianji.png">
+                            </a>
+                        </td>
+                        <td class="address_manager_edit">
+                            <a href="javascript:;" onclick="delAddress('{$vo[id]}')">
+                                <img src="SKIN_HTML5/{$templet_name}/images/close.png">
+                            </a>
+                        </td>
+                    </tr>
+                </volist>
+            </table>
+
+        <div class="address_manager_newadd">
+            <php>if($count < $web_config[address_num]){</php>
+            <a style="display: block" href="{:U('Member/address_view',array('openid'=>$openid,'member_id'=>$member_id,'cartorderaddress'=>1,'cart_return'=>$cart_return))}">
+                新增地址
+        	<span><img src="SKIN_HTML5/{$templet_name}/images/addmanager-add-round.png"></span></a>
+            <php>}else{</php>
+            <a href="javascript:;">
+                您的地址已满
+            </a>
+            <php>}</php>
+        </div>
+        <div class="clearfix"></div>
+        <div class="address_count">您已创建<span>{$count}</span>个收货地址，最多可创建<span>{$web_config[address_num]}</span>个</div>
+        <div class="clearfix"></div>
+        <php>if($cart_return){</php>
+            <input type="button" class="add_address_submit" value="返回订单" />
+        <php>}</php>
+        <form id="cart_order" action="{:U('Cart/order')}" method="post">
+            <php>if(!$order_cart_id['id']){</php>
+            <volist name="order_cart_id" id="vo" >
+                <input id="id_{$vo['product_id']}" class="item_checkbox" type="hidden" value="{$vo['value']}" cart="{$vo['web_id']}-{$key}" name="id[{$vo['web_id']}][]">
+            </volist>
+            <php>}else{</php>
+            <volist name="order_cart_id" id="vo" >
+            <input type="hidden" name="{$key}" value="{$vo}"/>
+            </volist>
+            <php>}</php>
+            <input type="hidden" id="openid" name="openid" value='{$openid}'/>
+            <input type="hidden" id="member_id" name="member_id" value='{$member_id}'/>
+        </form>
+        <div class="modal fade" id="confirm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-body"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-default btn" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn-primary btn" id="sure">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </summary>
+</section>
+<include file="Public:footer" />
+<!--4、此处引入js，2个jquery文件需带上-->
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<include file="Public:form_validation" />
+<script>
+    $('.add_address_submit').click(function(){
+        $("#cart_order").submit();
+    });
+    $('label').click(function(){
+        var k=$(this).parent("td").children(".Lockbox_check").val();
+        setDefault(k);
+    });
+    function setDefault(id) {
+        bs_comfirm(id, '您是否设置此地址为收货地址？', "{:U('Member/setAddressDefault',array('openid'=>$openid,'member_id'=>$member_id))}");
+    }
+    function editAddress(id) {
+        window.location = (("{:U('Member/address_view',array('openid'=>$openid,'member_id'=>$member_id))}?id=" + id));
+    }
+    function delAddress(id) {
+        bs_comfirm(id, '您确定要删除此收货地址？', "{:U('Member/delAddress',array('openid'=>$openid,'member_id'=>$member_id))}");
+    }
+    function bs_comfirm(id, msg, url) {
+        if (id) {
+            $('#confirm').modal('show').on('shown.bs.modal', function (e) {
+                $('#confirm .modal-body').html(msg);
+                $('#confirm #sure').click(function () {
+                    $.get(url, { id: id }, function (s) {
+                        $('#confirm .modal-body').html(s.data);
+                        $('#sure').hide();
+                        if (s.status == '1') {
+                            location.reload();
+                        } else {
+                        location.reload();
+                        };
+                    }, 'json');
+                });
+            });
+        }
+    }
+</script>
+</body>
+</html>

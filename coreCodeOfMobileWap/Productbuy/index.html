@@ -1,0 +1,182 @@
+<include file="Public:header"/>
+<i name="column_id" input="get.column_id" default="0" />
+<i name="cate_id" input="get.cate_id" default="0" />
+<i name="title" input="get.title" />
+<link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/index.css">
+<link href="SKIN_HTML5/{$templet_name}/css/style.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/bin1.css" rel="stylesheet" type="text/css">
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<!--<script src="js/jquery-1.10.2.min.js"></script>-->
+</head>
+
+<body>
+
+<header id="header">
+    <div class="top">
+		<a href="javascript:window.history.go(-1)" class="headerLeft">
+		<img src="SKIN_HTML5/{$templet_name}/images/back2.png"></a>
+        <div class="hTitle">求购列表</div>
+		<!--<a class="headerRight"><span>新增</span></a>-->
+    </div>
+</header>
+
+
+<style type="text/css">
+	.style6{float: left;width: 100%;background-color: #FFF;padding-bottom: 1em;}
+.style6 li{
+    float: left;
+    width: 33.3%;
+    text-align: center;
+    padding: 1em 0.5em 0;
+    box-sizing: border-box;
+    display: none;
+}
+.style6 li a {
+    float: left;
+    width: 100%;
+    display: table-row;
+    font-size: 1em;
+    height: 2.5em;
+    line-height: 2.5em;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    border-color:#ad6f72;
+    border-style:solid;
+    border-width:1px;
+    color: #ad6f72;
+}
+</style>
+<section id="container" style="margin-bottom: 7.5em;">
+		
+	<getProductBuyCategorys name="cate_data"   is_tree="1"  />
+	<ul class="style6" id="style6">
+		<volist name="cate_data" id="cate_name">
+			<li >
+			<a href="{:U('Productbuy/index',array('cate_id'=>$cate_name['id']))}">
+			{$cate_name['name']}
+			</a>
+			</li>
+		</volist>
+	</ul>
+	<script type="text/javascript">
+		
+        var style6=document.getElementById('style6'), li=style6.getElementsByTagName('li'),en_number=1;
+        if(li.length>3){
+            for(var i=0;i<li.length;i++){if(i>1){li[i].style.display='none';}else{li[i].style.display='block';}}
+            var add="<li  style='display: block;' ><a href='javascript:;' onclick='on_lick(this);'>更多</a> </li>";
+            style6.innerHTML+=add;
+        }
+        function on_lick(obj){
+            for(var i=0;i<li.length;i++){
+                if(i>1 && i<li.length-1){if(li[i].style.display=="none"){li[i].style.display='block';}else{
+                        li[i].style.display='none';}}
+            }
+            if(en_number==1){obj.innerHTML='收起';en_number=0;}else{obj.innerHTML='更多';en_number=1;}
+        }
+	</script>
+	<!-- {$cate_data|P} -->
+	<ul class="myShopType">
+	
+	
+	<getProductBuyList name="data" cate_id="$cate_id" size="10" title="$title"  p="1"/>
+	<volist name="data['list']" id="vo">
+		<a href="{:U('Productbuy/view',array('id'=>$vo['id']))}">
+			<li class="hasArr">
+			<b>
+				<php>if($vo['mobile_thumb']!=""){</php>
+					<img src="{$vo['mobile_thumb']|show_Pic=###,120,120,0}">
+				<php>}elseif($vo['thumb']!=""){</php>
+					<img src="{$vo['thumb']|show_Pic=###,120,120,0}">
+				<php>}else{</php>
+					<img src="/Public/nopic.jpg">
+				<php>}</php>
+			</b>
+			<var>
+				<p class="title listTitle">{$vo['title']}</p>
+				<p class="listTitle">{$vo['num']}{$vo['unit']}，{$vo['price']}元 </p>
+				<span>{$vo['endtime']|substr=###,0,10}</span>
+			</var>
+			</li>
+		</a>
+
+	</volist>		
+	</ul>
+	<p id="loding_a" style="display: none;"><a href="javascript:;" style="text-align: center; color: blue;width: 100%;height: 2em;line-height: 2em;background: #999;display: block;">加载中...</a></p>
+	<php>
+		if($data['total']%10>0){
+			$totalpage=(int)($data['total']/10)+1;
+		}else{
+		$totalpage=(int)($data['total']/10);
+		}
+	</php>
+	<script>
+		$(document).ready(function(){
+			var p=1;
+			if(p<{$totalpage}){
+			window.onscroll=function(){
+		var OscrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+		
+			if(OscrollTop==(document.documentElement.offsetHeight-document.documentElement.clientHeight)){
+				$('#loding_a').css('display','block');
+				p++;
+				$.ajax({
+					type:'POST',
+					url:"{:U('Productbuy/ajxaindex')}?column_id={$vo['column_id']}&cate_id={$cate_id}&pages="+p,
+					success:function(data){
+						var divs=$("<div> </div>");
+						divs.html(data);
+						$(".myShopType").append(divs);
+						$('#loding_a').css('display','none');
+					}
+				});
+			}
+	}
+			
+		}	
+		});
+	</script>
+	<!-- <php>
+		
+		if($data['total']%10>0){
+			$totalpage=(int)($data['total']/10)+1;
+		}else{
+		$totalpage=(int)($data['total']/10);
+		}
+	</php>
+	<php>
+		if($totalpage>1){
+	</php>
+	<div class="pagePreNext">
+	<php>if($pages-1>0){</php>
+		<a href="{:U('Productbuy/index',array(p=>$pages-1,'openid'=>$openid,'member_id'=>$member_id))}" >上一页</a>
+	<php>}else{</php>
+		<a href="javascript:;" class="no">上一页</a>
+	<php>}</php>
+		<div class="page_num">第
+			<select id="page_select" onchange="javascript:window.location=this.value">
+				<php>for($i=1;$i<=$totalpage;$i++){</php>
+				<option value="{:U('Productbuy/index',array(p=>$i))}" <php>if($i==$pages){</php> selected="selected"<php>}</php> >{$i}</option>
+				<php>}</php>
+			</select> 页 共 {$totalpage}页
+		</div>
+		<php>
+			if($pages<$totalpage){
+		</php>
+		<a href="{:U('Productbuy/index',array(p=>$pages+1,'openid'=>$openid,'member_id'=>$member_id))}">下一页</a>
+		<php>}else{</php>
+		<a href="javascript:;" class="no">下一页</a>
+		<php>}</php>
+	</div>
+	<php>}</php> -->
+	
+	<!-- <div class="deal" >
+		<a href="{:U('Productbuy/my_list',array('openid'=>$openid,'member_id'=>$member_id))}"><input type="button" name="submit" value="我的求购" class="submit"></a>
+	</div> -->
+</section>
+
+	<include file="Public:footer"/>
+
+</body>
+</html>

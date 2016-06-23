@@ -1,0 +1,24 @@
+<include file="Public:header" />
+<I name="status_value" input="get.status_value" default="-1" />
+<style>
+    iframe{
+        width: 96%;
+        padding:0 2%;
+        height: 1000px;
+    }
+</style>
+<link rel="stylesheet" href="SKIN_HTML5/{$templet_name}/css/global.css" />
+</head>
+<body>
+<include file="Public:top" />
+<!--3、此处加入主体内容，id="container"必带-->
+<section id="container">
+    <if condition="$one['shipping_type'] eq 1">
+        {$one['shipping_content']}
+        <else/>
+        <iframe name="kuaidi100" src="{$one['shipping_content']}"></iframe>
+    </if>
+</section>
+<include file="Public:footer" />
+</body>
+</html>

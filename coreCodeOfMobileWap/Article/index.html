@@ -1,0 +1,121 @@
+<include file="Public:header"/>
+
+<link rel="stylesheet" type="text/css" href="SKIN_HTML5/{$templet_name}/css/index.css">
+<link href="SKIN_HTML5/{$templet_name}/css/superIndex.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/style.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+<link href="SKIN_HTML5/{$templet_name}/css/bin1.css" rel="stylesheet" type="text/css">
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<i name="column_id" input="get.column_id" default="0" />
+<i name="cate_id" input="get.cate_id" default="0" />
+<I name="keywords" input="get.keywords" default="0" />
+<getarticlecolumn name="data_column" id="$column_id" />
+<getarticlecategorys name="article_categorys_list_top" column_id="$column_id" is_mobile="1"/>
+<volist name="article_categorys_list_top" id="vo_top">
+	<eq name="cate_id" value="$vo_top.id" >
+		<assign name="data_cate_name" value="$vo_top.name" />
+	</eq>
+</volist>
+<style type="text/css">
+
+</style>
+</head>
+
+<body>
+
+<include file="Public:top"/>
+
+
+
+<section id="container">
+		
+	<ul class="style6" id="style6">
+	<eq name="keywords" value="0">
+	<if condition="count($article_categorys_list_top) gt 1">
+	<volist name="article_categorys_list_top" id="vo_top">
+		<li>
+			<a href="{:U('Article/index',array('column_id'=>$vo_top['column_id'],'cate_id'=>$vo_top['id'],'openid'=>$openid,'member_id'=>$member_id))}">{$vo_top['name']}</a>
+		</li>
+	</volist>
+
+	</if>
+	<getarticles name="articles_list" column_id="$column_id" cate_id="$cate_id" limit="1" is_page="1" size="10" />
+	<else/>
+	<getArticles name="articles_list" title="$keywords" size="999" p="1" />
+	</eq>
+	</ul>
+	<form class="search" action="{:U("Article/index")}">
+		<div class="searchInput2">
+			<input type="text" placeholder="请输入关键词" name="keywords" required="">
+		</div>
+  		<button type="submit"><img src="/App/Front/Html5/packaging_h/images/search_for.png"></button>
+  	</form>
+    <script>
+        var style6=document.getElementById('style6'), li=style6.getElementsByTagName('li'),en_number=1;
+        if(li.length>3){
+            for(var i=0;i<li.length;i++){if(i>1){li[i].style.display='none';}}
+            var add="<li  style='display: block;' ><a href='javascript:;' onclick='on_lick(this);'>更多</a> </li>";
+            style6.innerHTML+=add;
+        }
+        function on_lick(obj){
+            for(var i=0;i<li.length;i++){
+                if(i>1 && i<li.length-1){if(li[i].style.display=="none"){li[i].style.display='block';}else{
+                        li[i].style.display='none';}}
+            }
+            if(en_number==1){obj.innerHTML='收起';en_number=0;}else{obj.innerHTML='更多';en_number=1;}
+        }
+    </script>
+	
+	<ul class="myShopType">
+	<volist name="articles_list['list']" id="lists">
+		<a href="{:U('Article/view',array('column_id'=>$lists['column_id'],'cate_id'=>$lists['cate_id'],'id'=>$lists['id'],'openid'=>$openid,'member_id'=>$member_id))}">
+			<li class="hasArr">
+				<p>{$lists['title']}</p>
+				<span>{$lists.addtime|msubstr=###,0,10}</span>
+			</li>
+		</a>	
+	</volist>
+	</ul>
+	<p id="loding_a" style="display: none;"><a href="javascript:;" style="text-align: center; color: blue;width: 100%;height: 2em;line-height: 2em;background: #999;display: block;">加载中...</a></p>
+	<php>
+		$pages=1;
+		if(isset($_GET['p'])){
+			$pages=$_GET['p'];
+		}
+		
+	</php>
+	<script>
+		$(document).ready(function(){
+			var p=1;
+			document.getElementsByTagName('html')[0].style.height="initial";
+			window.onscroll=function(){
+			if(p<{$articles_list['totalPage']}){
+			
+		var OscrollTop=document.documentElement.scrollTop||document.body.scrollTop;
+		
+			if(OscrollTop==(document.documentElement.offsetHeight-document.documentElement.clientHeight)){
+				$('#loding_a').css('display','block');
+				p++;
+				$.ajax({
+					type:'POST',
+					url:"{:U('Article/ajax_article_content')}?column_id={$column_id}&cate_id={$cate_id}&p="+p,
+					success:function(data){
+						var divs=$("<div> </div>");
+						divs.html(data);
+						$(".myShopType").append(divs);
+						$('#loding_a').css('display','none');
+					}
+				});
+			}
+	}
+			
+		}	
+		});
+	</script>
+	
+</section>
+
+	<include file="Public:footer"/>
+
+</body>
+</html>

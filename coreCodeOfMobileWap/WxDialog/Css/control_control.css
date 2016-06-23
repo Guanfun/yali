@@ -1,0 +1,184 @@
+﻿*
+{
+    margin: 0px;
+    padding: 0px;
+    font-size: 12px;
+    overflow: hidden;
+}
+.on
+{
+    background: #fdeca9;
+}
+ul, li
+{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    overflow: auto;
+    border-bottom: 1px solid #b4b4b4;
+}
+#main
+{
+    width: 662px;
+    margin: 0px auto 0px;
+    position: relative;
+    padding: 5px;
+    background: #d4d4d4;
+    border:1px solid #b4b4b4;
+}
+#head
+{
+    width: 100%;
+    height: 32px;
+    background: url(../images/top_bg.png) repeat-x;
+    line-height: 32px;
+    font-size: 14px;
+    color: #fff;
+    text-align: center;
+    border: 1px solid #b50b0e;
+}
+#left
+{
+    width: 350px;
+    height: 500px;
+    float: left;
+    border: 1px solid #b4b4b4;
+    overflow: hidden;
+    position: relative;
+    background:#fff;
+}
+#right
+{
+    width: 298px;
+    float: right;
+    border: 1px solid #b4b4b4;
+    border-bottom: 0px;
+    background:#fff;
+}
+.userinfo
+{
+    width:268px;
+    text-align: center;
+    margin: 0 auto;
+    padding-top: 3px;
+}
+.userinfo dd
+{
+    width: 35px;
+    float: left;
+    overflow: hidden;
+    position: relative;
+}
+.userinfo dd img
+{
+    width: 35px;
+    height: 35px;
+}
+.userinfo dt
+{
+    width: 220px;
+    float: left;
+    padding-left: 5px;
+    text-align: left;
+    padding-top: 5px;
+}
+.userinfo dd span
+{
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    color: #fff;
+    background: #ea5c4e;
+    padding: 3px;
+    border-radius: 3px;
+}
+#msg_history
+{
+    width: 100%;
+    height: 450px;
+}
+#userlist
+{
+    height: 500px;
+    width: 100%;
+}
+.msglist
+{
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 5px;
+}
+
+/*在线聊天开始*/
+.input-wrap
+{
+    position: absolute;
+    bottom: 0px;
+    z-index: 999 !important;
+    background-color: #f8f8f8;
+    border-top: 1px solid #cbcbcb;
+    bottom: 0;
+    font-size: 0;
+    padding: 8px 60px 8px 10px;
+    width: 100%;
+}
+.input
+{
+    border: 1px solid #cbcbcb;
+    display: block;
+    font-size: 14px;
+    padding-left: 10px;
+    width: 100%;
+}
+.input, .send-btn
+{
+    line-height: 30px;
+}
+.input, .notice, .send-btn
+{
+    border-radius: 3px;
+}
+.input, .send-btn
+{
+}
+.input, .input-wrap
+{
+    box-sizing: border-box;
+}
+.input, a:active, a:hover
+{
+    outline: 0 none;
+}
+input
+{
+    line-height: normal;
+}
+button, input, optgroup, select, textarea
+{
+    color: inherit;
+    font: inherit;
+    margin: 0;
+}
+.send-btn
+{
+    background-color: #25a6da;
+    color: #fff;
+    display: none;
+    font-size: 14px;
+    margin-left: 7px;
+    padding: 0 6px;
+    right: 7px;
+    text-align: center;
+}
+.img-btn
+{
+    background: rgba(0, 0, 0, 0) url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAlCAYAAAAA7LqSAAAAAXNSR0IArs4c6QAAA15JREFUWAndmLFLW1EUxk+SUgyKXcQYFJPFreIkKHTopNIhU4UuXdoh6Fb7D7h1aCndNEu3Qrs6mV1QcBLHLCoGRZxEjYtJ7+/BAU1q4j33KaYfhJv33jnfud+799x77ktIIJaXl5OZTOZPIpF4G0C1cXl5ObO0tFSzciStjurnRHwPFAHVq3Q6/Xt+fj6lvL5t4l8OKysrjeb7CwsLLbbO7rMT8a3Z1nrdaDR+ujgfLf7mEXEi3jkRXy1B7/JxfB8c75e7nre73/KW2xnrMxfstQtadtfP9V6cbb1e/7S4uPjDh9NbiBPx0onYcEFe+ATytHWzrPHeTbNf9/VLrK6uvnHGJfcbua/TE7M7dP0pkiPdLIJ3ygCUENKtI4EIxYh51VKGp9I+e4iOZLNZyeVyQtvb2ys9PT1ydXUlFxcXcnR0JPv7+1HbKXaxWIxMSiVmf3vEKmR4eFimpqZkYGCgJSqC+A0ODsrExIScnp7K1taWVKvVFlvLDVatll3cl8gtxzI9PS3j4+OR6/n5uVQqFTk4OJCzs7NoNBiV/v5+GR0dlbGxMenr64tsd3d3ZXNzU9xy6xv2ln2wEETMzs5GU+n6+lq2t7eFzrlN7VagmxfJZDISPTk5KalUKppq5XI5SExwsjMS5EOtVpO1tTXZ2dlpKwJBiMQOe/zwhycEQULICaYTI7G+vi4nJydefcEeP/zhgc+KICEkNmA6+YrQDuOHP1A+febTmoWwtLI6kdjkRAjwhwc+eC0wC8nn81E8Vqd2iX2fTuEPDyBfLDALGRoaiuKxxMYB5Xn0EWFzA+wTcUB5lNeX0zwibHCA0iMOKI/y+nKahYQGbu6oClDe5uedrs1CKAABZUccUB7l9eU0C6GKBdROcUB5lNeX0yyEUhxQAFI7hQB/eIDy+vKZe8CboxSnitWq1ze42uMPD3yPPiJ0gvMEoIrlnGEBfvgD5bPwmEeEYByKKC8oxefm5rzFIAI//OEJOWQFCUEMhyLmtft2K4VCITr9dcoZnnNKxB4//OEJQfDBiuD/xQnx5ltsd2a/acf/J3lmb+4khR/VMYUltRO7Njs2m93x8bHs7e2ZV6fmWHod61cUJWUJtS6jyuHbBie7b8CHskcIH4G7HYcI4XNeN4uh78W/00JnTY6ZNA8AAAAASUVORK5CYII=") no-repeat scroll center center / 86% auto;
+    height: 30px;
+    right: 9px;
+    width: 41px;
+}
+.img-btn, .send-btn
+{
+    position: absolute;
+    top: 20%;
+}

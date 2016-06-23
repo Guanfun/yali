@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+		<meta content="no-cache,must-revalidate" http-equiv="Cache-Control">
+		<meta content="no-cache" http-equiv="pragma">
+		<meta content="0" http-equiv="expires">
+		<meta content="telephone=no, address=no" name="format-detection">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<title>{$web_config['name']}</title>
+	<link type="text/css" rel="stylesheet" href="PUBLIC_CSS/mobile_group/wap/base.css" />
+	<link rel="stylesheet" type="text/css" href="PUBLIC_CSS/mobile_group/superIndex.css">
+	<link type="text/css" rel="stylesheet" href="PUBLIC_CSS/mobile_group/normalize.css" />
+	<!--<link type="text/css" rel="stylesheet" href="PUBLIC_CSS/mobile_group/main.css" />-->
+	<link href="PUBLIC_CSS/mobile_group/packageIndex.css" type="text/css"  rel="stylesheet"/>
+	<!--<link href="PUBLIC_CSS/mobile_group/packageLayout.css" type="text/css"  rel="stylesheet"/>-->
+		<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="PUBLIC_JS/jquery.min.js"></script>
+		<script src="PUBLIC_JS/jquery-1.8.2.js" language="JavaScript"></script>
+		<script src="PUBLIC_JS/jquery-ui.js" language="JavaScript"></script>
+		<script type="text/javascript" src="PUBLIC_JS/mobile_group/jquery.simplesidebar.js"></script>
+		<script src="PUBLIC_JS/mobile_group/moduleJs.js" language="JavaScript"></script>
+		<include file="Public:css"/>
+	</head>
+	<body>
+		<div id="navigate_iframe" name="mainFrame" class="mainFrame"  frameborder="0" allowtransparency="true" style="overflow: hidden;">
+			<!--头部：开始-->
+			<assign  name="member_id" value="$member_id"/>
+			<assign  name="openid" value="$openid"/>
+		<getMobilePack name="header_info" content_type="1" client_type="4" member_id="$member_id" openid="$openid"/>
+			<style>
+				.toolbar .t-left img {
+					max-width: 100%;
+					max-height: 100%;
+				/*padding: 0;*/
+				padding-top: {$header_info['imgs'][0]};
+				padding-bottom: {$header_info['imgs'][0]};
+				padding-right: 0;
+				padding-left: 0;
+				box-sizing: border-box;
+				}
+				.toolbar .t-right img {
+					max-width: 100%;
+					max-height: 100%;
+				padding-top: {$header_info['imgs'][1]};
+				padding-bottom: {$header_info['imgs'][1]};
+				padding-left: 0;
+				padding-right: 0;
+				box-sizing: border-box;
+				}
+			</style>
+			{$header_info['html']}
+			
+			<!--头部：结束-->

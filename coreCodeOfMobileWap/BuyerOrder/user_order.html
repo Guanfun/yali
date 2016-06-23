@@ -1,0 +1,102 @@
+﻿<include file="Public:header" />
+<I name="status_value" input="get.status_value" default="-1" />
+<link rel="stylesheet" href="SKIN_HTML5/{$templet_name}/css/global.css" />
+<link rel="stylesheet" href="SKIN_HTML5/{$templet_name}/css/buyerorder.css" />
+
+</head>
+<body>
+<include file="Public:top"/>
+	<!--3、此处加入主体内容，id="container"必带-->
+	<section id="container">
+    <!---我的订单header--->
+        <php>if($status_value<6){</php>
+            <div class="membeorder_wrap" >
+                 <div class="con">
+                     <div class="membeorder_header_top">
+                        <ul id="tags" class="tags">
+                          <li sid="-1" <eq name="status_value" value="-1">class="selectTag"</eq> ><a href="javascript:void(0)">全部</a> </li>
+                          <li sid="0" <eq name="status_value" value="0">class="selectTag"</eq> ><a href="javascript:void(0)">待付款</a> </li>
+                          <li sid="1" <eq name="status_value" value="1">class="selectTag"</eq> ><a href="javascript:void(0)">待发货</a> </li>
+                          <li sid="4" <eq name="status_value" value="4">class="selectTag"</eq> ><a href="javascript:void(0)">待收货</a> </li>
+                          <li sid="5" <eq name="status_value" value="5">class="selectTag"</eq> ><a href="javascript:void(0)">待评价</a> </li>
+                         </ul>
+                     </div>
+                     <div class="order_tagContent">
+                     </div>
+                 </div>
+            </div>
+        <php>}else if($status_value>6){</php>
+        <div class="membeorder_wrap" >
+            <div class="con">
+                <div class="membeorder_header_top">
+                    <ul id="tags" class="tags1">
+                        <li sid="-1" <eq name="status_value" value="-1">class="selectTag"</eq> ><a href="javascript:void(0)">全部订单</a> </li>
+                        <li sid="7" <eq name="status_value" value="7">class="selectTag"</eq> ><a href="javascript:void(0)">售后处理中</a> </li>
+                        <li sid="8" <eq name="status_value" value="8">class="selectTag"</eq> ><a href="javascript:void(0)">售后完成</a> </li>
+                        <li sid="10" <eq name="status_value" value="10">class="selectTag"</eq> ><a href="javascript:void(0)">售后失败</a> </li>
+                    </ul>
+                </div>
+                <div class="order_tagContent">
+                </div>
+            </div>
+        </div>
+        <php>}</php>
+    </section>
+<include file="Public:footer" />
+<!--4、此处引入js，2个jquery文件需带上-->
+<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/jquery.min.js"></script>
+<script src="SKIN_HTML5/{$templet_name}/js/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<include file="Public:form_validation" />
+    <script>
+        $(document).ready(function(){
+            var status_value="{$status_value}";
+            $('#tags li').click(function(){
+                //选中当前
+                $('#tags li').removeClass('selectTag');
+                $(this).addClass('selectTag');
+                var cate_id = $(this).attr('sid');
+                bulid_url(cate_id);
+            });
+            bulid_url(status_value);
+        });
+       function bulid_url(cate_id){
+            var loading = "{:U('BuyerOrder/order_status_list')}?tem_name=order_list&mode=BuyerOrder&openid={$_GET['openid']}";
+          if(cate_id !="-1"){
+                $('.order_tagContent').load(loading+'&status='+cate_id);
+            }else{
+                /*$('#tagContent').load("SKIN_HTML5/{$templet_name}/BuyerOrder/abc.html");*/
+               $('.order_tagContent').load(loading);
+            }
+        }
+        function delUserOrder(id) {
+            if (id) {
+                if (confirm("是否确定取消订单?")) {
+                    $.get("{:U('BuyerOrder/cancleUserOrder',array('openid'=>$openid,'member_id'=>$member_id))}", { id: id }, function (data) {
+                        alert(data.data);
+                        if (data.status == '1') {
+                            $('#delorder_' + id).remove();
+                            location.href ="{:U('BuyerOrder/user_order',array('openid'=>$openid,'member_id'=>$member_id,'status_value'=>0))}";
+                        }
+                    }, 'json');
+                }
+            }
+        }
+        function cancleThisOrder(id){
+            openModal("{:U('SalerOrder/close_order',array('openid'=>$openid,'member_id'=>$member_id))}?member_type=user&order_id=" + id);
+        }
+        function TakeOver(id){
+            if (id){
+                if (confirm("是否确定收货?")){
+                    $.get("{:U('BuyerOrder/takeOverProduct',array('openid'=>$openid,'member_id'=>$member_id))}", { id:id }, function (data) {
+                        alert(data.data);
+                        if (data.status == '1'){
+                            location.reload();
+                        }
+                    }, 'json');
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="SKIN_HTML5/{$templet_name}/Links/js_3/city.min.js"></script>
+    <script src="SKIN_HTML5/{$templet_name}/Links/ceshi.js"></script>
+    <style>
+        *{margin: 0;padding: 0;}
+        #p,#p1,#p2{float: left}
+        #prov>dt,#city>dt,#zone>dt{width: 100%;height: 1.5em;background: grey;}
+        #prov>dd,#city>dd,#zone>dd{margin: .1em;background:hotpink;float: right;width: 4.5em;text-align: center;display: none}
+        #prov>dd:nth-child(2n),#city>dd:nth-child(2n),#zone>dd:nth-child(2n){float: left}
+        #prov,#city,#zone{overflow: hidden}
+    </style>
+</head>
+<body>
+<div style="overflow: hidden">
+<p id="p"></p>
+<p id="p1"></p>
+<p id="p2"></p>
+</div>
+<!--省-->
+<dl id="prov">
+    <dt><span>省</span></dt>
+</dl>
+<!--市-->
+<dl id="city">
+    <dt>市</dt>
+</dl>
+<!--区-->
+<dl id="zone">
+    <dt>区</dt>
+</dl>
+<p id="en_p"></p>
+<script>
+    /*设置默认样式*/
+ document.getElementsByTagName('html')[0].style.fontSize=document.documentElement.clientWidth/10+'px';
+
+    function cityLocation(pro,city,dis){
+        $.ajax({
+            url: "{:U('Special/getTaoIp')}",
+            data:{},
+            type: "GET",
+            dataType:'json',
+            async:false,
+            success:function(data){
+                $(city).html(data.data.city);
+                if(pro){
+                    $(pro).html(data.data.region);
+                }
+                /*region(省)，region_id,city,city_id,isp(供应商)，ip*/
+            }
+        });
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(pos) {
+                /* var url = 'http://api.map.baidu.com/geocoder/v2/?ak=39f4d8f314b498af2f75a95a788b3cce&coordtype=wgs84ll&output=json';
+                 url +='&location='+pos.coords.latitude+','+pos.coords.longitude;*/
+                var lat=pos.coords.latitude;
+                var lon=pos.coords.longitude;
+                $.ajax({
+                    url: "{:U('Special/getBaiIp')}",
+                    data:{latitude:lat,longitude:lon},
+                    type: "GET",
+                    dataType:'json',
+                    success:function(data){
+                        if($(city).html() != data.data.city) {
+                            if (confirm("是否更新定位？")) {
+                                $(city).html(data.data.city);
+                                if(pro){
+                                    $(pro).html(data.data.province);
+                                }
+                                if(dis){
+                                    $(dis).html(data.data.district);
+                                }
+
+                                /*province(省)，province_id,city,city_id,district,district_id*/
+                            }
+                        }
+                    }
+                });
+            },function(error){
+                switch(error.code){
+                    case error.PERMISSION_DENIED:
+                        alert("地理位置信息的获取失败，因为该页面没有获取地理位置信息的权限");
+                        break;
+                    case error.POSITION_UNAVAILABLE:
+                        alert("地理位置获取失败，因为至少有一个内部位置源返回一个内部错误");
+                        break;
+                    case error.TIMEOUT:
+                        alert("获取地理位置超时");
+                        break;
+                }
+            }, {
+                enableHighAccuracy: true, // 是否获取高精度结果
+                timeout: 5000, //超时,毫秒
+                maximumAge: 0 //可以接受多少毫秒的缓存位置
+                // 详细说明 https://developer.mozilla.org/cn/docs/Web/API/PositionOptions
+            });
+        }
+    }
+   /**/
+for(var attr in _prov){
+    document.getElementById('en_p').innerHTML=_prov[attr]['name'];
+}
+
+    var m_prov=document.getElementById('p'),
+            m_city=document.getElementById('p1'),
+            m_zone=document.getElementById('p2'),
+            prov=document.getElementById('prov'),
+            city=document.getElementById('city'),
+            zone=document.getElementById('zone');
+    cityLocation(m_prov,m_city,m_zone);
+    var O_id=0,T_id=0,Th_id=0,enarray=[];
+    regt(region,prov,_prov);
+    prov.onclick=function () {
+        displays(this.getElementsByTagName('dd'),'block');
+    };
+    displays(prov.getElementsByTagName('dd'),'block',function(obj,e){
+        obj.onclick=function(en){
+            prov.getElementsByTagName('dt')[0].innerHTML=this.innerHTML;
+            prov.getElementsByTagName('dt')[0].setAttribute('name_id',this.getAttribute('name_id'));
+            city.getElementsByTagName('dt')[0].innerHTML="市";
+            city.getElementsByTagName('dt')[0].removeAttribute('name_id');
+            zone.getElementsByTagName('dt')[0].innerHTML="区";
+            zone.getElementsByTagName('dt')[0].removeAttribute('name_id');
+            displays(prov.getElementsByTagName('dd'),'none');
+            O_id=this.getAttribute('name_id');
+            regt(region[O_id]['child'],city,_city);
+
+            displays(city.getElementsByTagName('dd'),'block',function(en_obj,e){
+                en_obj.onclick=function(en){
+                    city.getElementsByTagName('dt')[0].innerHTML=this.innerHTML;
+                    city.getElementsByTagName('dt')[0].setAttribute('name_id',this.getAttribute('name_id'));
+                    displays(city.getElementsByTagName('dd'),'none');
+                    T_id=this.getAttribute('name_id');
+                    Th_id=this.getAttribute('name_ids');
+                    regt(region[O_id]['child'][Th_id]['child'][T_id],zone,_zone);
+                    displays(zone.getElementsByTagName('dd'),'block',function(t_obj,e){
+                        t_obj.onclick=function(en){
+                            zone.getElementsByTagName('dt')[0].innerHTML=this.innerHTML;
+                            zone.getElementsByTagName('dt')[0].setAttribute('name_id',this.getAttribute('name_id'));
+                            displays(zone.getElementsByTagName('dd'),'none');
+                            e(en);
+
+                        }
+                    });
+                    e(en);
+                }
+            });
+            e(en);
+        }
+    });
+    function displays(obj,en,fn){
+        for(var i=0;i<obj.length;i++){
+            obj[i].style.display=en;
+             if(fn){
+             	fn(obj[i],function (e) {
+                    if ( e && e.stopPropagation )
+                    //因此它支持W3C的stopPropagation()方法
+                        e.stopPropagation();
+                    else
+                    //否则，我们需要使用IE的方式来取消事件冒泡
+                        window.event.cancelBubble = true;
+                });
+             }
+        }
+    }
+    
+    function regt(region,prov,name){
+    	for(var i=prov.childNodes.length-1;i>=0;i--){
+    		if(prov.childNodes[i].nodeName=="DD" || prov.childNodes[i].nodeName=="#text"){
+	    		prov.removeChild(prov.childNodes[i]);
+	    	}
+    	}
+    	
+        for(var attr in region) {
+            for(var i=0;i<name.length;i++){
+                if(region[attr]['id']==name[i]['id']){
+                    var Odd = document.createElement('dd');
+                    Odd.setAttribute("name_id", region[attr]['id']);
+                    Odd.setAttribute("name_ids", attr)
+                    Odd.innerHTML = region[attr]['name'];
+                    prov.appendChild(Odd);
+                }
+            }
+        }
+        
+    }
+</script>
+</body>
+</html>

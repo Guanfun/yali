@@ -1,0 +1,76 @@
+<include file="Public:header" />
+	<!--2、此处引入css文件-->
+	<link href="SKIN_HTML5/{$templet_name}/css/bin1.css" rel="stylesheet" type="text/css">
+	<link href="SKIN_HTML5/{$templet_name}/css/global.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+	<header id="header">
+		<div class="top">
+		    <div class="headerLeft">
+		    	<i class="home_open">
+		    		<a href="javascript:window.history.go(-1)">
+		    			<img src="SKIN_HTML5/{$templet_name}/images/back2.png" />
+		    		</a>
+		    	</i>
+		    </div>
+			<div class="hTitle">
+				找回密码
+			</div>
+			<!--<div class="headerRight">
+				<a href="enroll.html">注册</a>
+			</div>-->
+		</div>
+	</header>     
+	<!--3、此处加入主体内容，id="container"必带-->
+	<section id="container">
+	<form name="creator" class="ink_form" action="javascript:;">
+
+	</form>
+		<div class="ink_submit">
+			<input type="button" name="submit" value="下一步" class="submit" onclick="">
+		</div>
+	</section>
+	<script src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+<include file="Public:footer"/>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	var p=null;
+	var tetxhtml=null,number=0;
+	$('.ink_submit input').click(function(){
+		if(number){
+			location.href='{:U('Login/index')}';
+		}else{
+			var nextop=document.getElementsByClassName('nextop');
+			p=nextop[nextop.length-1].value;
+			$.ajax({
+				type:'POST',
+				url:"{:U('Login/find_password')}?op="+p,
+				data:$('.ink_form').serialize(),
+				success:function (data) {
+					
+					if(data.info){
+						alert(data.info);
+					}else{
+						var divs=$("<div></div>");
+						divs.html(data);
+						$('.ink_form').append(divs);
+					}
+					if(p=="four"){
+						$('.ink_submit input').val('完成');
+						number=1;
+					}
+				}
+			});
+			
+		}
+		
+	});
+	$('.ink_form').load("{:U('Login/find_password')}");
+});
+</script>
+	
+</body>
+</html>

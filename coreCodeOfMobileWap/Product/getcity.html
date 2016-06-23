@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="SKIN_HTML5/{$templet_name}/js/jquery-1.10.2.min.js"></script>
+    <style type="text/css">
+        body, html{width: 100%;height: 100%; margin:0;font-family:"微软雅黑";}
+        #l-map{height:80%;width:100%;}
+        #r-result{width:100%;}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=39f4d8f314b498af2f75a95a788b3cce"></script>
+</head>
+<body>
+<div id="l-map"></div>
+<div id="r-result"></div>
+<script type="text/javascript">
+    // 百度地图API功能
+    var map = new BMap.Map("l-map");            // 创建Map实例
+    map.centerAndZoom(new BMap.Point(116.404, 39.915), 15);
+    var local = new BMap.LocalSearch(map, {
+        renderOptions: {map: map, panel: "r-result"}
+    });
+    local.search("餐饮");
+</script>
+<script>
+   /* var map = new BMap.Map("container");          // 创建地图实例
+    var point = new BMap.Point(116.404, 39.915);  // 创建点坐标
+    map.centerAndZoom(point, 15);*/
+    /*if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(function(pos) {
+            /!* var url = 'http://api.map.baidu.com/geocoder/v2/?ak=39f4d8f314b498af2f75a95a788b3cce&coordtype=wgs84ll&output=json';
+             url +='&location='+pos.coords.latitude+','+pos.coords.longitude;*!/
+            var lat=pos.coords.latitude;
+            var lon=pos.coords.longitude;
+
+        },function(error){
+            switch(error.code){
+                case error.PERMISSION_DENIED:
+                    alert("地理位置信息的获取失败，因为该页面没有获取地理位置信息的权限");
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    alert("地理位置获取失败，因为至少有一个内部位置源返回一个内部错误");
+                    break;
+                case error.TIMEOUT:
+                    alert("获取地理位置超时");
+                    break;
+            }
+        }, {
+            enableHighAccuracy: true, // 是否获取高精度结果
+            timeout: 5000, //超时,毫秒
+            maximumAge: 0 //可以接受多少毫秒的缓存位置
+            // 详细说明 https://developer.mozilla.org/cn/docs/Web/API/PositionOptions
+        });
+    }*/
+</script>
+</body>
+</html>

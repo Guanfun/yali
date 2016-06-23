@@ -1,0 +1,28 @@
+<volist name="list['list']" id="vo">
+    <li>
+        <div class="product_activity_main">
+            <p>{$vo.title}</p>
+            <p>使用期限{$vo.begintime|msubstr=###,2,8} ~ {$vo.endtime|msubstr=###,2,8}</p>
+        </div>
+        <div class="product_activity_receive" id="{$vo.id}">
+            <php>if($vo['is_over']=="0"){</php>
+            <p>暂未</p>
+            <p>使用</p>
+            <php>}else if($vo['is_over']=="1"&&$vo['use_time']!=""){</php>
+            <p>已</p>
+            <p>使用</p>
+            <php>}else if($vo['is_over']=="1" && $vo['use_time']==""){</php>
+            <p>已</p>
+            <p>过期</p>
+            <php>}</php>
+        </div>
+        <div class="product_activity_money">
+            <p>&yen;{$vo.money}</p>
+            <php>if($vo['use_type']=="1"){</php>
+            <p>满{$vo.full_money}使用</p>
+            <php>}else{</php>
+            <p>无使用条件</p>
+            <php>}</php>
+        </div>
+    </li>
+</volist>

@@ -1,0 +1,132 @@
+/*обть*/
+body{
+    background: #fff;
+}
+.download_list{
+    width:100%;
+    margin:0.5em auto;
+    padding:0 0.5em;
+    box-sizing:border-box;
+    overflow:hidden;
+}
+
+.download_list li{
+    float:left;
+    border:1px solid #efefef;
+    background:#fff;
+    box-sizing:border-box;
+    margin-bottom:0.5em;
+    box-shadow:0 0 0.1em #e3e3e3;
+    width:100%;
+    padding:0.5em;
+}
+
+.download_list li img{
+    float:left;
+    width:6rem;
+    height:6rem;
+    margin-right:0.5em;
+    vertical-align:middle;
+}
+
+.download_list li .f_title{
+    float:left;
+    width:12em;
+    line-height:2rem;
+    height:6rem;
+    overflow:hidden;
+}
+
+.download_list li .f_title h2{
+    font-size:1.2rem;
+    font-weight:normal;
+    overflow: hidden;white-space: nowrap;text-overflow: ellipsis
+}
+
+.download_list li .f_title h3{
+    font-size:1rem;
+    color:#999;
+    font-weight:normal;
+    overflow: hidden;white-space: nowrap;text-overflow: ellipsis
+}
+
+.download_list li .f_title span{
+    font-size:1rem;
+    color:#CCC
+}
+
+.download_list li .download{
+    float:right;
+    color:#fff;
+    background:url(../images/Download.png) no-repeat 0.25em center,#4abc96;
+    background-size:1.5em 1.5em;
+    border:none;
+    margin-top:2rem;
+    border-radius:0.25rem;
+    padding-left:2.5em;
+    padding-right:0.5em;
+    height:2em;
+    line-height: 2em;
+}
+
+.down_detail{}
+
+.down_top{
+    width:100%;
+    padding:1em;
+    box-sizing:border-box;
+}
+
+.down_top .logo{
+    width:8em;
+    height:8em;
+    border-radius:1em;
+    vertical-align:middle;
+    float:left;
+    margin-right:1em;
+}
+
+.down_top .title{
+    font-size:1.3rem;
+    font-weight:normal;
+    line-height:2rem;
+}
+
+.down_top .mb{
+    font-size:1.1rem;
+    line-height:2rem;
+    color:#CCC;
+}
+
+.down_top .down{
+    float:right;
+    color:#fff;
+    background:url(../images/Download.png) no-repeat 0.75em center,#4abc96;
+    background-size:1.5em 1.5em;
+    border:none;
+    margin-top:2rem;
+    border-radius:0.4rem;
+    padding-left:3em;
+    padding-right:1em;
+    height:2em;width:auto;
+    height:2rem;
+
+}
+.down_detail .detail_pg {
+    margin-top:1em;
+}
+
+.down_detail .detail_pg .title{
+    width:100%;
+    box-sizing:border-box;
+    border-bottom:1px solid #efefef;
+    font-size:1.3rem;
+    padding-bottom:0.5em;
+    padding-left:1em;
+}
+
+.down_detail .detail_pg .text{
+    font-size:1em;
+    padding:1em 0.8em;
+    color:#888;
+}
